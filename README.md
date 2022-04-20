@@ -1,2 +1,2 @@
-# m-CP
+# mCP
 mini-Complexome Profiler
