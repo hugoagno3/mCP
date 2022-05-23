@@ -1,5 +1,7 @@
-# corum_database <- New_Corum_Mouse_09032022
-# experiment_data <- pepQuant_Dig_C12E8_Triton_NP_40_Corrected
+# library(readr)
+# corum_database <- read_csv("~/Downloads/New_Corum_Mouse_09032022.csv")
+# experiment_data <- read_csv("~/Downloads/pepQuant_Dig_C12E8_Triton_NP-40_Corrected.csv")
+
 # View(corum_database)
 # View(experiment_data)
 #' List of Protein Complexes
@@ -24,9 +26,13 @@ mcp_list <- function(corum_database, experiment_data, N_fractions = 34, conditio
   #assertthat::assert_that(class(corum_database) == "data.frame")
   # ... 
   Matrix_Clast1 <-
-    experiment_data %>% distinct(protein_id, .keep_all = TRUE)
-  Viaexp <- Matrix_Clast1 %>% select(1, 'Pi1...2':'Pi34...35')
-  df <- dplyr::inner_join(corum_database, Viaexp, by = 'protein_id')
+    experiment_data %>%
+    dplyr::distinct(protein_id, .keep_all = TRUE) %>% 
+    dplyr::select(1:(N_fractions + 1))
+  colnames(Matrix_Clast1) <- c("protein_id", 1:N_fractions)
+  df <- dplyr::inner_join(corum_database, Matrix_Clast1, by = 'protein_id')
+  
+  
   
   prot_names <- gprofiler2::gconvert(
     query = df$protein_id,
@@ -35,18 +41,31 @@ mcp_list <- function(corum_database, experiment_data, N_fractions = 34, conditio
     mthreshold = 1,
     filter_na = FALSE
   ) %>% 
-    select(name, input) %>% #TODO: include description?
-    mutate(name = ifelse(is.na(name), yes = input, no = name)) %>% # replace NA
-    rename(protein_id = input)
+    dplyr::select(name, input) %>% #TODO: include description?
+    dplyr::mutate(name = ifelse(is.na(name), yes = input, no = name)) %>% # replace NA
+    dplyr::rename(protein_id = input)
   
   assertthat::are_equal(prot_names$protein_id, df$protein_id)
-  
   df1 <- df %>% tibble::add_column(prot_name = prot_names$name, .before = 3)
-  df_long <- df1 %>%
-    tidyr::gather("SEC_FR", "Intensity", 'Pi1...2':'Pi34...35') %>% 
-    dplyr::arrange(complex_id)
   
-  return(df_long)
+  df_long <- df1 %>%
+    tidyr::gather("SEC_FR", "Intensity", as.character(1):as.character(N_fractions)) %>% 
+    dplyr::arrange(complex_id)
+  df_long$SEC_FR <- as.numeric(df_long$SEC_FR)
+  
+  output <- unique(df_long$complex_id) %>%
+    lapply(function(id) {
+      subset <- df_long %>% dplyr::filter(complex_id == id)
+      
+      corMat <- subset %>%
+        dplyr::select(!protein_id) %>%
+        tidyr::spread(key = "prot_name", value = "Intensity") %>%
+        dplyr::select(!c(complex_id, complex_name, SEC_FR)) %>%
+        cor()
+      return(list(data = subset, corMat = corMat))
+    })
+  
+  return(output)
 }
 
 
