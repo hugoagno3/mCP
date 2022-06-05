@@ -10,6 +10,20 @@
 
 
 
+#' Title
+#'
+#' @param complex_list 
+#' @param N_fractions 
+#' @param filter 
+#' @param output_name 
+#' @param format 
+#' @param display_weights 
+#' @param standard_weights 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 cpp_plotter <- function(
   complex_list,
   N_fractions = 35,

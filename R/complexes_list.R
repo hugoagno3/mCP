@@ -8,15 +8,14 @@
 #' 
 #' @description This function detects a list of potential list of complexes... 
 #' @param corum_database 
-#' @param experiment_data 
+#' @param experiment_data A *data.frame* with your experiment results 
 #' @param N_fractions 
-#' @param condition 
 #'
 #' @return
 #' @export
 #'
-#' @examples
-mcp_list <- function(corum_database, experiment_data, N_fractions = 34, condition) {
+#' @examples Co-fractionation experiments with Digitonin detergent
+mcp_list <- function(corum_database, experiment_data, N_fractions = 34) {
   
   # datacleaning
   # - check user input

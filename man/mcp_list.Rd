@@ -4,17 +4,21 @@
 \alias{mcp_list}
 \title{List of Protein Complexes}
 \usage{
-mcp_list(corum_database, experiment_data, N_fractions = 34, condition)
+mcp_list(corum_database, experiment_data, N_fractions = 34)
 }
 \arguments{
 \item{corum_database}{}
 
-\item{experiment_data}{}
+\item{experiment_data}{A \emph{data.frame} with your experiment results}
 
 \item{N_fractions}{}
+}
+\value{
 
-\item{condition}{}
 }
 \description{
 This function detects a list of potential list of complexes...
+}
+\examples{
+Co-fractionation experiments with Digitonin detergent
 }
