@@ -48,7 +48,15 @@ cpp_plotter <- function(
   
   
   c_counter <- 0
-  pdf(file = paste0(output_name, ".", format), width = 8, height = 6)
+  plots_list <- list()
+  cp_names <- list()
+  while (!is.null(dev.list())) {
+    dev.off()
+  }
+  if (tolower(format) == "pdf") {
+    pdf(file = paste0(output_name, ".", format), width = 8, height = 6)
+  
+  }
   for (i in seq_along(complex_list)) {
     
     data <- complex_list[[i]]$data
@@ -56,7 +64,7 @@ cpp_plotter <- function(
     tri <- corMat[upper.tri(corMat)]
     
     if (nrow(data) > N_fractions & !all(data["Intensity"] == 0)) {
-      if (any(tri > filter)){
+      if (any(tri > filter)) {
         c_counter <- c_counter + 1        
         
         # plot
@@ -81,17 +89,21 @@ cpp_plotter <- function(
                                   linetype = "dashed") +
               ggplot2::annotate("text", x = standard_x - 0.5, y = mean(data$Intensity),
                                 label = standard_labels, angle = 90, 
-                                color = "grey",)
+                                color = "grey")
               
-          }
         }
-        
-        complex_list[[i]]$p <- p
-        print(p)
+        plots_list <- c(plots_list, list(p))
+        cp_names <- c(cp_names, as.character(data$complex_name[1]))
+        if (tolower(format) == "pdf") {
+          print(p)
+        }
+        }
       }
   }
-  dev.off()
-  
+  if (tolower(format) == "pdf") {
+    dev.off()
+  }
   print(paste0(c_counter, " Complexes were detected"))
-  return(p)
+  names(plots_list) <- cp_names
+  return(plots_list)
 }
