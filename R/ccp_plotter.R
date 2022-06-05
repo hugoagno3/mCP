@@ -10,17 +10,38 @@
 
 
 
-cpp_plotter <- function(complex_list, filter = 0.93, format = "pdf") {
+cpp_plotter <- function(
+  complex_list,
+  N_fractions = 35,
+  filter = 0.93,
+  output_name = paste0("complexes_detected_", Sys.Date()),
+  format = "pdf", 
+  display_weights = FALSE,
+  standard_weights = list(
+    list(x = 9, label = "1236 KDa"), 
+    list(x = 13, label = "720 KDa")
+  )
+) {
+  
+  # Input validation
+  assertthat::assert_that(is.list(standard_weights))
+  assertthat::assert_that(all(sapply(standard_weights, function(standard)
+    length(standard) == 2)))
+  assertthat::assert_that(all(sapply(standard_weights, function(standard)
+    names(standard) == c("x", "label"))))
+  assertthat::assert_that(all(sapply(standard_weights, function(standard)
+    is.numeric(standard$x))))
+  
   
   c_counter <- 0
-  pdf(file = "complexes_detected_P16-25_miniBNE_35UG_WT_Digitonin_0.93.pdf", width = 8, height = 6)
+  pdf(file = paste0(output_name, ".", format), width = 8, height = 6)
   for (i in seq_along(complex_list)) {
     
     data <- complex_list[[i]]$data
     corMat <- complex_list[[i]]$corMat
     tri <- corMat[upper.tri(corMat)]
     
-    if (nrow(data) > 37 & !all(data["Intensity"] == 0)) {
+    if (nrow(data) > N_fractions & !all(data["Intensity"] == 0)) {
       if (any(tri > filter)){
         c_counter <- c_counter + 1        
         
@@ -33,32 +54,30 @@ cpp_plotter <- function(complex_list, filter = 0.93, format = "pdf") {
                                col = prot_name
                              )) +
           ggplot2::geom_line() +
-          ggplot2::scale_x_continuous(name = "Fractions", breaks = seq(1, 37, 2)) +
+          ggplot2::scale_x_continuous(name = "Fractions", breaks = seq(1, N_fractions, 2)) +
           ggplot2::ggtitle(data$complex_name) +
-          ggplot2::geom_vline(xintercept = 9,
-                              colour = "grey",
-                              linetype = "dashed") +
-          ggplot2::geom_vline(xintercept = 13,
-                              colour = "grey",
-                              linetype = "dashed") +
-          ggplot2::geom_text(
-            ggplot2::aes(x = 9 - 0.5, label = "1236 KDa" , y = 200000),
-            angle = 90,
-            text = ggplot2::element_text(size = 11)
-          ) +
-          ggplot2::geom_text(
-            ggplot2::aes(x = 13 - 0.5, label = "720 KDa", y = 200000),
-            angle = 90,
-            text = ggplot2::element_text(size = 11)
-          )
+          ggplot2::theme_minimal()
+        
+        if (display_weights) {
+          standard_x <- sapply(standard_weights, function(standard) standard$x)
+          standard_labels <- sapply(standard_weights, function(standard) standard$label)
+            p <- p +
+              ggplot2::geom_vline(xintercept = standard_x,
+                                  colour = "grey",
+                                  linetype = "dashed") +
+              ggplot2::annotate("text", x = standard_x - 0.5, y = mean(data$Intensity),
+                                label = standard_labels, angle = 90, 
+                                color = "grey",)
+              
+          }
+        }
         
         complex_list[[i]]$p <- p
         print(p)
       }
-    }
   }
   dev.off()
   
   print(paste0(c_counter, " Complexes were detected"))
-  return(complex_list)
+  return(p)
 }
