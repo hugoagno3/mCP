@@ -9,15 +9,10 @@ It is ideal to study difficult-to-obtain or scarce samples. We showed increased 
 The workflow requires 34 FR, 35-71µg protein per sample and 14 days lab & bioinformatic work
 ![imagen](https://user-images.githubusercontent.com/82643524/179712766-6099285a-7512-4b1d-a6a3-d9eb7df89fa3.png)
 Bibliography
-![imagen](https://user-images.githubusercontent.com/82643524/179712868-7a4ab39b-8114-4065-9cc8-438bc4adbbb2.png)
 1.PMID: 31185731
-![imagen](https://user-images.githubusercontent.com/82643524/179712910-20fef45d-de37-46ca-8f97-9c17024d9dbb.png)
 2.PMID: 30642884
-![imagen](https://user-images.githubusercontent.com/82643524/179712964-87c57a7a-5bc2-4f7b-94ff-a905edb252fd.png)
 3. PMID: 22939629
-![imagen](https://user-images.githubusercontent.com/82643524/179713004-e3f03557-bdac-483c-b927-d179ce4341f6.png)
 4. PMID: 30357367
-![imagen](https://user-images.githubusercontent.com/82643524/179713051-331ed45a-63d8-4d3e-b7bf-c13bdc9ed1cb.png)
 5.PMID: 17010801 
-![imagen](https://user-images.githubusercontent.com/82643524/179713091-b5769e7c-10c6-4f23-a4dd-df8b6a33333a.png)
+
 
