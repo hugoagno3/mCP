@@ -1,4 +1,7 @@
 # mCP
+
+![imagen](https://user-images.githubusercontent.com/82643524/179713559-a0f27ad1-07af-4d69-ac72-380d4eba304b.png)
+
 mini-Complexome Profiler
 
 Protein/protein complexes (PPC) are key components of cellular and physiological processes. Several cardiac diseases, such as Atrial Fibrillation1, are associated with disruptions of these complexes. Due to their role in health and disease, PPCs have been the focus of much research2–4. Here, we introduce a new workflow named mini-Complexome Profiler (m-CP) that allows sensitive detection of PPCs from HEK293 and mouse primary myocytes. Unlike previously established approaches such as CCProfiler2, m-CP is suitable for PPC identification in low fraction number data, making it a useful tool for screening or analyzing difficult-to-obtain samples. We were able to reproduce previous observations showing that phospholamban (PLN) is part of a cardiac Ca+2 handling complex, and that its deletion results in alteration of this structure in isolated mouse ventricular cardiomyocytes knockout conditions (KO-PLN-/-)1. 
