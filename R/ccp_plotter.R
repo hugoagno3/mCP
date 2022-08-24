@@ -80,16 +80,19 @@ cpp_plotter <- function(
           ggplot2::ggtitle(data$complex_name) +
           ggplot2::theme_minimal()
         
-        if (display_weights) {
-          standard_x <- sapply(standard_weights, function(standard) standard$x)
-          standard_labels <- sapply(standard_weights, function(standard) standard$label)
+        if (display_weights) { 
+          for (weight in standard_weights) {
             p <- p +
-              ggplot2::geom_vline(xintercept = standard_x,
+              ggplot2::geom_vline(xintercept = weight$x,
                                   colour = "grey",
                                   linetype = "dashed") +
-              ggplot2::annotate("text", x = standard_x - 0.5, y = mean(data$Intensity),
-                                label = standard_labels, angle = 90, 
+              ggplot2::annotate("text", x = weight$x - 0.5, y = mean(data$Intensity),
+                                label = weight$label, angle = 90, 
                                 color = "grey")
+            
+          }
+          # standard_x <- sapply(standard_weights, function(standard) standard$x)
+          # standard_labels <- sapply(standard_weights, function(standard) standard$label)
               
         }
         plots_list <- c(plots_list, list(p))
