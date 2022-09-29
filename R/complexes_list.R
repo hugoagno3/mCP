@@ -1,21 +1,16 @@
-# library(readr)
-# corum_database <- read_csv("~/Downloads/New_Corum_Mouse_09032022.csv")
-# experiment_data <- read_csv("~/Downloads/pepQuant_Dig_C12E8_Triton_NP-40_Corrected.csv")
-
-# View(corum_database)
-# View(experiment_data)
 #' List of Protein Complexes
 #' 
 #' @description This function detects a list of potential list of complexes... 
 #' @param corum_database 
 #' @param experiment_data A *data.frame* with your experiment results 
 #' @param N_fractions 
+#' @param organism = could be "mmusculus", "hsapiens" , check gconvert vignette
 #'
 #' @return
 #' @export
 #'
 #' @examples Co-fractionation experiments with Digitonin detergent
-mcp_list <- function(corum_database, experiment_data, N_fractions = 34) {
+mcp_list <- function(corum_database, experiment_data, N_fractions = 34, organism = "mmusculus") {
   
   # datacleaning
   # - check user input
