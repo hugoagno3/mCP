@@ -62,7 +62,8 @@ cpp_plotter <- function(
     data <- complex_list[[i]]$data
     corMat <- complex_list[[i]]$corMat
     tri <- corMat[upper.tri(corMat)]
-    
+    tri[is.na(tri)]<-0
+  
     if (nrow(data) > N_fractions & !all(data["Intensity"] == 0)) {
       if (any(tri > filter)) {
         c_counter <- c_counter + 1        
