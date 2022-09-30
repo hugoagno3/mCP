@@ -30,7 +30,7 @@ mcp_list <- function(corum_database, experiment_data, N_fractions = 34, organism
   
   prot_names <- gprofiler2::gconvert(
     query = df$protein_id,
-    organism = "mmusculus",
+    organism = ,
     target = "ENSG",
     mthreshold = 1,
     filter_na = FALSE
