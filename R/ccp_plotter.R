@@ -77,7 +77,7 @@ cpp_plotter <- function(
                                col = prot_name
                              )) +
           ggplot2::geom_line() +
-          ggplot2::scale_x_continuous(name = "Fractions", breaks = seq(1, N_fractions, 2)) +
+          ggplot2::scale_x_continuous(name = "Fractions", breaks = seq(1, N_fractions, 5)) +
           ggplot2::ggtitle(data$complex_name) +
           ggplot2::theme_minimal()
         
