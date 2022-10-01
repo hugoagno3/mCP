@@ -4,13 +4,13 @@
 #' @param corum_database 
 #' @param experiment_data A *data.frame* with your experiment results 
 #' @param N_fractions 
-#' @param organism = could be "mmusculus", "hsapiens" , check gconvert vignette
+#' @param organism = could be "mmusculus", "hsapiens" , check gconvert vignette for more options https://cran.r-project.org/web/packages/gprofiler2/vignettes/gprofiler2.html
 #'
 #' @return
 #' @export
 #'
 #' @examples Co-fractionation experiments with Digitonin detergent
-mcp_list <- function(corum_database, experiment_data, N_fractions = 34, organism = "mmusculus") {
+mcp_list <- function(corum_database, experiment_data, N_fractions = 34, specie = "mmusculus") {
   
   # datacleaning
   # - check user input
@@ -30,7 +30,7 @@ mcp_list <- function(corum_database, experiment_data, N_fractions = 34, organism
   
   prot_names <- gprofiler2::gconvert(
     query = df$protein_id,
-    organism = ,
+    organism =specie ,
     target = "ENSG",
     mthreshold = 1,
     filter_na = FALSE
