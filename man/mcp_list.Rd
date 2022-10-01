@@ -4,7 +4,12 @@
 \alias{mcp_list}
 \title{List of Protein Complexes}
 \usage{
-mcp_list(corum_database, experiment_data, N_fractions = 34)
+mcp_list(
+  corum_database,
+  experiment_data,
+  N_fractions = 34,
+  specie = "mmusculus"
+)
 }
 \arguments{
 \item{corum_database}{}
@@ -12,9 +17,8 @@ mcp_list(corum_database, experiment_data, N_fractions = 34)
 \item{experiment_data}{A \emph{data.frame} with your experiment results}
 
 \item{N_fractions}{}
-}
-\value{
 
+\item{organism}{= could be "mmusculus", "hsapiens" , check gconvert vignette for more options https://cran.r-project.org/web/packages/gprofiler2/vignettes/gprofiler2.html}
 }
 \description{
 This function detects a list of potential list of complexes...

@@ -30,9 +30,6 @@ cpp_plotter(
 
 \item{standard_weights}{}
 }
-\value{
-
-}
 \description{
 Title
 }
