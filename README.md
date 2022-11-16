@@ -1,6 +1,4 @@
 # mCP
-![image](https://user-images.githubusercontent.com/82643524/193405427-b34bacc9-c099-4fe2-a6c2-bdf573ed2ab8.png)
-
 
 ![imagen](https://user-images.githubusercontent.com/82643524/179713559-a0f27ad1-07af-4d69-ac72-380d4eba304b.png)
 
