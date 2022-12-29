@@ -1,11 +1,12 @@
 #' FDR_mCP
-#'
-#' @param corum_database
-#' @param experiment_data 
-#' @param N_fractions 
-#' @param filter 
-#' @param specie 
-#' @param n_simulations
+#' 
+#' @description This function performs different matrix from your experimental matrix and evaluetes this "fake matrix" into  mCP workflow by using the selected filter then calculates the FDR based in montecarlo simulations and the real result of protein complexes detected in your experiment.
+#' @param corum_database The corum data base. 
+#' @param experiment_data A matrix that has protein_id in the first column and the detected intensities in the other colums.
+#' @param N_fractions Number of fractions in your experimet
+#' @param filter Pearson Correlation filter for the analysis
+#' @param specie Write: "hsapiens" if you work with homosapiens. 
+#' @param n_simulations number of simulations 10 by default
 #'
 #' @return
 #' @export
