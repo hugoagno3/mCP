@@ -7,6 +7,7 @@
 #' @param filter Pearson Correlation filter for the analysis
 #' @param specie Write: "hsapiens" if you work with homosapiens. 
 #' @param n_simulations number of simulations 10 by default
+#' @param Output_cpp_plotter output list of detected protein complexes function cpp_plotter
 #'
 #' @return
 #' @export
@@ -14,7 +15,7 @@
 #' @examples
 
 fdr_mCP<- function (corum_database, experiment_data, N_fractions = 35, 
-                    specie = "hsapiens", filter=0.93, n_simulations= 10) 
+                    specie = "hsapiens", filter=0.93, n_simulations= 10, Output_cpp_plotter) 
 {
   X<- replicate(n_simulations,{
     Hek_293_fake <- experiment_data
@@ -23,7 +24,7 @@ fdr_mCP<- function (corum_database, experiment_data, N_fractions = 35,
     CL_hek_P1_2_a<- mcp_list(corum_database =  Corum_Humans_Database,
                              experiment_data = Hek_293_fake, N_fractions = N_fractions, specie = specie)
     
-    out_Hek_p1_2_a <- cpp_plotter(CL_hek_P1_2_a,output_name = paste0(format(Sys.time(), "%H_%M_%OS3"),"fake.pdf"), format = ".", filter = 0.93, N_fractions = 35,
+    out_Hek_p1_2_a <- cpp_plotter(CL_hek_P1_2_a,output_name = paste0(format(Sys.time(), "%H_%M_%OS3"),"fake.pdf"), format = ".", filter = filter, N_fractions = N_fractions,
                                   display_weights = TRUE, standard_weights =list(list(x = 11, label= "1049KDa"), 
                                                                                  list(x = 13, label ="720 KDa"),
                                                                                  list(x = 17, label = "480 KDa"), 
@@ -31,13 +32,6 @@ fdr_mCP<- function (corum_database, experiment_data, N_fractions = 35,
                                                                                  list(x =29, label ="60 KDa")))
   }
   )
-  Analysis_result  <- mcp_list(corum_database =  Corum_Humans_Database,
-                               experiment_data = experiment_data, N_fractions = N_fractions, specie = specie)
-  n_Complexes <- sum(sapply(Analysis_result, function(Comp){
-    return(sum(Comp$corMat >= filter)>nrow(Comp$corMat))
-  }))
-  
-  fdrs <- sapply(X, "length")/n_Complexes
-  print(paste0("FDR (McS)= ", mean(fdrs)))
+  print(paste0("FDR (McS)= ", mean(sapply(X, "length")/length(Output_cpp_plotter))))
   FDRsimulations<- X
 }

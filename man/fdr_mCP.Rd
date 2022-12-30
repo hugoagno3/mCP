@@ -10,7 +10,8 @@ fdr_mCP(
   N_fractions = 35,
   specie = "hsapiens",
   filter = 0.93,
-  n_simulations = 10
+  n_simulations = 10,
+  Output_cpp_plotter
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ fdr_mCP(
 \item{filter}{Pearson Correlation filter for the analysis}
 
 \item{n_simulations}{number of simulations 10 by default}
+
+\item{Output_cpp_plotter}{output list of detected protein complexes function cpp_plotter}
 }
 \description{
 This function performs different matrix from your experimental matrix and evaluetes this "fake matrix" into  mCP workflow by using the selected filter then calculates the FDR based in montecarlo simulations and the real result of protein complexes detected in your experiment.
