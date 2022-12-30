@@ -8,7 +8,7 @@ cpp_plotter(
   complex_list,
   N_fractions = 35,
   filter = 0.93,
-  output_name = paste0("complexes_detected_", Sys.time()),
+  output_name = paste0("complexes_detected_", Sys.Date()),
   format = "pdf",
   display_weights = FALSE,
   standard_weights = list(list(x = 9, label = "1236 KDa"), list(x = 13, label =
