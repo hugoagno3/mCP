@@ -11,7 +11,8 @@ fdr_mCP(
   specie = "hsapiens",
   filter = 0.93,
   n_simulations = 10,
-  Output_cpp_plotter
+  Output_cpp_plotter,
+  file_name = "exp_id"
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ fdr_mCP(
 \item{n_simulations}{number of simulations 10 by default}
 
 \item{Output_cpp_plotter}{output list of detected protein complexes function cpp_plotter}
+
+\item{file_name}{this is the file name of the output, is a string, It should be writen within "". For example "outputname"}
 }
 \description{
 This function performs different matrix from your experimental matrix and evaluetes this "fake matrix" into  mCP workflow by using the selected filter then calculates the FDR based in montecarlo simulations and the real result of protein complexes detected in your experiment.
