@@ -8,7 +8,7 @@ cpp_plotter(
   complex_list,
   N_fractions = 35,
   filter = 0.93,
-  output_name = paste0("complexes_detected_", Sys.time()),
+  output_name = paste0("complexes_detected_", Sys.Date()),
   format = "pdf",
   relative = FALSE,
   heat_map = FALSE,
