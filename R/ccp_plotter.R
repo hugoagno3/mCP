@@ -94,7 +94,7 @@ cpp_plotter <- function (complex_list, N_fractions = 35, filter = 0.93,
     pdf(file = paste0("heatmap_",output_name, ".", format), width = 8, 
         height = 6)
     plots_list_heatmaps <- list()
-  
+  }
   for (i in seq_along(complex_list)) {
     data <- complex_list[[i]]$data
     corMat <- complex_list[[i]]$corMat
@@ -112,7 +112,6 @@ cpp_plotter <- function (complex_list, N_fractions = 35, filter = 0.93,
         }
       }
     }
-  }
   }
   if (tolower(format) == "pdf" & heat_map) {
     dev.off()

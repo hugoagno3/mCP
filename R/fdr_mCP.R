@@ -37,7 +37,7 @@ fdr_mCP<- function (corum_database, experiment_data, N_fractions = 35,
     CL_hek_P1_2_a<- mcp_list(corum_database =  Corum_Humans_Database,
                              experiment_data = experiment_data, N_fractions = N_fractions, specie = specie)
     
-    out_Hek_p1_2_a <- cpp_plotter(CL_hek_P1_2_a,output_name = paste0(format(Sys.time(), "%H_%M_%OS3"),"fake.pdf"), format = ".", filter = filter, N_fractions = N_fractions,
+    out_Hek_p1_2_a <- potter(CL_hek_P1_2_a,output_name = paste0(format(Sys.time(), "%H_%M_%OS3"),"fake.pdf"), format = ".", filter = filter, N_fractions = N_fractions,
                                   display_weights = TRUE, standard_weights =list(list(x = 11, label= "1049KDa"), 
                                                                                  list(x = 13, label ="720 KDa"),
                                                                                  list(x = 17, label = "480 KDa"), 
