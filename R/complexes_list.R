@@ -42,7 +42,7 @@ mcp_list <- function(corum_database, experiment_data, N_fractions = 34, specie =
   assertthat::are_equal(prot_names$protein_id, df$protein_id)
   df1 <- df %>% tibble::add_column(prot_name = prot_names$name, .before = 3)
   
-  df_long <- df1 %>%
+  df_long <- df1 %>% 
     tidyr::gather("SEC_FR", "Intensity", as.character(1):as.character(N_fractions)) %>% 
     dplyr::arrange(complex_id)
   df_long$SEC_FR <- as.numeric(df_long$SEC_FR)
@@ -51,8 +51,8 @@ mcp_list <- function(corum_database, experiment_data, N_fractions = 34, specie =
     lapply(function(id) {
       subset <- df_long %>% dplyr::filter(complex_id == id)
       
-      corMat <- subset %>%
-        dplyr::select(!protein_id) %>%
+      corMat <- subset %>% 
+        dplyr::select(!protein_id) %>%  
         tidyr::spread(key = "prot_name", value = "Intensity") %>%
         dplyr::select(!c(complex_id, complex_name, SEC_FR)) %>%
         cor()
@@ -61,5 +61,3 @@ mcp_list <- function(corum_database, experiment_data, N_fractions = 34, specie =
   
   return(output)
 }
-
-
