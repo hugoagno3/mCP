@@ -34,7 +34,7 @@ fdr_mCP<- function (corum_database, experiment_data, N_fractions = 35,
     # this part we don't need anymore
     #experiment_data[,2:ncol(experiment_data)]<- experiment_data[sample(1:nrow(experiment_data),nrow(experiment_data),replace = F),2:ncol(experiment_data)]
     
-    CL_hek_P1_2_a<- mcp_list(corum_database =  Corum_Humans_Database,
+    CL_hek_P1_2_a<- mcp_list(corum_database =  Corum_Database,
                              experiment_data = experiment_data, N_fractions = N_fractions, specie = specie)
     
     out_Hek_p1_2_a <- potter(CL_hek_P1_2_a,output_name = paste0(format(Sys.time(), "%H_%M_%OS3"),"fake.pdf"), format = ".", filter = filter, N_fractions = N_fractions,
