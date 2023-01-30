@@ -8,10 +8,11 @@
 #'
 #' @return
 #' @export
-#'
+#' @import gprofiler2
+#' @import assertthat
 #' @examples Co-fractionation experiments with Digitonin detergent
 mcp_list <- function(corum_database, experiment_data, N_fractions = 34, specie = "mmusculus") {
-  
+
   # datacleaning
   # - check user input
   # - NA, remove duplicates
