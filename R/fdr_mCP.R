@@ -19,8 +19,6 @@
 fdr_mCP<-  function (corum_database, experiment_data, N_fractions = 35, 
                      specie = "hsapiens", filter=0.93, n_simulations= 10, Output_cpp_plotter, file_name= "exp_id", save_file=TRUE) 
 {
-  #sink(paste0(file_name, "_FDR.txt"))
-  #print("starting Monte Carlo Simulation")
   X<- replicate(n_simulations,{
     experiment_data <- experiment_data
     # Identifie those Protein Ids that are in the data set and in the Corum DB
@@ -38,7 +36,7 @@ fdr_mCP<-  function (corum_database, experiment_data, N_fractions = 35,
     CL_hek_P1_2_a<- mcp_list(corum_database =  corum_database,
                              experiment_data = experiment_data, N_fractions = N_fractions, specie = specie)
     
-    out_Hek_p1_2_a <- cpp_plotter(CL_hek_P1_2_a,output_name = paste0(format(Sys.time(), "%H_%M_%OS3"),"fake.pdf"), format = ".", filter = filter, N_fractions = N_fractions,
+    out_Hek_p1_2_a <- cpp_plotter(complex_list = CL_hek_P1_2_a,output_name = paste0(format(Sys.time(), "%H_%M_%OS3"),"fake.pdf"), format = ".", filter = filter, N_fractions = N_fractions,
                                   display_weights = FALSE)
   }
   )
@@ -56,16 +54,15 @@ fdr_mCP<-  function (corum_database, experiment_data, N_fractions = 35,
                        N_subunits = as.numeric(table(corum_database$complex_name)[complex_names]))
   
   if(save_file){
-    write.csv(res_DF[names(Output_cpp_plotter),],file = paste0(file_name,".csv"))
+    write.csv(res_DF[names(Output_cpp_plotter),],file = paste0(file_name,".csv"), row.names = FALSE)
   }
-  
-  
-  return(res_DF[names(Output_cpp_plotter),])
-  
-  #print("Fold discovery rate results")
-  #print(paste0("FDR (McS)= ", mean(sapply(X, "length")/length(Output_cpp_plotter))))
-  #print(paste0("PPC_Detected= ", length(Output_cpp_plotter)))
-  #print(paste0("SD_Fdr= ", sd(sapply(X, "length")/length(Output_cpp_plotter))))
-  #sink()
+  sink(paste0(file_name, "_FDR.txt"))
+  #print("starting Monte Carlo Simulation") 
+  print("Fold discovery rate results")
+  print(paste0("FDR (McS)= ", mean(sapply(X, "length")/length(Output_cpp_plotter))))
+  print(paste0("PPC_Detected= ", length(Output_cpp_plotter)))
+  print(paste0("SD_Fdr= ", sd(sapply(X, "length")/length(Output_cpp_plotter))))
+  sink()
   #return(X)
+  return(res_DF[names(Output_cpp_plotter),])
 }
