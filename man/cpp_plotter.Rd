@@ -5,19 +5,23 @@
 \title{Title}
 \usage{
 cpp_plotter(
+  relative = FALSE,
+  heat_map = FALSE,
   complex_list,
   N_fractions = 35,
   filter = 0.93,
   output_name = paste0("complexes_detected_", Sys.Date()),
   format = "pdf",
-  relative = FALSE,
-  heat_map = FALSE,
   display_weights = FALSE,
   standard_weights = list(list(x = 9, label = "1236 KDa"), list(x = 13, label =
     "720 KDa"))
 )
 }
 \arguments{
+\item{relative}{could be = FALSE or TRUE. When TRUE the plots will be relative to the maximum intensity of each protiens. When FALSE, the plot will be the intensities detected in the experiment without relativization. This option is useful when some of the proteins in a protein protein complex are not easy to detect in the Mass spectrometer}
+
+\item{heat_map}{could be = FALSE or TRUE. When TRUE it will plot heat maps of all protein complexes detected after filter them by Pearson correlation.}
+
 \item{complex_list}{}
 
 \item{N_fractions}{}
@@ -27,10 +31,6 @@ cpp_plotter(
 \item{output_name}{}
 
 \item{format}{}
-
-\item{relative}{could be = FALSE or TRUE. When TRUE the plots will be relative to the maximum intensity of each protiens. When FALSE, the plot will be the intensities detected in the experiment without relativization. This option is useful when some of the proteins in a protein protein complex are not easy to detect in the Mass spectrometer}
-
-\item{heat_map}{could be = FALSE or TRUE. When TRUE it will plot heat maps of all protein complexes detected after filter them by Pearson correlation.}
 
 \item{display_weights}{}
 

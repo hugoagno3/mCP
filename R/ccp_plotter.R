@@ -26,9 +26,9 @@
 #' @export
 #'
 #' @examples
-cpp_plotter <- function (complex_list, N_fractions = 35, filter = 0.93, 
-                         output_name = paste0("complexes_detected_", Sys.Date()), format = "pdf", 
-                         relative= FALSE, heat_map= FALSE, display_weights = FALSE, 
+
+cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fractions = 35, filter = 0.93, output_name = paste0("complexes_detected_", 
+                         Sys.Date()), format = "pdf", display_weights = FALSE,
                          standard_weights = list(list(x = 9, label = "1236 KDa"), list(x = 13, label = "720 KDa"))) 
 {
   assertthat::assert_that(is.list(standard_weights))
@@ -52,6 +52,9 @@ cpp_plotter <- function (complex_list, N_fractions = 35, filter = 0.93,
     corMat <- complex_list[[i]]$corMat
     tri <- corMat[upper.tri(corMat)]
     tri[is.na(tri)] <- 0
+    if (length(tri)> 210){
+      tri<- sample(tri, 210, replace = FALSE)
+    }
     if (nrow(data) > N_fractions & !all(data["Intensity"] == 
                                         0)) {
       if (any(tri > filter)) {
@@ -94,29 +97,33 @@ cpp_plotter <- function (complex_list, N_fractions = 35, filter = 0.93,
     pdf(file = paste0("heatmap_",output_name, ".", format), width = 8, 
         height = 6)
     plots_list_heatmaps <- list()
-  }
-  for (i in seq_along(complex_list)) {
-    data <- complex_list[[i]]$data
-    corMat <- complex_list[[i]]$corMat
-    tri <- corMat[upper.tri(corMat)]
-    tri[is.na(tri)] <- 0
-    if (nrow(data) > N_fractions & !all(data["Intensity"] == 
-                                        0)) {
-      if (any(tri > filter)) {
-        p <-heatmap(corMat, scale = "none", main = unique(data$complex_name))
-        
-        plots_list_heatmaps <- c(plots_list_heatmaps, list(p))
-        cp_names <- c(cp_names, as.character(data$complex_name[1]))
-        if (tolower(format) == "pdf" & heat_map) {
-          print(p)
+    
+    for (i in seq_along(complex_list)) {
+      data <- complex_list[[i]]$data
+      corMat <- complex_list[[i]]$corMat
+      tri <- corMat[upper.tri(corMat)]
+      tri[is.na(tri)] <- 0
+      if (length(tri)> 210){
+        tri<- sample(tri, 210, replace = FALSE)
+      }
+      if (nrow(data) > N_fractions & !all(data["Intensity"] == 
+                                          0)) {
+        if (any(tri > filter)) {
+          p <-heatmap(corMat, scale = "none", main = unique(data$complex_name))
+          
+          plots_list_heatmaps <- c(plots_list_heatmaps, list(p))
+          cp_names <- c(cp_names, as.character(data$complex_name[1]))
+          if (tolower(format) == "pdf" & heat_map) {
+            print(p)
+          }
         }
       }
     }
-  }
-  if (tolower(format) == "pdf" & heat_map) {
     dev.off()
   }
+  
   ##### End of heatmap 
+  
   print(paste0(c_counter, " Complexes were detected"))
   return(plots_list)
 }
