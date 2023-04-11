@@ -53,7 +53,7 @@ mcp_list <- function(corum_database, experiment_data, N_fractions = 34, specie =
       subset <- df_long %>% dplyr::filter(complex_id == id)
       
       corMat <- subset %>% 
-        dplyr::select(!protein_id) %>%  
+        dplyr::select(!protein_id) %>%  distinct(prot_name, SEC_FR,.keep_all = TRUE) %>% 
         tidyr::spread(key = "prot_name", value = "Intensity") %>%
         dplyr::select(!c(complex_id, complex_name, SEC_FR)) %>%
         cor()
