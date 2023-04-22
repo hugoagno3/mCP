@@ -28,7 +28,7 @@
 #' @examples
 
 cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fractions = 35, filter = 0.93, output_name = paste0("complexes_detected_", 
-                         Sys.Date()), format = "pdf", display_weights = FALSE,
+                                                                                                                               Sys.Date()), format = "pdf", display_weights = FALSE,
                          standard_weights = list(list(x = 9, label = "1236 KDa"), list(x = 13, label = "720 KDa"))) 
 {
   assertthat::assert_that(is.list(standard_weights))
@@ -50,6 +50,18 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fract
   for (i in seq_along(complex_list)) {
     data <- complex_list[[i]]$data
     corMat <- complex_list[[i]]$corMat
+    ########### interactomics
+    pectores<- corMat
+    #pectores<- round(pectores[,],2)
+    pectores<- gdata::unmatrix(pectores)
+    pere<- as.data.frame(pectores[pectores>filter], row.names = TRUE)
+    pere$pairs<- rownames(pere)
+    colnames(pere)[1]<- "Pearson"
+    pere_1<- pere %>% dplyr::distinct(pairs, .keep_all = TRUE) %>% dplyr::filter(!Pearson==1) %>% filter(row_number() %% 2 == 0)
+    # pere_1<- as.data.frame(paste0(vere_1$pairs,"-", vere_1$Pearson))
+    # colnames(pere)[1]<- "interaction"
+    perek_2<- list(interactions=pere_1$pairs, Pearson= pere_1$Pearson)
+    ###########
     tri <- corMat[upper.tri(corMat)]
     tri[is.na(tri)] <- 0
     if (length(tri)> 210){
@@ -58,6 +70,7 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fract
     if (nrow(data) > N_fractions & !all(data["Intensity"] == 
                                         0)) {
       if (any(tri > filter)) {
+        vere<- data.frame(Hits= length(which(tri > filter)))
         c_counter <- c_counter + 1
         if (relative) {data <- data %>%group_by(protein_id) %>%
           mutate(Intensity = Intensity/max(Intensity, na.rm=TRUE))
@@ -77,7 +90,7 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fract
                                 angle = 90, color = "grey")
           }
         }
-        plots_list <- c(plots_list, list(p))
+        plots_list <- c(plots_list, list(c(list(p),list(vere),list(perek_2))))
         cp_names <- c(cp_names, as.character(data$complex_name[1]))
         if (tolower(format) == "pdf") {
           print(p)
@@ -111,7 +124,7 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fract
         if (any(tri > filter)) {
           p <-heatmap(corMat, scale = "none", main = unique(data$complex_name))
           
-          plots_list_heatmaps <- c(plots_list_heatmaps, list(p))
+          plots_list_heatmaps <- c(plots_list_heatmaps, list(p, vere))
           cp_names <- c(cp_names, as.character(data$complex_name[1]))
           if (tolower(format) == "pdf" & heat_map) {
             print(p)

@@ -3,6 +3,7 @@
 export(Calc_mean_matrix)
 export(combine_1_n_mapping)
 export(cpp_plotter)
+export(extract_mcp)
 export(fdr_mCP)
 export(mcp_list)
 export(split_mat)
