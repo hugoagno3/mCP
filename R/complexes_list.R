@@ -5,13 +5,14 @@
 #' @param experiment_data A *data.frame* with your experiment results 
 #' @param N_fractions 
 #' @param organism = could be "mmusculus", "hsapiens" , check gconvert vignette for more options https://cran.r-project.org/web/packages/gprofiler2/vignettes/gprofiler2.html
+#' @param method = can be "kendall", "spearman" or "pearson" (default "pearson")
 #'
 #' @return
 #' @export
 #' @import gprofiler2
 #' @import assertthat
 #' @examples Co-fractionation experiments with Digitonin detergent
-mcp_list <- function(corum_database, experiment_data, N_fractions = 34, specie = "mmusculus") {
+mcp_list <- function(corum_database, experiment_data, N_fractions = 34, specie = "mmusculus", method= "pearson") {
 
   # datacleaning
   # - check user input
@@ -56,7 +57,7 @@ mcp_list <- function(corum_database, experiment_data, N_fractions = 34, specie =
         dplyr::select(!protein_id) %>%  distinct(prot_name, SEC_FR,.keep_all = TRUE) %>% 
         tidyr::spread(key = "prot_name", value = "Intensity") %>%
         dplyr::select(!c(complex_id, complex_name, SEC_FR)) %>%
-        cor()
+        cor(method = method)
       return(list(data = subset, corMat = corMat))
     })
   
