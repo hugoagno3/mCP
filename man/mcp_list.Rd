@@ -9,7 +9,8 @@ mcp_list(
   experiment_data,
   N_fractions = 34,
   specie = "mmusculus",
-  method = "pearson"
+  method_cor = "pearson",
+  heatmap_seaborn = TRUE
 )
 }
 \arguments{
@@ -19,9 +20,11 @@ mcp_list(
 
 \item{N_fractions}{}
 
-\item{method}{= can be "kendall", "spearman" or "pearson" (default "pearson")}
+\item{heatmap_seaborn}{always TRUE perform a correlation matrix compatible with the heat map seaborn form corrr package. Not active only in the FDR function.}
 
 \item{organism}{= could be "mmusculus", "hsapiens" , check gconvert vignette for more options https://cran.r-project.org/web/packages/gprofiler2/vignettes/gprofiler2.html}
+
+\item{method}{= can be "kendall", "spearman" or "pearson" (default "pearson")}
 }
 \description{
 This function detects a list of potential list of complexes...

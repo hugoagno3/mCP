@@ -33,12 +33,12 @@ fdr_mCP<-  function (corum_database, experiment_data, N_fractions = 35,
                                                                                 sum(Indeces_in_Corum), replace = F)]
     experiment_data$protein_id[Indeces_in_Corum] <- fake_Ids
     CL_hek_P1_2_a <- mcp_list(corum_database = corum_database, 
-                              experiment_data = experiment_data, N_fractions = N_fractions, 
-                              specie = specie)
+                                   experiment_data = experiment_data, N_fractions = N_fractions, 
+                                   specie = specie, heatmap_seaborn = FALSE)
     out_Hek_p1_2_a <- cpp_plotter(complex_list = CL_hek_P1_2_a, 
-                                  output_name = paste0(format(Sys.time(), "%H_%M_%OS3"), 
-                                                       "fake.pdf"), format = ".", filter = filter, 
-                                  N_fractions = N_fractions, display_weights = FALSE)
+                                       output_name = paste0(format(Sys.time(), "%H_%M_%OS3"), 
+                                                            "fake.pdf"), format = ".", filter = filter, 
+                                       N_fractions = N_fractions, display_weights = FALSE)
     #standar_simulation<- extract_mcp(out_Hek_p1_2_a)
   })
   
