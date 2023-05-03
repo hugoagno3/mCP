@@ -18,7 +18,7 @@
 #' @param output_name 
 #' @param format 
 #' @param relative could be = FALSE or TRUE. When TRUE the plots will be relative to the maximum intensity of each protiens. When FALSE, the plot will be the intensities detected in the experiment without relativization. This option is useful when some of the proteins in a protein protein complex are not easy to detect in the Mass spectrometer
-#' @param heat_map could be = FALSE or TRUE. When TRUE it will plot heat maps of all protein complexes detected after filter them by Pearson correlation.
+#' @param heat_map could be = FALSE or TRUE. When TRUE it will plot heat maps of all protein complexes detected after filter them by Pearson correlation. When the algorithm of correlation is not Pearson is should be always FALSE. 
 #' @param display_weights 
 #' @param standard_weights 
 #'
@@ -52,21 +52,16 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fract
     corMat <- complex_list[[i]]$corMat
     ########### interactomics
     pectores<- corMat
-    #pectores<- round(pectores[,],2)
     pectores<- gdata::unmatrix(pectores)
     pere<- as.data.frame(pectores[pectores>filter], row.names = TRUE)
     pere$pairs<- rownames(pere)
     colnames(pere)[1]<- "Pearson"
-    pere_1<- pere %>% dplyr::distinct(pairs, .keep_all = TRUE) %>% dplyr::filter(!Pearson==1) %>% filter(row_number() %% 2 == 0)
-    # pere_1<- as.data.frame(paste0(vere_1$pairs,"-", vere_1$Pearson))
-    # colnames(pere)[1]<- "interaction"
+    pere_1<- pere %>% dplyr::distinct(pairs, .keep_all = TRUE) %>%
+      dplyr::filter(!Pearson==1) %>% filter(row_number() %% 2 == 0)
     perek_2<- list(interactions=pere_1$pairs, Pearson= pere_1$Pearson)
     ###########
     tri <- corMat[upper.tri(corMat)]
     tri[is.na(tri)] <- 0
-    if (length(tri)> 210){
-      tri<- sample(tri, 210, replace = FALSE)
-    }
     if (nrow(data) > N_fractions & !all(data["Intensity"] == 
                                         0)) {
       if (any(tri > filter)) {
@@ -116,27 +111,27 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fract
       corMat <- complex_list[[i]]$corMat
       tri <- corMat[upper.tri(corMat)]
       tri[is.na(tri)] <- 0
-      if (length(tri)> 210){
-        tri<- sample(tri, 210, replace = FALSE)
-      }
       if (nrow(data) > N_fractions & !all(data["Intensity"] == 
                                           0)) {
         if (any(tri > filter)) {
-          p <-heatmap(corMat, scale = "none", main = unique(data$complex_name))
+          g <-heatmap(corMat, scale = "none", main = unique(data$complex_name))
+          d<- corrr::network_plot (complex_list[[i]][["CorMat_rrr"]], min_cor = 0.3)
           
-          plots_list_heatmaps <- c(plots_list_heatmaps, list(p, vere))
           cp_names <- c(cp_names, as.character(data$complex_name[1]))
           if (tolower(format) == "pdf" & heat_map) {
-            print(p)
+            print(g)
+            print(d)
           }
+          plots_list_heatmaps <- c(plots_list_heatmaps, list(c(list(d))))
         }
       }
     }
     dev.off()
+    names(plots_list_heatmaps) <- names(plots_list)
+    plots_list <- Map(c, plots_list, plots_list_heatmaps)
   }
   
   ##### End of heatmap 
-  
   print(paste0(c_counter, " Complexes were detected"))
   return(plots_list)
 }
