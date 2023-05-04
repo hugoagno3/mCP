@@ -5,7 +5,7 @@
 #' @param experiment_data A *data.frame* with your experiment results 
 #' @param N_fractions 
 #' @param organism = could be "mmusculus", "hsapiens" , check gconvert vignette for more options https://cran.r-project.org/web/packages/gprofiler2/vignettes/gprofiler2.html
-#' @param method_cor = can be "kendall", "spearman" or "pearson" (default "pearson")
+#' @param method = can be "kendall", "spearman" or "pearson" (default "pearson")
 #' @param heatmap_seaborn always TRUE perform a correlation matrix compatible with the heat map seaborn form corrr package. Not active only in the FDR function.
 #'
 #' @return
