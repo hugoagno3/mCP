@@ -73,8 +73,8 @@ fdr_mCP<-   function (corum_database, experiment_data, N_fractions = 35,
   ############################################################
   if (save_file) {
     write.csv(res_DF, file = paste0(file_name,".csv"), row.names = FALSE)
-    VS_f<- res_DF %>% dplyr::select(1,3,4,6:(5+n_simulations))
-    write.csv(VS_f, file = paste0(file_name,"MontecarloSimulationFDR_results.csv"), row.names = FALSE)
+    # VS_f<- res_DF %>% dplyr::select(1,3,4,6:(5+n_simulations))
+    # write.csv(VS_f, file = paste0(file_name,"MontecarloSimulationFDR_results.csv"), row.names = FALSE)
   }
   sink(paste0(file_name, "_FDR.txt"))
   print("Fold discovery rate results")
