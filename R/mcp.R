@@ -38,6 +38,7 @@
 #'filter = 0.93,
 #'heat_map = TRUE,
 #'relative = FALSE,
+#'fdr_limit= 0.05,
 #'n_simulations= 9,
 #'display_weights = TRUE,
 #'standard_weights = list(list(x =11, label= "1049KDa"), 
