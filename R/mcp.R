@@ -47,7 +47,7 @@
 mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapiens",
                 method_cor="pearson", heatmap_seaborn= TRUE, format="pdf", output_name= mCP_analysis,
                 filter=0.93, heat_map= TRUE, relative= FALSE, display_weights=TRUE, 
-                standard_weights=TRUE, fdr_limit=0.05, n_simulations=185){
+                standard_weights=TRUE, fdr_limit=0.05 , n_simulations=185){
   
   # initialiye progress bar
   
@@ -68,7 +68,7 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
   cat("mcp_list function completed in", difftime(Sys.time(), start_time), "mins.\n")
   
   # Update progress bar
-  t<-10/(1.5+5.4+3.75*n_simulations)
+  t<-10/(1.5+5.4+3.75*n_simulations+5.4)
   setTxtProgressBar(pb, 1.5*t)
   
   # Step 2:  Run cpp_plotter function
@@ -76,7 +76,7 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
   
   out_Hek_P2_1 <- cpp_plotter(complex_list = CL_hek_P2_1,
                               format = format, 
-                              output_name = output_name,
+                              output_name = paste0("all_Candidates_", output_name),
                               filter = filter, N_fractions = N_fractions,
                               heat_map = heat_map,
                               relative = relative,
@@ -97,7 +97,23 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
                                  N_fractions = N_fractions,
                                  specie = specie,
                                  filter = filter,
-                                 n_simulations = n_simulations, fdr_limit=fdr_limit)
+                                 fdr_limit = fdr_limit,
+                                 n_simulations = n_simulations, )
+  
+  
+  filist<- names(FDR_DIANN_dDIA_P2_1_)
+  CL_list_fdr<-CL_hek_P2_1[filist]
+  # Update progress bar
+  setTxtProgressBar(pb, 5.4*t)
+  out_Hek_P2_1 <- cpp_plotter(complex_list = CL_list_fdr,
+                              format = format, 
+                              output_name = output_name,
+                              filter = filter, N_fractions = N_fractions,
+                              heat_map = heat_map,
+                              relative = relative,
+                              display_weights = display_weights,
+                              standard_weights = standard_weights)
+  
   # # Calculate the elapsed time and print it to the console
   # end_time <- Sys.time()
   # elapsed_time <- end_time - start_time
@@ -109,5 +125,5 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
   setTxtProgressBar(pb, 10) 
   # End progress bar
   close(pb)
-  return(FDR_DIANN_dDIA_P2_1_)
+  return(out_Hek_P2_1)
 }
