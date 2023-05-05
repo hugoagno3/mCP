@@ -13,7 +13,8 @@ fdr_mCP(
   n_simulations = 10,
   Output_cpp_plotter,
   file_name = "exp_id",
-  save_file = TRUE
+  save_file = TRUE,
+  fdr_limit = 0.05
 )
 }
 \arguments{

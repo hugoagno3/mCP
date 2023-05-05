@@ -2,7 +2,7 @@
 % Please edit documentation in R/mcp.R
 \name{mCP}
 \alias{mCP}
-\title{Integrated function for targeted analysis of protein complexes with extended range to low number of fractions.}
+\title{mCP function: Targeted analysis of protein complexes extended to a low number of fractions.}
 \usage{
 mCP(
   corum_database,
@@ -18,6 +18,7 @@ mCP(
   relative = FALSE,
   display_weights = TRUE,
   standard_weights = TRUE,
+  fdr_limit = 0.05,
   n_simulations = 185
 )
 }
@@ -45,6 +46,8 @@ mCP(
 \item{display_weights}{TRUE or FALSE statement to display molecular weight markers in the complexome profiling plots.}
 
 \item{standard_weights}{following core= list(list(x =11, label= "1049KDa"), list(x = 13, label ="720 KDa"))). It is possible to add many markers. you have to extend the code, for example to add a thrid marker= list(list(x =11, label= "1049KDa"), list(x=12, label="900 kDa"), list(x = 13, label ="720 KDa"))). Display_weights muss be TRU}
+
+\item{fdr_limit}{report only protein complexes detected with a false discovery rate lower than a numeric value, for example = 0.05.}
 
 \item{n_simulations}{This is the number of simulations we recomend 185 simulations (this part could take 12 hrs for human dataset).}
 
