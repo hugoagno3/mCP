@@ -16,9 +16,9 @@
 #'
 #' @examples
 
-fdr_mCP<-  function (corum_database, experiment_data, N_fractions = 35, 
-                     specie = "hsapiens", filter = 0.93, n_simulations = 10, 
-                     Output_cpp_plotter, file_name = "exp_id", save_file = TRUE) 
+fdr_mCP<-   function (corum_database, experiment_data, N_fractions = 35, 
+                      specie = "hsapiens", filter = 0.93, n_simulations = 10, 
+                      Output_cpp_plotter, file_name = "exp_id", save_file = TRUE, fdr_limit= 0.05) 
 {
   standar_Experiment<- extract_mcp(Output_cpp_plotter)
   ######## simulation##########
@@ -33,12 +33,12 @@ fdr_mCP<-  function (corum_database, experiment_data, N_fractions = 35,
                                                                                 sum(Indeces_in_Corum), replace = F)]
     experiment_data$protein_id[Indeces_in_Corum] <- fake_Ids
     CL_hek_P1_2_a <- mcp_list(corum_database = corum_database, 
-                                   experiment_data = experiment_data, N_fractions = N_fractions, 
-                                   specie = specie, heatmap_seaborn = FALSE)
+                              experiment_data = experiment_data, N_fractions = N_fractions, 
+                              specie = specie, heatmap_seaborn = FALSE)
     out_Hek_p1_2_a <- cpp_plotter(complex_list = CL_hek_P1_2_a, 
-                                       output_name = paste0(format(Sys.time(), "%H_%M_%OS3"), 
-                                                            "fake.pdf"), format = ".", filter = filter, 
-                                       N_fractions = N_fractions, display_weights = FALSE)
+                                  output_name = paste0(format(Sys.time(), "%H_%M_%OS3"), 
+                                                       "fake.pdf"), format = ".", filter = filter, 
+                                  N_fractions = N_fractions, display_weights = FALSE)
     #standar_simulation<- extract_mcp(out_Hek_p1_2_a)
   })
   
@@ -60,16 +60,21 @@ fdr_mCP<-  function (corum_database, experiment_data, N_fractions = 35,
   ################################################################
   ######################################################
   #FDR_P11_today_50023 <- FDR_P11_2_801_tests_100
-  VS<-res_DF_1 %>% select(6:(5+n_simulations))
+  VS<-res_DF_1 %>% dplyr::select(6:(5+n_simulations))
   VES<-res_DF_1$Hits
   papa<- as.data.frame(ifelse(VS>=VES,1,0))
   disco_11<- data.frame(Discovered= rowSums(papa))
   ##############################################################
-  res_DF <- data.frame(complex_names,Hits = standar_Experiment$hits, Discovered = disco_11$Discovered, rel.discoveries =disco_11$Discovered/n_simulations, 
+  res_DF <- data.frame(complex_names,Hits_in_experiment = standar_Experiment$hits, False_positives = disco_11$Discovered, FDR =disco_11$Discovered/n_simulations, 
                        N_subunits = as.numeric(table(corum_database$complex_name)[complex_names]),rbind(res_matrix)) #,rbind(res_matrix) to include the hits in each simulation
+  res_DF<- res_DF %>% dplyr::filter(FDR<= fdr_limit)
+  filti<- res_DF$complex_names
+  out_Hek_P2_1 <-  Output_cpp_plotter[filti]
   ############################################################
   if (save_file) {
     write.csv(res_DF, file = paste0(file_name,".csv"), row.names = FALSE)
+    VS_f<- res_DF %>% dplyr::select(1,3,4,6:(5+n_simulations))
+    write.csv(VS_f, file = paste0(file_name,"MontecarloSimulationFDR_results.csv"), row.names = FALSE)
   }
   sink(paste0(file_name, "_FDR.txt"))
   print("Fold discovery rate results")
@@ -77,5 +82,5 @@ fdr_mCP<-  function (corum_database, experiment_data, N_fractions = 35,
   print(paste0("PPC_Detected= ", length(Output_cpp_plotter)))
   print(paste0("SD_Fdr= ", sd(sapply(X, "length")/length(Output_cpp_plotter))))
   sink()
-  return(res_DF)
+  return(out_Hek_P2_1)
 }
