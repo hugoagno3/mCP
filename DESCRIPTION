@@ -14,3 +14,8 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+Imports: 
+  gdata,
+  assertthat,
+  corrr,
+  gprofiler2
