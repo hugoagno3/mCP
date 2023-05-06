@@ -26,23 +26,52 @@
 #' @export
 #' @import gprofiler2 gdata corrr
 #' @import assertthat
-#' @examples Co-fractionation experiments with NP-40 mild-detergent 
-#'  out_Hek_P2_1_teste <- mCP(corum_database = Corum_Humans_Database,
-#'  experiment_data = NAmatrix_P2_1, 
-#'N_fractions = 35, 
-#'specie = "hsapiens",
-#'method_cor = "pearson",
-#'heatmap_seaborn = TRUE,
-#'format = "pdf", 
-#'output_name = "m_CP_analysis_2",
-#'filter = 0.93,
-#'heat_map = TRUE,
-#'relative = FALSE,
-#'fdr_limit= 0.05,
-#'n_simulations= 9,
-#'display_weights = TRUE,
-#'standard_weights = list(list(x =11, label= "1049KDa"), 
-#'                        list(x = 13, label ="720 KDa")))
+#' @examples 
+#' 
+#' Co-fractionation experiments with NP-40 mild-detergent_Humans(Hek293 cells)
+#' 
+#'data("Corum_Humans_Database")
+#'data("Hek293_P2_1")
+#'mCP_TEND_out_Hek_P2_1_teste_11 <- mCP(corum_database = Corum_Humans_Database,
+#'                                      experiment_data = Hek293_P2_1, 
+#'                                      N_fractions = 35, 
+#'                                      specie = "hsapiens",
+#'                                      method_cor = "pearson",
+#'                                      heatmap_seaborn = TRUE,
+#'                                      format = "pdf", 
+#'                                      output_name = "INTO_m_CP_analysis_7",
+#'                                      filter = 0.93,
+#'                                      heat_map = TRUE,
+#'                                      relative = FALSE,
+#'                                      fdr_limit = 0.05,
+#'                                      n_simulations= 7,
+#'                                      display_weights = TRUE,
+#'                                      standard_weights = list(list(x =11, label= "1049KDa"), 
+#'                                                              list(x = 13, label ="720 KDa")))
+#'                                                              
+#'Co-fractionation experiments with C12E8 mild-detergent_Mouse (89FR)
+#'
+#'data("Corum_Mouse_Database")
+#'data("WT_R14DEL_Mouse")
+#'mCP_TEND_out_WT_Mouse_Cardiac <- mCP(corum_database = Corum_Mouse_Database,
+#'                                     experiment_data = WT_R14DEL_Mouse, 
+#'                                     N_fractions = 89, 
+#'                                     specie = "mmusculus",
+#'                                     method_cor = "pearson",
+#'                                     heatmap_seaborn = TRUE,
+#'                                     format = "pdf", 
+#'                                     output_name = "INTO_m_CP_mouse_analysis_8",
+#'                                     filter = 0.93,
+#'                                     heat_map = TRUE,
+#'                                     relative = FALSE,
+#'                                     fdr_limit = 0.05,
+#'                                     n_simulations= 14,
+#'                                     display_weights = TRUE,
+#'                                     standard_weights =  list(
+#'                                       list(x = 44, label = "2.010 KDa"), 
+#'                                       list(x = 32.07, label = "158 KDa"), 
+#'                                       list(x = 33.8, label = "44 KDa")))
+
 
 mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapiens",
                 method_cor="pearson", heatmap_seaborn= TRUE, format="pdf", output_name= mCP_analysis,
