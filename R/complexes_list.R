@@ -1,12 +1,12 @@
 #' List of Protein Complexes
 #' 
-#' @description This function detects a list of potential list of complexes. 
-#' @param corum_database CORUM database of protein complexes (or a targeted list of interest) dataframe with 3 columns:´  col1= "complex_id", col2= "complex_name" and col3= "protein_id").
-#' @param experiment_data A *data.frame* with your experiment results 
-#' @param N_fractions number of protein fractions obtained in the co-fractionation experiment.
-#' @param organism = could be "mmusculus", "hsapiens" , check gconvert vignette for more options https://cran.r-project.org/web/packages/gprofiler2/vignettes/gprofiler2.html
-#' @param method_cor = can be "kendall", "spearman" or "pearson" (default "pearson")
-#' @param heatmap_seaborn always TRUE perform a correlation matrix compatible with the heat map seaborn form corrr package. Not active only in the FDR function.
+#' @description This function produces a list of potential protein complexes. Its input is an experimental matrix and the CORUM database.
+#' @param corum_database The CORUM database of protein complexes (or a targeted list of interest). The data frame should contain three columns: col1= "complex_id", col2= "complex_name", and col3= "protein_id".
+#' @param experiment_data A *data.frame* with your experiment results. 
+#' @param N_fractions The number of fractions obtained in the co-fractionation experiment.
+#' @param organism A string that indicates the specie. It could be "mmusculus", "hsapiens". Check gconvert vignette for more options https://cran.r-project.org/web/packages/gprofiler2/vignettes/gprofiler2.html
+#' @param method_cor A string that indicates the correlation algorithm to make the matrix correlation. It can be "kendall", "spearman" or "pearson" (default "pearson")
+#' @param heatmap_seaborn a logical value indicating whether to perform a correlation matrix compatible with a network plot from the corrr package (default TRUE).
 #'
 #' @return
 #' @export
