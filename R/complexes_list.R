@@ -1,18 +1,28 @@
 #' List of Protein Complexes
 #' 
-#' @description This function detects a list of potential list of complexes... 
-#' @param corum_database 
+#' @description This function detects a list of potential list of complexes. 
+#' @param corum_database CORUM database of protein complexes (or a targeted list of interest) dataframe with 3 columns:´  col1= "complex_id", col2= "complex_name" and col3= "protein_id").
 #' @param experiment_data A *data.frame* with your experiment results 
-#' @param N_fractions 
+#' @param N_fractions number of protein fractions obtained in the co-fractionation experiment.
 #' @param organism = could be "mmusculus", "hsapiens" , check gconvert vignette for more options https://cran.r-project.org/web/packages/gprofiler2/vignettes/gprofiler2.html
-#' @param method = can be "kendall", "spearman" or "pearson" (default "pearson")
+#' @param method_cor = can be "kendall", "spearman" or "pearson" (default "pearson")
 #' @param heatmap_seaborn always TRUE perform a correlation matrix compatible with the heat map seaborn form corrr package. Not active only in the FDR function.
 #'
 #' @return
 #' @export
 #' @import gprofiler2
 #' @import assertthat
-#' @examples Co-fractionation experiments with Digitonin detergent
+#' @examples 
+#' # Read the experiment files
+#'data(Hek293_P2_1)
+#'#### RUN mCP list that creates a list of potential protein complexes
+#'CL_hek_P2_1<- mcp_list(corum_database =  Corum_Humans_Database,
+#'                       experiment_data = Hek293_P2_1, 
+#'                       N_fractions = 35, 
+#'                       specie = "hsapiens",
+#'                       method_cor = "pearson",
+#'                       heatmap_seaborn = TRUE)
+#' 
 mcp_list <- function(corum_database, experiment_data, N_fractions = 34, specie = "mmusculus", method_cor= "pearson", heatmap_seaborn= TRUE) {
   
   # datacleaning
