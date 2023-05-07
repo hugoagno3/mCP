@@ -1,6 +1,6 @@
 #' fdr_mCP
 #' 
-#' @description This function performs different matrix from your experimental matrix and evaluetes this "fake matrix" into  mCP workflow by using the selected filter then calculates the FDR based in montecarlo simulations and the real result of protein complexes detected in your experiment.
+#' @description This function performs different matrix from your experimental matrix and evaluates this "fake matrix" into  mCP workflow by using the selected filter then calculates the FDR based in montecarlo simulations and the real result of protein complexes detected in your experiment.
 #' @param corum_database The corum data base. 
 #' @param experiment_data A matrix that has protein_id in the first column and the detected intensities in the other colums.
 #' @param N_fractions Number of fractions in your experimet
@@ -11,10 +11,21 @@
 #' @param file_name this is the file name of the output, is a string, It should be writen within "". For example "outputname"
 #' @param save_file could be TRUE or FALSE it generate an csv file with results of Fold Discovery Rate per protein complexes
 #'
-#' @return
+#' @return a list of controlled FDr Portein compleses. 
 #' @export
 #'
 #' @examples
+#' data(Corum_Humans_Database)
+#' date()
+#' FDR_DIANN_dDIA_P2_1_<- fdr_mCP(corum_database= Corum_Humans_Database,
+#'Output_cpp_plotter = out_Hek_P2_1, 
+#'experiment_data=Hek293_P2_1,
+#'file_name = "m_CP_analysis",
+#'N_fractions = 35,
+#'specie = "hsapiens",
+#'filter=0.93,
+#'n_simulations= 2)
+#' 
 
 fdr_mCP<-   function (corum_database, experiment_data, N_fractions = 35, 
                       specie = "hsapiens", filter = 0.93, n_simulations = 10, 
