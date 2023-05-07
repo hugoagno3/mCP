@@ -14,6 +14,9 @@ The `mCP` package provides a set of functions for targeted protein complex detec
 This vignette provides a step-by-step guide to using the `mCP` package to analyze proteomics data and identify protein complexes of interest.
 We provide a processing with "hsapiens" dataset Hek293 processed by BNE page of 35 fractions. We explain in the last section how to run an extra function that will be very useful for getting the input matrix as the average of the replicates in the experiment. All functions have different options, therefore we provide a detailed explanation about the functions at the end of this tutorial.
 
+![eIF3 complex](https://user-images.githubusercontent.com/82643524/236702932-d61f9ccd-cf1f-442f-8a4a-719495b381e0.png)![Eif3j heatmap](https://user-images.githubusercontent.com/82643524/236702938-b9b08b57-e7d1-4d7b-9140-f41e41b0ed5d.png)
+
+
 # Installation
 
 To install the mCP package from GitHub, run the following code:
