@@ -44,14 +44,29 @@ The cpp_plotter() function takes a list of potential protein complexes as input.
 }
 \examples{
 For the exaple load the 2 datasets and run mcp_list function and then cpp_ploter 
+
+#'out_Hek_P2_1 <- cpp_plotter(complex_list = CL_hek_P2_1,
+                           format = "pdf", 
+                           output_name = "m_CP_analysis",
+                           filter = 0.93,
+                           N_fractions = 35,
+                           heat_map = TRUE,
+                           relative = FALSE,
+                           display_weights = TRUE,
+                           standard_weights = list(list(x =11, label= "1049KDa"), 
+                                                   list(x = 13, label ="720 KDa")))
+### To generate an example
 data(Hek293_P2_1)
+
 data(Corum_Humans_Database) 
+
 CL_hek_P2_1<- mcp_list(corum_database =  Corum_Humans_Database,
 experiment_data = Hek293_P2_1, 
 N_fractions = 35, 
 specie = "hsapiens",
 method_cor = "pearson",
 heatmap_seaborn = TRUE)
+
 ##### Run the output of mcp_list into the cpp_ploter function. 
 out_Hek_P2_1 <- cpp_plotter(complex_list = CL_hek_P2_1,
                            format = "pdf", 
@@ -63,8 +78,4 @@ out_Hek_P2_1 <- cpp_plotter(complex_list = CL_hek_P2_1,
                            display_weights = TRUE,
                            standard_weights = list(list(x =11, label= "1049KDa"), 
                                                    list(x = 13, label ="720 KDa")))
-
-
-
-
 }

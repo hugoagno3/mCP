@@ -2,16 +2,37 @@
 % Please edit documentation in R/extract_mcp.R
 \name{extract_mcp}
 \alias{extract_mcp}
-\title{List of Protein Complexes}
+\title{extract_mcp}
 \usage{
 extract_mcp(z)
 }
 \arguments{
-\item{z}{the output list of mCP}
+\item{z}{The output list of mCP}
 }
 \description{
 This function Extract data from the output list of mCP and generates a data.frame file
 }
 \examples{
-extratract_mcp(output_mcp_list)
+extract_mcp(out_Hek_P2_1)
+#### for  example RUN mCP list that creates a list of potential protein complexes
+data("Hek293_P2_1")
+
+CL_hek_P2_1<- mcp_list(corum_database =  Corum_Humans_Database,
+                      experiment_data = Hek293_P2_1, 
+                      N_fractions = 35, 
+                      specie = "hsapiens",
+                      method_cor = "pearson",
+                      heatmap_seaborn = TRUE)
+out_Hek_P2_1 <- cpp_plotter(complex_list = CL_hek_P2_1,
+                           format = "pdf", 
+                           output_name = "m_CP_analysis",
+                           filter = 0.93,
+                           N_fractions = 35,
+                           heat_map = TRUE,
+                           relative = FALSE,
+                           display_weights = TRUE,
+                           standard_weights = list(list(x =11, label= "1049KDa"), 
+                                                   list(x = 13, label ="720 KDa")))                      
+extraction<- extract_mcp(out_Hek_P2_1)                       
+                 
 }
