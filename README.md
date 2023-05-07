@@ -148,25 +148,11 @@ Note that if you wish to have the plots of this last FDR protein complexes  you 
 ### PLots
 The output list out_Hek_P2_1_final_output has a list of protein complexes each protein complex is an element of that list with 4 objects
 1) The first object is a profile of proteins, fractions vs intensities. 
-
-
-
-
-![13S condensin Complex](https://user-images.githubusercontent.com/82643524/236702562-3e656a6d-3272-422f-9419-2c698a1d0a09.png)
-
-
-
-
 ```{r my-plot, fig.cap = "My Plot Caption"}
-my_plot<- out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[2]]
-  
-png("my_plot.png")
- ![13S condensin Complex](https://user-images.githubusercontent.com/82643524/236702514-c9356bfe-dd80-4c9d-8c2a-5504c10c7ba8.png)
-
-  plot(my_plot)
- dev.off()
+out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[1]]
  knitr::include_graphics("my_plot.png")
 ```
+![13S condensin Complex](https://user-images.githubusercontent.com/82643524/236702562-3e656a6d-3272-422f-9419-2c698a1d0a09.png)
 
 2) The second object is the number of Hits detected in the experiment as the number of significant binary interactions. So binare pearson correlations values in the experiment higher than a filter.  
 
@@ -196,16 +182,11 @@ out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[3]]
 ```
 
 4) Network heatmap constructed from the correlation matrix. 
-
 ```{r my-plot, fig.cap = "My Plot Caption"}
-my_plot<- out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[4]]
-  
-png("my_plot.png")
- 
-  plot(my_plot)
- dev.off()
+out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[4]] 
  knitr::include_graphics("my_plot.png")
 ```
+![Network](https://user-images.githubusercontent.com/82643524/236702686-3e03d641-9f98-4d14-a25d-cc96895a664d.png)
 
 
 # Data Processing (Input of matrix with protein_id as first column and Factions)
