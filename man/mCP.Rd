@@ -53,6 +53,9 @@ mCP(
 
 \item{relativea}{TRUE or FALSE statement to plot relative complexome profiling plots, useful to compare between conditions.}
 }
+\value{
+a list of protein complexes plots, the significant interactions, binary pairs proteins detected, and a network heatmap based.
+}
 \description{
 This function is an integrated function of mCP package, that needs as input an experimental data and returns a list of plots, binary total hits, id of proteins of binary hits and heatmaps_seaborn of know protein complexes detected in CORUM database. In addition, it plots 4 files as  outputs:
 1- pdf file with detected protein complexes profiles from Corum database.

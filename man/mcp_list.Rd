@@ -26,6 +26,9 @@ mcp_list(
 
 \item{organism}{A string that indicates the specie. It could be "mmusculus", "hsapiens". Check gconvert vignette for more options https://cran.r-project.org/web/packages/gprofiler2/vignettes/gprofiler2.html}
 }
+\value{
+a list of potential protein complexes in the experiment which has two elements inside the data of the protein complex detected and its correlation matrix. If  heatmap_seaborn= TRUE it also includes a correlataion matrix made by the corrr package funcion correlate()
+}
 \description{
 This function produces a list of potential protein complexes. Its input is an experimental matrix and the CORUM database.
 }
