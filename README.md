@@ -149,11 +149,17 @@ Note that if you wish to have the plots of this last FDR protein complexes  you 
 The output list out_Hek_P2_1_final_output has a list of protein complexes each protein complex is an element of that list with 4 objects
 1) The first object is a profile of proteins, fractions vs intensities. 
 
+
+
+
+
+
 ```{r my-plot, fig.cap = "My Plot Caption"}
 my_plot<- out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[2]]
   
 png("my_plot.png")
- 
+ ![13S condensin Complex](https://user-images.githubusercontent.com/82643524/236702514-c9356bfe-dd80-4c9d-8c2a-5504c10c7ba8.png)
+
   plot(my_plot)
  dev.off()
  knitr::include_graphics("my_plot.png")
