@@ -14,8 +14,12 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+LazyData: true
 Imports: 
   gdata,
   assertthat,
   corrr,
   gprofiler2
+  
+  
+  
