@@ -152,6 +152,9 @@ The output list out_Hek_P2_1_final_output has a list of protein complexes each p
 
 
 
+![13S condensin Complex](https://user-images.githubusercontent.com/82643524/236702562-3e656a6d-3272-422f-9419-2c698a1d0a09.png)
+
+
 
 
 ```{r my-plot, fig.cap = "My Plot Caption"}
