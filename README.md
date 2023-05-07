@@ -89,8 +89,10 @@ out_Hek_P2_1_teste <- mCP(corum_database = Corum_Humans_Database,
                           standard_weights = list(list(x =11, label= "1049KDa"), 
                                              list(x = 13, label ="720 KDa")))
 ```
- Outputs:
+ # Outputs plots per Protein complex detected:
+ ```{r pressure, echo=FALSE}
  mCP_TEND_out_Hek_P2_1_teste_11$`Respiratory chain complex I (intermediate VII/650kD), mitochondrial`
+ ```
  [[1]]
  ![respiratory mitochondrial](https://user-images.githubusercontent.com/82643524/236703671-d1cdcda6-73c0-4ede-8258-679c28fe234e.png)
 [[2]]
