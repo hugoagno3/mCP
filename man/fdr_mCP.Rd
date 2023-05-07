@@ -36,6 +36,22 @@ fdr_mCP(
 
 \item{save_file}{could be TRUE or FALSE it generate an csv file with results of Fold Discovery Rate per protein complexes}
 }
+\value{
+a list of controlled FDr Portein compleses.
+}
 \description{
-This function performs different matrix from your experimental matrix and evaluetes this "fake matrix" into  mCP workflow by using the selected filter then calculates the FDR based in montecarlo simulations and the real result of protein complexes detected in your experiment.
+This function performs different matrix from your experimental matrix and evaluates this "fake matrix" into  mCP workflow by using the selected filter then calculates the FDR based in montecarlo simulations and the real result of protein complexes detected in your experiment.
+}
+\examples{
+data(Corum_Humans_Database)
+date()
+FDR_DIANN_dDIA_P2_1_<- fdr_mCP(corum_database= Corum_Humans_Database,
+Output_cpp_plotter = out_Hek_P2_1, 
+experiment_data=Hek293_P2_1,
+file_name = "m_CP_analysis",
+N_fractions = 35,
+specie = "hsapiens",
+filter=0.93,
+n_simulations= 2)
+
 }

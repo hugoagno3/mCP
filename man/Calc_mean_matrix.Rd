@@ -2,7 +2,7 @@
 % Please edit documentation in R/Calc_mean_matrix.R
 \name{Calc_mean_matrix}
 \alias{Calc_mean_matrix}
-\title{Calc_mean_matrix makes average of matrixes as input for mCP}
+\title{Calc_mean_matrix built the mCP matrix input by averaco of replicates fractions}
 \usage{
 Calc_mean_matrix(
   NAmatrix,
