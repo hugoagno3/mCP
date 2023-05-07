@@ -6,23 +6,26 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+# mCP
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
+![imagen](https://user-images.githubusercontent.com/82643524/179713559-a0f27ad1-07af-4d69-ac72-380d4eba304b.png)
 
-```{r setup}
-library(mCP)
-```
+mini-Complexome Profiler
+
+
+ "mCP_tutorial_Humans_samples"
+
 # Overview 
 
 The `mCP` package provides a set of functions for targeted protein complex detection in mass spectrometry-based proteomics co-fractionation experiments. It is designed to work with experimental data in the form of protein abundance matrices, and to compare the data to the CORUM database of known protein complexes to identify complexes that are present in the experimental data.
 
 This vignette provides a step-by-step guide to using the `mCP` package to analyze proteomics data and identify protein complexes of interest.
-We provide a processing with "hsapiens" dataset Hek293 processed by BNE page of 35 fractions. We explain in the last section how to run an extra function that will be very useful for getting the input matrix as the average of the replicates in the experiment. All functions have different options, therefore we provide a detailed explanation about the functions at the end of this tutorial.
+We provide a processing with "hsapiens" dataset Hek293 processed by BNE page of 35 fractions. We explain in the last section how to run an extra function that will be very useful for getting the input matrix as the average of the replicates in the experiment. All functions have different options, therefore 
+we provide a detailed explanation about the functions at the end of this tutorial.
+
+![eIF3 complex](https://user-images.githubusercontent.com/82643524/236702932-d61f9ccd-cf1f-442f-8a4a-719495b381e0.png)
+![heat eIF3 complex](https://user-images.githubusercontent.com/82643524/236703288-735a5d6e-25aa-49b9-8520-071a3df7ea4c.png)
+![Eif3j heatmap](https://user-images.githubusercontent.com/82643524/236703265-8cd3be1e-4252-4878-8f91-58481916cb84.png)
 
 # Installation
 
@@ -94,6 +97,30 @@ out_Hek_P2_1_teste <- mCP(corum_database = Corum_Humans_Database,
                           standard_weights = list(list(x =11, label= "1049KDa"), 
                                              list(x = 13, label ="720 KDa")))
 ```
+ # Outputs plots per Protein complex detected:
+ ```{r pressure, echo=FALSE}
+ mCP_TEND_out_Hek_P2_1_teste_11$`Respiratory chain complex I (intermediate VII/650kD), mitochondrial`
+ ```
+ [[1]]
+ ![respiratory mitochondrial](https://user-images.githubusercontent.com/82643524/236703671-d1cdcda6-73c0-4ede-8258-679c28fe234e.png)
+[[2]]
+  Hits
+1    9
+
+[[3]]
+[[3]]$interactions
+[1] "NDUFS5:NDUFA6" "NDUFA6:NDUFA9" "NDUFS3:NDUFA9" "NDUFA9:NDUFS2" "NDUFS7:NDUFS2" "NDUFS2:NDUFS3"
+[7] "NDUFA6:NDUFS5" "NDUFA6:NDUFV2" "NDUFS3:NDUFV2"
+
+[[3]]$Pearson
+[1] 0.9434851 0.9346499 0.9487094 0.9306028 0.9495674 0.9727912 0.9434851 0.9427735 0.9544865
+ 
+ [[4]]
+ ![seahet mitochondrial respiratory](https://user-images.githubusercontent.com/82643524/236703676-5ac98435-02b4-48d8-a1b6-e4ceeeae5737.png)
+
+ 
+ 
+ 
  
 # Option 2: Runn mCP function individually
 
@@ -134,7 +161,6 @@ FDR_DIANN_dDIA_Hek_P2_1_<- fdr_mCP(corum_database= Corum_Humans_Database,
                               n_simulations= 185)
 ##Note this function will perform a FDR filter and simultation it is important to do the simulation with the same filter then the previous function. if filter value is different the simulation do not makes sense. 
 ```
-
 ## Last step to get the protein complexes filtered by FDR is to get back to the list and run cpp_plotter again.
 Note that if you wish to have the plots of this last FDR protein complexes  you could filter the names of the protein complexes detected into the first list (from mcp_list) and run cpp_ploter again. 
 
@@ -159,16 +185,11 @@ Note that if you wish to have the plots of this last FDR protein complexes  you 
 ### PLots
 The output list out_Hek_P2_1_final_output has a list of protein complexes each protein complex is an element of that list with 4 objects
 1) The first object is a profile of proteins, fractions vs intensities. 
-
 ```{r my-plot, fig.cap = "My Plot Caption"}
-my_plot<- out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[2]]
-  
-png("my_plot.png")
- 
-  plot(my_plot)
- dev.off()
+out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[1]]
  knitr::include_graphics("my_plot.png")
 ```
+![13S condensin Complex](https://user-images.githubusercontent.com/82643524/236702562-3e656a6d-3272-422f-9419-2c698a1d0a09.png)
 
 2) The second object is the number of Hits detected in the experiment as the number of significant binary interactions. So binare pearson correlations values in the experiment higher than a filter.  
 
@@ -198,16 +219,11 @@ out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[3]]
 ```
 
 4) Network heatmap constructed from the correlation matrix. 
-
 ```{r my-plot, fig.cap = "My Plot Caption"}
-my_plot<- out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[4]]
-  
-png("my_plot.png")
- 
-  plot(my_plot)
- dev.off()
+out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[4]] 
  knitr::include_graphics("my_plot.png")
 ```
+![Network](https://user-images.githubusercontent.com/82643524/236702686-3e03d641-9f98-4d14-a25d-cc96895a664d.png)
 
 
 # Data Processing (Input of matrix with protein_id as first column and Factions)
@@ -268,6 +284,8 @@ filters the list of protein complexes based on the presence of co-eluting protei
 *my_protein_complex_mpp_ploter[1][3]* The name of the proteins involved in the Binary interaction detected.
 *my_protein_complex_mpp_ploter[1][3]* Pearson correlation detected higher than the filter of the detected binaries interactions. 
 *my_protein_complex_mpp_ploter[1][4]* Network heatmap constructed from the correlation matrix.
+
+
 
 - `mcp_fdr()`:
 
