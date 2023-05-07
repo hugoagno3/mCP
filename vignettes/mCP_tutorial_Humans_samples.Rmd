@@ -49,6 +49,7 @@ To perform targeted protein complexes detection, two input files are needed:
 
 ```{r pressure, echo=FALSE}
 library(readr)
+library(dplyr)
 
 # Read the Corum protein complex database file
       data(Corum_Humans_Database)
@@ -65,8 +66,8 @@ To process the input data, we need to run *Option 1*- the mCP function or *Optio
  1- pdf file with All candidates detected as protein complexes profiles from Corum database.
  2- pdf with with all candidates heatmaps of the detected protein complexes.
  3- pdf file with the detected as protein complexes profiles with a controlled FDR.
- 4- pdf with with heatmaps of the detected protein complexes with a controlled FDR.
- 5- txt file with numbers about general false positive when just 1 hit is consider as filter.
+ 4- pdf with heatmaps of the detected protein complexes with a controlled FDR.
+ 5- txt file with numbers about general false positive when at least 1 hit is consider as filter.
  6- CVS file containing all protein complexes detected, hits of binary interactions inside the protein complexes, FDR detected by MonteCarloSimulation.
    An example can be found here:
  
@@ -97,6 +98,7 @@ out_Hek_P2_1_teste <- mCP(corum_database = Corum_Humans_Database,
 # Option 2: Runn mCP function individually
 
 ```{r pressure, echo=FALSE}
+library(dplyr)
 library(mCP)
 # Read the Corum protein complex database file
       data(Corum_Humans_Database)
