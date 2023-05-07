@@ -16,7 +16,7 @@ We provide a processing with "hsapiens" dataset Hek293 processed by BNE page of 
 
 ![eIF3 complex](https://user-images.githubusercontent.com/82643524/236702932-d61f9ccd-cf1f-442f-8a4a-719495b381e0.png)
 ![Eif3j heatmap](https://user-images.githubusercontent.com/82643524/236703265-8cd3be1e-4252-4878-8f91-58481916cb84.png)
-![Eif3j heatmap](https://user-images.githubusercontent.com/82643524/236702938-b9b08b57-e7d1-4d7b-9140-f41e41b0ed5d.png)
+![heat eIF3 complex](https://user-images.githubusercontent.com/82643524/236703288-735a5d6e-25aa-49b9-8520-071a3df7ea4c.png)
 
 
 # Installation
