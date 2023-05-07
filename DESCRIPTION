@@ -18,7 +18,9 @@ Imports:
     gdata,
     assertthat,
     corrr,
-    gprofiler2
+    gprofiler2,
+    readr,
+    dplyr
   
  
  
