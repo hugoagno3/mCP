@@ -30,7 +30,7 @@ we provide a detailed explanation about the functions at the end of this tutoria
 # Installation
 
 To install the mCP package from GitHub, run the following code:
-```{r pressure, echo=FALSE}
+```{r pressure1, eval=FALSE, include=FALSE}
 library(devtools)
 devtools::install_github("hugoagno3/mCP")
 ```
@@ -50,7 +50,7 @@ To perform targeted protein complexes detection, two input files are needed:
            2- An experiment file *data.frame* with your experiment results in wide-format- first column called "protein_id" and the next columns contains protein intensity and belong to the fractions in the co-fractionation experiment: can be numerics names from 1 to the last number of fractions, for example 1,2,3,..,35 for 35 fractions, means 35 columns.
            In this example, we will use the Corum_Humans_Database file as the protein complex database and the Hek293_P2_1.csv and Hek293_P2_2.csv files as the experiment files.
 
-```{r pressure, echo=FALSE}
+```{r pressure2, echo=FALSE}
 library(readr)
 library(dplyr)
 
@@ -74,7 +74,7 @@ To process the input data, we need to run *Option 1*- the mCP function or *Optio
  6- CVS file containing all protein complexes detected, hits of binary interactions inside the protein complexes, FDR detected by MonteCarloSimulation.
    An example can be found here:
  
-```{r pressure, echo=FALSE}
+```{r pressure3, eval=FALSE, include=FALSE}
 library(mCP)
 # Read the Corum protein complex database file
       data(Corum_Humans_Database)
@@ -98,7 +98,7 @@ out_Hek_P2_1_teste <- mCP(corum_database = Corum_Humans_Database,
                                              list(x = 13, label ="720 KDa")))
 ```
  # Outputs plots per Protein complex detected:
- ```{r pressure, echo=FALSE}
+```{r pressure123, eval=FALSE, include=FALSE}
  mCP_TEND_out_Hek_P2_1_teste_11$`Respiratory chain complex I (intermediate VII/650kD), mitochondrial`
  ```
  [[1]]
@@ -117,14 +117,14 @@ out_Hek_P2_1_teste <- mCP(corum_database = Corum_Humans_Database,
  
  [[4]]
  ![seahet mitochondrial respiratory](https://user-images.githubusercontent.com/82643524/236703676-5ac98435-02b4-48d8-a1b6-e4ceeeae5737.png)
-
+```
  
  
  
  
 # Option 2: Runn mCP function individually
 
-```{r pressure, echo=FALSE}
+```{r pressure4, eval=FALSE, include=FALSE}
 library(dplyr)
 library(mCP)
 # Read the Corum protein complex database file
@@ -165,7 +165,7 @@ FDR_DIANN_dDIA_Hek_P2_1_<- fdr_mCP(corum_database= Corum_Humans_Database,
 Note that if you wish to have the plots of this last FDR protein complexes  you could filter the names of the protein complexes detected into the first list (from mcp_list) and run cpp_ploter again. 
 
 
-```{r}
+```{r5}
 #### list to plot
    CL_final_output<- CL_hek_P2_1[names(out_Hek_P2_1)]
 #### Then run again this list on the cpp_plotter function as follows. 
@@ -185,7 +185,7 @@ Note that if you wish to have the plots of this last FDR protein complexes  you 
 ### PLots
 The output list out_Hek_P2_1_final_output has a list of protein complexes each protein complex is an element of that list with 4 objects
 1) The first object is a profile of proteins, fractions vs intensities. 
-```{r my-plot, fig.cap = "My Plot Caption"}
+```{r6 my-plot1, fig.cap = "13S condensin complex;Condensin I complex"}
 out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[1]]
  knitr::include_graphics("my_plot.png")
 ```
@@ -193,7 +193,7 @@ out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[1]]
 
 2) The second object is the number of Hits detected in the experiment as the number of significant binary interactions. So binare pearson correlations values in the experiment higher than a filter.  
 
-```{r}
+```{r7}
  out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[2]]
 
 [[2]]
@@ -205,7 +205,7 @@ out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[1]]
 ## The output list out_Hek_P2_1_final_output has 4 objects
 3) The name of the proteins involved in the Binary interaction detected (Experimental Protein-binary Pearson correlatio nhigher than the filter) and its Pearson correlation of thes significant binary interactions.
 
-```{r}
+```{r8}
 out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[3]]
 
 [[3]]
@@ -219,7 +219,7 @@ out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[3]]
 ```
 
 4) Network heatmap constructed from the correlation matrix. 
-```{r my-plot, fig.cap = "My Plot Caption"}
+```{r9 my-plot2, fig.cap = "13S condensin complex;Condensin I complex"}
 out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[4]] 
  knitr::include_graphics("my_plot.png")
 ```
@@ -228,16 +228,16 @@ out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[4]]
 
 # Data Processing (Input of matrix with protein_id as first column and Factions)
   Most of the time we measure samples per duplicate in co-fractionation experiemnt, mCP provide a function to deal with these extensive number of columns. The function input can be a data.frame imported by the following function read.table
-```{r}
+```{r10}
 NAmatrix_P2_1 <- read.table("Hek293_P2_1.csv",sep =",",dec = ".", header= T)
 ```
   once imported you will get this file, we provide it in the R package, just write data(NAmatrix_P2_1)
-```{r}
+```{r11}
 
 ```
 ##  After that you can run the funtion calc_mean_matrix
   The function calc mean matrix will recognize the replicates by a tag like _A_ and _B_ as part of the names for the MS file and the *Frac_index*. It is the position in which you can find the number of fraction in the column name separated by underscores. for example the frac_index=5 is date_Surname_Measurement_A_01 because the number for the fraction is 5 spaces between underscores, like a_b_c_d_FractionNumber. 
-```{r}
+```{r12}
   ###  Note: Here the frac_index= is 17. and the pattern_group= _A_ and pattern_group= _B_  
      names(Hek293_P2_1[,2])
     [1] "D:\\Current Projects\\Projects_2022\\2022_77_H_Amede_mCP_Hek293_Cells\\03_Raw Data timsTOF Pro\\P2\\H_Amedei_04112022_P31_HEK293_P2_1_A_01_GA1_1_6588.d"
@@ -248,7 +248,7 @@ NAmatrix_P2_1 <- read.table("Hek293_P2_1.csv",sep =",",dec = ".", header= T)
   
   So we can run the function as follow. 
 
-```{r}
+```{r13}
 
 Hek_293_MA_P2_1 <- Calc_mean_matrix(NAmatrix = NAmatrix_P2_1,
                             pattern_group_A = "_A_",
