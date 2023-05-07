@@ -89,6 +89,28 @@ out_Hek_P2_1_teste <- mCP(corum_database = Corum_Humans_Database,
                           standard_weights = list(list(x =11, label= "1049KDa"), 
                                              list(x = 13, label ="720 KDa")))
 ```
+ Outputs:
+ mCP_TEND_out_Hek_P2_1_teste_11$`Respiratory chain complex I (intermediate VII/650kD), mitochondrial`
+ [[1]]
+ ![respiratory mitochondrial](https://user-images.githubusercontent.com/82643524/236703671-d1cdcda6-73c0-4ede-8258-679c28fe234e.png)
+[[2]]
+  Hits
+1    9
+
+[[3]]
+[[3]]$interactions
+[1] "NDUFS5:NDUFA6" "NDUFA6:NDUFA9" "NDUFS3:NDUFA9" "NDUFA9:NDUFS2" "NDUFS7:NDUFS2" "NDUFS2:NDUFS3"
+[7] "NDUFA6:NDUFS5" "NDUFA6:NDUFV2" "NDUFS3:NDUFV2"
+
+[[3]]$Pearson
+[1] 0.9434851 0.9346499 0.9487094 0.9306028 0.9495674 0.9727912 0.9434851 0.9427735 0.9544865
+ 
+ [[4]]
+ ![seahet mitochondrial respiratory](https://user-images.githubusercontent.com/82643524/236703676-5ac98435-02b4-48d8-a1b6-e4ceeeae5737.png)
+
+ 
+ 
+ 
  
 # Option 2: Runn mCP function individually
 
