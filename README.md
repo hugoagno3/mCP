@@ -12,12 +12,12 @@ mini-Complexome Profiler
 The `mCP` package provides a set of functions for targeted protein complex detection in mass spectrometry-based proteomics co-fractionation experiments. It is designed to work with experimental data in the form of protein abundance matrices, and to compare the data to the CORUM database of known protein complexes to identify complexes that are present in the experimental data.
 
 This vignette provides a step-by-step guide to using the `mCP` package to analyze proteomics data and identify protein complexes of interest.
-We provide a processing with "hsapiens" dataset Hek293 processed by BNE page of 35 fractions. We explain in the last section how to run an extra function that will be very useful for getting the input matrix as the average of the replicates in the experiment. All functions have different options, therefore we provide a detailed explanation about the functions at the end of this tutorial.
-![heat eIF3 complex](https://user-images.githubusercontent.com/82643524/236703288-735a5d6e-25aa-49b9-8520-071a3df7ea4c.png)
+We provide a processing with "hsapiens" dataset Hek293 processed by BNE page of 35 fractions. We explain in the last section how to run an extra function that will be very useful for getting the input matrix as the average of the replicates in the experiment. All functions have different options, therefore 
+we provide a detailed explanation about the functions at the end of this tutorial.
+
 ![eIF3 complex](https://user-images.githubusercontent.com/82643524/236702932-d61f9ccd-cf1f-442f-8a4a-719495b381e0.png)
+![heat eIF3 complex](https://user-images.githubusercontent.com/82643524/236703288-735a5d6e-25aa-49b9-8520-071a3df7ea4c.png)
 ![Eif3j heatmap](https://user-images.githubusercontent.com/82643524/236703265-8cd3be1e-4252-4878-8f91-58481916cb84.png)
-
-
 
 # Installation
 
