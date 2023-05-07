@@ -41,7 +41,7 @@ data(NAmatrix_P2_1)
 ###
 [1] "D:\\\\Current Projects\\\\Projects_2022\\\\2022_77_H_Amede_mCP_Hek293_Cells\\\\03_Raw Data timsTOF Pro\\\\P2\\\\H_Amedei_04112022_P31_HEK293_P2_1_A_01_GA1_1_6588.d"
 [1] "D:\\\\Current Projects\\\\Projects_2022\\\\2022_77_H_Amede_mCP_Hek293_Cells\\\\03_Raw Data timsTOF Pro\\\\P2\\\\H_Amedei_04112022_P31_HEK293_P2_1_B_01_GA1_1_6626.d"
-####
+#### _A_ and _B_ are patterns for recognition groups and the numeric position that separate the number of fraction is 17 between underscore. 
 Hek293_input_for_mCP <- Calc_mean_matrix(NAmatrix = NAmatrix_P2_1,
                        pattern_group_A = "_A_",
                        pattern_group_B = "_B_",
