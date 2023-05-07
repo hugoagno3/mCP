@@ -22,7 +22,7 @@
 #' @param fdr_limit report only protein complexes detected with a false discovery rate lower than a numeric value, for example = 0.05. 
 #' @param n_simulations This is the number of simulations we recomend 185 simulations (this part could take 12 hrs for human dataset).
 #'
-#' @return
+#' @return a list of protein complexes plots, the significant interactions, binary pairs proteins detected, and a network heatmap based.
 #' @export
 #' @import gprofiler2 gdata corrr
 #' @import assertthat

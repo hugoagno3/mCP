@@ -8,7 +8,7 @@
 #' @param method_cor A string that indicates the correlation algorithm to make the matrix correlation. It can be "kendall", "spearman" or "pearson" (default "pearson")
 #' @param heatmap_seaborn a logical value indicating whether to perform a correlation matrix compatible with a network plot from the corrr package (default TRUE).
 #'
-#' @return
+#' @return a list of potential protein complexes in the experiment which has two elements inside the data of the protein complex detected and its correlation matrix. If  heatmap_seaborn= TRUE it also includes a correlataion matrix made by the corrr package funcion correlate() 
 #' @export
 #' @import gprofiler2
 #' @import assertthat
