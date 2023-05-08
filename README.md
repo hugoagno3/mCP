@@ -35,12 +35,8 @@ To perform targeted protein complexes detection, two input files are needed:
            In this example, we will use the Corum_Humans_Database file as the protein complex database and the Hek293_P2_1.csv and Hek293_P2_2.csv files as the experiment files.
 
 ```{r pressure, echo=FALSE}
-library(readr)
-library(dplyr)
-
 # Read the Corum protein complex database file
       data(Corum_Humans_Database)
-
 # Read the experiment files
       data(Hek293_P2_1)
 ```
@@ -60,6 +56,8 @@ To process the input data, we need to run *Option 1*- the mCP function or *Optio
    An example can be found here:
  
 ```{r pressure, echo=FALSE}
+library(readr)
+library(dplyr)
 library(mCP)
 # Read the Corum protein complex database file
       data(Corum_Humans_Database)
