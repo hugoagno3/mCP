@@ -93,21 +93,21 @@ out_Hek_P2_1_teste <- mCP(corum_database = Corum_Humans_Database,
  ```{r pressure, echo=FALSE}
  mCP_TEND_out_Hek_P2_1_teste_11$`Respiratory chain complex I (intermediate VII/650kD), mitochondrial`
  ```
- [[1]]
+ [[1]]  Coelution complexome profiling plots (In this experiment 388 detected. It is shown one example out of 388).
  
  ![respiratory mitochondrial](https://user-images.githubusercontent.com/82643524/236703671-d1cdcda6-73c0-4ede-8258-679c28fe234e.png)
 
 
-[[2]]
+[[2]] How many hits were detected
  Hits
 1    9
 
-[[3]]
+[[3]] The Ids of the detected binary interactions within the protein complex.
 [[3]]$interactions
 [1] "NDUFS5:NDUFA6" "NDUFA6:NDUFA9" "NDUFS3:NDUFA9" "NDUFA9:NDUFS2" "NDUFS7:NDUFS2" "NDUFS2:NDUFS3"
 [7] "NDUFA6:NDUFS5" "NDUFA6:NDUFV2" "NDUFS3:NDUFV2"
 
-[[3]]$Pearson
+[[3]]$Pearson of the detected binary interactions within the protein complex.
 [1] 0.9434851 0.9346499 0.9487094 0.9306028 0.9495674 0.9727912 0.9434851 0.9427735 0.9544865
  
  [[4]]
