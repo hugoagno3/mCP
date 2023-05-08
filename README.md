@@ -12,8 +12,8 @@ mini-Complexome Profiler (mCP)
 The `mCP` package provides a set of functions for targeted protein complex detection in mass spectrometry-based proteomics co-fractionation experiments. It is designed to work with experimental data in the form of protein abundance matrices, and to compare the data to the CORUM database of known protein complexes to identify complexes that are present in the experimental data.
 
 This vignette provides a step-by-step guide to using the `mCP` package to analyze proteomics data and identify protein complexes of interest.
-We provide an Experimental dataset Hek293 celle "hsapiens" fractionated by BNE-PAGE of about 35 fractions. 
-In the last section,the User can find how to run an extra function that will be very useful for getting the input matrix as the average of the replicates in the experiment. All functions have different options, therefore 
+We provide an Experimental dataset Hek293 called "hsapiens" fractionated by BNE-PAGE of about 35 fractions. 
+In the last section,the User can find how to run an extra function called `Calc_mean_matrix()` that will be very useful for getting the input matrix as the average of the replicates in the experiment. All functions have different options, therefore 
 we provide a detailed explanation about the functions at the end of this tutorial.
 
 ![eIF3 complex](https://user-images.githubusercontent.com/82643524/236702932-d61f9ccd-cf1f-442f-8a4a-719495b381e0.png)
@@ -29,7 +29,7 @@ devtools::install_github("hugoagno3/mCP")
 ```
 
 # Data input 
- In this example, we will use the Corum_Humans_Database file as the protein complex database and the Hek293_P2_1.csv and Hek293_P2_2.csv files as the experiment files.To perform targeted protein complexes detection, two input files are needed:
+ In this tutorial, we will use the Corum_Humans_Database file as the protein complex database and the Hek293_P2_1 file as experiment files. To perform targeted protein complexes detection, only These two input files are needed:
 ```{r pressure, echo=FALSE}
 # Read the Corum protein complex database file
       data(Corum_Humans_Database)
@@ -37,15 +37,15 @@ devtools::install_github("hugoagno3/mCP")
       data(Hek293_P2_1)
 ```
 * A CORUM database of protein complexes (or a targeted list of interest) dataframe with 3 columns:´  col1= "complex_id", col2= "complex_name" and col3= "protein_id").
-* An experiment file *data.frame* with your experiment results in wide-format- first column called "protein_id" and the next columns contains protein intensity and belong to the fractions in the co-fractionation experiment: can be numerics names from 1 to the last number of fractions, for example 1,2,3,..,35 for 35 fractions, means 35 columns.
+* An experiment file *data.frame* with your experiment results in wide-format- first column called "protein_id" with a Single uniprot accession as elements and the next columns contains protein intensity and belong to the fractions in the co-fractionation experiment: can be numerics names from 1 to the last number of fractions, for example 1,2,3,..,35 for 35 fractions, means 35 columns.
 
- note: mCP R package is focused on detection of protein complexes and it accepts only protein data as an input matrix. The mass spectrometry data aquisition can be done by Data Dependent Acquisition mode or Data independent Aquisition.  
+Note: mCP R package is focused on detection of protein complexes and it accepts only protein data Level as an input matrix. The mass spectrometry data aquisition can be done by Data Dependent Acquisition mode or Data independent Aquisition.  
 
 # Data Processing (Input of matrix with long names wide format)
 
 To process the input data, we need to run *Option 1*- the mCP function or *Option 2* 3 functions provided by our mCP package.
 # Option 1: Running mCP function
-   This function is an integrated function of mCP package, that needs as input an experimental data and returns a list of plots, binary total hits, id of proteins of binary hits and heatmaps_seaborn of know protein complexes detected in CORUM database. In addition, it plots  6 files as  outputs: 
+   This function is an integrated function of mCP package, that needs as input an experimental data and returns a list of plots, binary total Interaktion hits, id of proteins of binary Hits detected and heatmaps_seaborn of know protein complexes detected in the experiment. In addition, it plots  6 files as  outputs: 
  1- pdf file with All candidates detected as protein complexes profiles from Corum database.
  2- pdf with with all candidates heatmaps of the detected protein complexes.
  3- pdf file with the detected as protein complexes profiles with a controlled FDR.
