@@ -2,7 +2,7 @@
 
 ![imagen](https://user-images.githubusercontent.com/82643524/179713559-a0f27ad1-07af-4d69-ac72-380d4eba304b.png)
 
-mini-Complexome Profiler
+mini-Complexome Profiler (mCP) 
 
 
  "mCP_tutorial_Humans_samples"
