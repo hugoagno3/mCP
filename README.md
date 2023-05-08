@@ -27,15 +27,7 @@ library(devtools)
 devtools::install_github("hugoagno3/mCP")
 ```
 
-
-# Data input (two files Corum database and Experimental wide format results)
-   mCP R package is focused on detection of protein complexes and it accepts only protein data as an input matrix. The mass spectrometry data aquisition can be done by Data Dependent Acquisition mode or Data independent Aquisition.  The following steps are recommended for pre-processing the data before getting into mCP:
-
-1. Normalize the data between fractions in experiments.  
-2. Replace missing values by 0.
-2. For comparison the normalization of the data to plot complexome profiling plots can be done inside each protein complexe by activateion the relativization fuction relative= TRUE in ccp_plotter function.
-3. Normalize per Biologica replicates if fractionation is reproducible. 
-
+# Data input 
 
 To perform targeted protein complexes detection, two input files are needed:
            1- A CORUM database of protein complexes (or a targeted list of interest) dataframe with 3 columns:´  col1= "complex_id", col2= "complex_name" and col3= "protein_id").
@@ -52,6 +44,7 @@ library(dplyr)
 # Read the experiment files
       data(Hek293_P2_1)
 ```
+ note: mCP R package is focused on detection of protein complexes and it accepts only protein data as an input matrix. The mass spectrometry data aquisition can be done by Data Dependent Acquisition mode or Data independent Aquisition.  
 
 # Data Processing (Input of matrix with long names wide format)
 
@@ -222,6 +215,13 @@ out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[4]]
 
 
 # Data Processing (Input of matrix with protein_id as first column and Factions)
+The following steps are recommended for pre-processing the data before getting into mCP:
+
+1. Normalize the data between fractions in experiments.  
+2. Replace missing values by 0.
+2. For comparison the normalization of the data to plot complexome profiling plots can be done inside each protein complexe by activateion the relativization fuction relative= TRUE in ccp_plotter function.
+3. Normalize per Biologica replicates if fractionation is reproducible. 
+
   Most of the time we measure samples per duplicate in co-fractionation experiemnt, mCP provide a function to deal with these extensive number of columns. The function input can be a data.frame imported by the following function read.table
 ```{r}
 NAmatrix_P2_1 <- read.table("Hek293_P2_1.csv",sep =",",dec = ".", header= T)
