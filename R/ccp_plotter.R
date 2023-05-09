@@ -13,7 +13,11 @@
 #' @param standard_weights following core= list(list(x =11, label= "1049KDa"), list(x = 13, label ="720 KDa"))). It is possible to add many markers. you have to extend the code, for example to add a thrid marker= list(list(x =11, label= "1049KDa"), list(x=12, label="900 kDa"), list(x = 13, label ="720 KDa"))). Display_weights muss be TRUE. 
 #'
 #' @return A list of protein complexes filter by pearson correlation, a pdf file with the detected as protein complexes profiles. A pdf with heatmaps of the detected protein complexes. A txt file with numbers about general false positive when atleast 1 hit is consider as filter. A CVS file containing all protein complexes detected, hits of binary interactions inside the protein complexes, FDR detected by MonteCarloSimulation.
-#' 
+#' @import gprofiler2
+#' @import gdata
+#' @import corrr
+#' @import dplyr
+#' @import assertthat
 #' 
 #' 
 #' @export

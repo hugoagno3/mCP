@@ -11,6 +11,9 @@
 #' @return a list of potential protein complexes in the experiment which has two elements inside the data of the protein complex detected and its correlation matrix. If  heatmap_seaborn= TRUE it also includes a correlataion matrix made by the corrr package funcion correlate() 
 #' @export
 #' @import gprofiler2
+#' @import gdata
+#' @import corrr
+#' @import dplyr
 #' @import assertthat
 #' @examples 
 #' # Read the experiment files

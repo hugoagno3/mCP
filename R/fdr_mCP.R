@@ -12,6 +12,11 @@
 #' @param save_file could be TRUE or FALSE it generate an csv file with results of Fold Discovery Rate per protein complexes
 #'
 #' @return a list of controlled FDr Portein compleses. 
+#' @import gprofiler2
+#' @import gdata
+#' @import corrr
+#' @import dplyr
+#' @import assertthat
 #' @export
 #'
 #' @examples

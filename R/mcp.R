@@ -24,7 +24,10 @@
 #'
 #' @return a list of protein complexes plots, the significant interactions, binary pairs proteins detected, and a network heatmap based.
 #' @export
-#' @import gprofiler2 gdata corrr
+#' @import gprofiler2
+#' @import gdata
+#' @import corrr
+#' @import dplyr
 #' @import assertthat
 #' @examples 
 #' 
