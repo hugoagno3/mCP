@@ -41,7 +41,7 @@ devtools::install_github("hugoagno3/mCP")
 
 Note: mCP R package is focused on detection of protein complexes and it accepts only protein data Level as an input matrix. The mass spectrometry data aquisition can be done by Data Dependent Acquisition mode or Data independent Aquisition.  
 
-# Data Processing (Input of matrix with long names wide format)
+# Data Processing
 
 To process the input data, we need to run *Option 1*- the mCP function or *Option 2* 3 functions provided by our mCP package.
 # Option 1: Running mCP function
