@@ -45,7 +45,8 @@ Note: mCP R package is focused on detection of protein complexes and it accepts 
 
 To process the input data, we need to run *Option 1*- the mCP function or *Option 2* 3 functions provided by our mCP package.
 # Option 1: Running mCP function
-   This function is an integrated function of mCP package, that needs as input an experimental data and returns a list of plots, binary total Interaktion hits, id of proteins of binary Hits detected and heatmaps_seaborn of know protein complexes detected in the experiment. 
+   This function is an integrated function of mCP package, that needs as input an experimental data the CORUM database of the specie and it returns a list of plots, binary total Interaction hits, id of protein Binary Interaktion hits
+detected and heatmaps_seaborn of the protein complexes detected in the experiment. 
  
 ```{r pressure, echo=FALSE}
 
