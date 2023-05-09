@@ -55,13 +55,7 @@ To process the input data, we need to run *Option 1*- the mCP function or *Optio
    An example can be found here:
  
 ```{r pressure, echo=FALSE}
-library(readr)
-library(dplyr)
-library(mCP)
-# Read the Corum protein complex database file
-      data(Corum_Humans_Database)
-# Read the experiment files
-      data(Hek293_P2_1)
+
 ##### Example #####
 out_Hek_P2_1_teste <- mCP(corum_database = Corum_Humans_Database,
                           experiment_data = Hek293_P2_1, 
