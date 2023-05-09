@@ -13,7 +13,7 @@ The `mCP` package provides a set of functions for targeted protein complex detec
 
 This vignette provides a step-by-step guide to using the `mCP` package to analyze proteomics data and identify protein complexes of interest.
 We provide an Experimental dataset Hek293 called "hsapiens" fractionated by BNE-PAGE of about 35 fractions. 
-In the last section,the User can find how to run an extra function called `Calc_mean_matrix()` that will be very useful for getting the input matrix as the average of the replicates in the experiment. All functions have different options, therefore 
+In the last section,the user can find how to run an extra function called `Calc_mean_matrix()` that will be very useful for getting the input matrix as the average of the replicates in the experiment. All functions have different options, therefore 
 we provide a detailed explanation about the functions at the end of this tutorial.
 
 ![eIF3 complex](https://user-images.githubusercontent.com/82643524/236702932-d61f9ccd-cf1f-442f-8a4a-719495b381e0.png)
@@ -29,7 +29,7 @@ devtools::install_github("hugoagno3/mCP")
 ```
 
 # Data input 
- In this tutorial, we will use the Corum_Humans_Database file as the protein complex database and the Hek293_P2_1 file as experiment files. To perform targeted protein complexes detection, only These two input files are needed:
+ In this tutorial, we will use the Corum_Humans_Database file as the protein complex database and the Hek293_P2_1 file as experiment files. To perform targeted protein complexes detection, only these two input files are needed:
 ```{r pressure, echo=FALSE}
 # Open the Corum protein complex database file
       data(Corum_Humans_Database)
@@ -45,14 +45,7 @@ Note: mCP R package is focused on detection of protein complexes and it accepts 
 
 To process the input data, we need to run *Option 1*- the mCP function or *Option 2* 3 functions provided by our mCP package.
 # Option 1: Running mCP function
-   This function is an integrated function of mCP package, that needs as input an experimental data and returns a list of plots, binary total Interaktion hits, id of proteins of binary Hits detected and heatmaps_seaborn of know protein complexes detected in the experiment. In addition, it plots  6 files as  outputs: 
- 1- pdf file with All candidates detected as protein complexes profiles from Corum database.
- 2- pdf with with all candidates heatmaps of the detected protein complexes.
- 3- pdf file with the detected as protein complexes profiles with a controlled FDR.
- 4- pdf with heatmaps of the detected protein complexes with a controlled FDR.
- 5- txt file with numbers about general false positive when at least 1 hit is consider as filter.
- 6- CVS file containing all protein complexes detected, hits of binary interactions inside the protein complexes, FDR detected by MonteCarloSimulation.
-   An example can be found here:
+   This function is an integrated function of mCP package, that needs as input an experimental data and returns a list of plots, binary total Interaktion hits, id of proteins of binary Hits detected and heatmaps_seaborn of know protein complexes detected in the experiment. 
  
 ```{r pressure, echo=FALSE}
 
@@ -96,8 +89,15 @@ out_Hek_P2_1_teste <- mCP(corum_database = Corum_Humans_Database,
  
  [[4]]
  ![seahet mitochondrial respiratory](https://user-images.githubusercontent.com/82643524/236703676-5ac98435-02b4-48d8-a1b6-e4ceeeae5737.png)
+In addition, it generates 6 files as  outputs:
 
- 
+ 1- pdf file with All candidates detected as protein complexes profiles from Corum database.
+ 2- pdf with with all candidates heatmaps of the detected protein complexes.
+ 3- pdf file with the detected as protein complexes profiles with a controlled FDR.
+ 4- pdf with heatmaps of the detected protein complexes with a controlled FDR.
+ 5- txt file with numbers about general false positive when at least 1 hit is consider as filter.
+ 6- CVS file containing all protein complexes detected, hits of binary interactions inside the protein complexes, FDR detected by MonteCarloSimulation.
+
  
  
  
