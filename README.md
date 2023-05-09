@@ -9,10 +9,10 @@ mini-Complexome Profiler (mCP)
 
 # Overview 
 
-The `mCP` package provides a set of functions for targeted protein complex detection in mass spectrometry-based proteomics co-fractionation experiments. It is designed to work with experimental data in the form of protein abundance matrices, and to compare the data to the CORUM database of known protein complexes to identify complexes that are present in the experimental data.
+The `mCP` package provides a set of functions for targeted protein complex detection in mass spectrometry-based proteomics co-fractionation experiments. It is designed to work with experimental data in the form of protein abundance matrices, and to compare the data to the CORUM database of known protein complexes to identify complexes that are present in the experimental data. The package contains two datasets as example: one example for "hsapiens" and on efor "mmusculus" Co fractionation experiment. 
 
 This vignette provides a step-by-step guide to using the `mCP` package to analyze proteomics data and identify protein complexes of interest.
-We provide an Experimental dataset Hek293 called "hsapiens" fractionated by BNE-PAGE of about 35 fractions. 
+We provide an Experimental dataset Hek293 called "hsapiens" fractionated by BNE-PAGE of about 35 fractions.
 In the last section,the user can find how to run an extra function called `Calc_mean_matrix()` that will be very useful for getting the input matrix as the average of the replicates in the experiment. All functions have different options, therefore 
 we provide a detailed explanation about the functions at the end of this tutorial.
 
