@@ -181,7 +181,7 @@ out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[1]]
 ```
 
 
-## The output list out_Hek_P2_1_final_output has 4 objects
+
 3) The name of the proteins involved in the Binary interaction detected (Experimental Protein-binary Pearson correlatio nhigher than the filter) and its Pearson correlation of thes significant binary interactions.
 
 ```{r}
