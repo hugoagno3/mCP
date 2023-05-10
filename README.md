@@ -2,17 +2,18 @@
 
 ![imagen](https://user-images.githubusercontent.com/82643524/179713559-a0f27ad1-07af-4d69-ac72-380d4eba304b.png)
 
-mini-Complexome Profiler
+mini-Complexome Profiler (mCP) 
 
 
  "mCP_tutorial_Humans_samples"
 
 # Overview 
 
-The `mCP` package provides a set of functions for targeted protein complex detection in mass spectrometry-based proteomics co-fractionation experiments. It is designed to work with experimental data in the form of protein abundance matrices, and to compare the data to the CORUM database of known protein complexes to identify complexes that are present in the experimental data.
+The `mCP` package provides a set of functions for targeted protein complex detection in mass spectrometry-based proteomics co-fractionation experiments. It is designed to work with experimental data in the form of protein abundance matrices, and to compare the data to the CORUM database of known protein complexes to identify complexes that are present in the experimental data. The package contains two datasets as example: one example for "hsapiens" and on efor "mmusculus" Co fractionation experiment. 
 
 This vignette provides a step-by-step guide to using the `mCP` package to analyze proteomics data and identify protein complexes of interest.
-We provide a processing with "hsapiens" dataset Hek293 processed by BNE page of 35 fractions. We explain in the last section how to run an extra function that will be very useful for getting the input matrix as the average of the replicates in the experiment. All functions have different options, therefore 
+We provide an Experimental dataset Hek293 called "hsapiens" fractionated by BNE-PAGE of about 35 fractions.
+In the last section,the user can find how to run an extra function called `Calc_mean_matrix()` that will be very useful for getting the input matrix as the average of the replicates in the experiment. All functions have different options, therefore 
 we provide a detailed explanation about the functions at the end of this tutorial.
 
 ![eIF3 complex](https://user-images.githubusercontent.com/82643524/236702932-d61f9ccd-cf1f-442f-8a4a-719495b381e0.png)
@@ -27,51 +28,28 @@ library(devtools)
 devtools::install_github("hugoagno3/mCP")
 ```
 
-
-# Data input (two files Corum database and Experimental wide format results)
-   mCP R package is focused on detection of protein complexes and it accepts only protein data as an input matrix. The mass spectrometry data aquisition can be done by Data Dependent Acquisition mode or Data independent Aquisition.  The following steps are recommended for pre-processing the data before getting into mCP:
-
-1. Normalize the data between fractions in experiments.  
-2. Replace missing values by 0.
-2. For comparison the normalization of the data to plot complexome profiling plots can be done inside each protein complexe by activateion the relativization fuction relative= TRUE in ccp_plotter function.
-3. Normalize per Biologica replicates if fractionation is reproducible. 
-
-
-To perform targeted protein complexes detection, two input files are needed:
-           1- A CORUM database of protein complexes (or a targeted list of interest) dataframe with 3 columns:´  col1= "complex_id", col2= "complex_name" and col3= "protein_id").
-           2- An experiment file *data.frame* with your experiment results in wide-format- first column called "protein_id" and the next columns contains protein intensity and belong to the fractions in the co-fractionation experiment: can be numerics names from 1 to the last number of fractions, for example 1,2,3,..,35 for 35 fractions, means 35 columns.
-           In this example, we will use the Corum_Humans_Database file as the protein complex database and the Hek293_P2_1.csv and Hek293_P2_2.csv files as the experiment files.
-
+# Data input 
+ In this tutorial, we will use the Corum_Humans_Database file as the protein complex database and the Hek293_P2_1 file as experiment files. To perform targeted protein complexes detection, only these two input files are needed:
 ```{r pressure, echo=FALSE}
-library(readr)
-library(dplyr)
-
-# Read the Corum protein complex database file
+# Open the Corum protein complex database file
       data(Corum_Humans_Database)
-
-# Read the experiment files
+# open the experiment files
       data(Hek293_P2_1)
 ```
+* A CORUM database of protein complexes (or a targeted list of interest) dataframe with 3 columns:´  col1= "complex_id", col2= "complex_name" and col3= "protein_id").
+* An experiment file *data.frame* with your experiment results in wide-format- first column called "protein_id" with a single uniprot accession per row as elements and the next columns contain protein intensity detected in the fractions in the co-fractionation experiment: can be numerics names from 1 to the last number of fractions, for example 1,2,3,..,35 for 35 fractions, means 35 columns.
 
-# Data Processing (Input of matrix with long names wide format)
+Note: mCP R package is focused on detection of protein complexes and it accepts only protein data Level as an input matrix. The mass spectrometry data aquisition can be done by Data Dependent Acquisition mode or Data independent Aquisition.  
 
-To process the input data, we need to run *Option 1*- the mCP function or *Option 2* 3 functions provided by our mCP package.
+# Data Processing
+
+To process the input data, we need to run *Option 1*- the mCP function or *Option 2*- 3 functions provided by our mCP package.
 # Option 1: Running mCP function
-   This function is an integrated function of mCP package, that needs as input an experimental data and returns a list of plots, binary total hits, id of proteins of binary hits and heatmaps_seaborn of know protein complexes detected in CORUM database. In addition, it plots  6 files as  outputs: 
- 1- pdf file with All candidates detected as protein complexes profiles from Corum database.
- 2- pdf with with all candidates heatmaps of the detected protein complexes.
- 3- pdf file with the detected as protein complexes profiles with a controlled FDR.
- 4- pdf with heatmaps of the detected protein complexes with a controlled FDR.
- 5- txt file with numbers about general false positive when at least 1 hit is consider as filter.
- 6- CVS file containing all protein complexes detected, hits of binary interactions inside the protein complexes, FDR detected by MonteCarloSimulation.
-   An example can be found here:
+   This function is an integrated function of mCP package, that needs as input an experimental data the CORUM database of the specie and it returns a list of plots, binary total Interaction hits, id of protein Binary Interaktion hits
+detected and heatmaps_seaborn of the protein complexes detected in the experiment. 
  
 ```{r pressure, echo=FALSE}
-library(mCP)
-# Read the Corum protein complex database file
-      data(Corum_Humans_Database)
-# Read the experiment files
-      data(Hek293_P2_1)
+
 ##### Example #####
 out_Hek_P2_1_teste <- mCP(corum_database = Corum_Humans_Database,
                           experiment_data = Hek293_P2_1, 
@@ -93,24 +71,34 @@ out_Hek_P2_1_teste <- mCP(corum_database = Corum_Humans_Database,
  ```{r pressure, echo=FALSE}
  mCP_TEND_out_Hek_P2_1_teste_11$`Respiratory chain complex I (intermediate VII/650kD), mitochondrial`
  ```
- [[1]]
+ [[1]]  Coelution complexome profiling plots (In this experiment 388 detected. It is shown one element out of 388 of the output list).
+ 
  ![respiratory mitochondrial](https://user-images.githubusercontent.com/82643524/236703671-d1cdcda6-73c0-4ede-8258-679c28fe234e.png)
-[[2]]
-  Hits
+
+
+[[2]] How many hits were detected
+ Hits
 1    9
 
-[[3]]
+[[3]] The Ids of the detected binary interactions within the protein complex.
 [[3]]$interactions
 [1] "NDUFS5:NDUFA6" "NDUFA6:NDUFA9" "NDUFS3:NDUFA9" "NDUFA9:NDUFS2" "NDUFS7:NDUFS2" "NDUFS2:NDUFS3"
 [7] "NDUFA6:NDUFS5" "NDUFA6:NDUFV2" "NDUFS3:NDUFV2"
 
-[[3]]$Pearson
+[[3]]$Pearson of the detected binary interactions within the protein complex.
 [1] 0.9434851 0.9346499 0.9487094 0.9306028 0.9495674 0.9727912 0.9434851 0.9427735 0.9544865
  
  [[4]]
  ![seahet mitochondrial respiratory](https://user-images.githubusercontent.com/82643524/236703676-5ac98435-02b4-48d8-a1b6-e4ceeeae5737.png)
+In addition, it generates 6 files as  outputs:
 
- 
+ 1- pdf file with All candidates detected as protein complexes profiles from Corum database.
+ 2- pdf with with all candidates heatmaps of the detected protein complexes.
+ 3- pdf file with the detected as protein complexes profiles with a controlled FDR.
+ 4- pdf with heatmaps of the detected protein complexes with a controlled FDR.
+ 5- txt file with numbers about general false positive when at least 1 hit is consider as filter.
+ 6- CVS file containing all protein complexes detected, hits of binary interactions inside the protein complexes, FDR detected by MonteCarloSimulation.
+
  
  
  
@@ -194,7 +182,7 @@ out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[1]]
 ```
 
 
-## The output list out_Hek_P2_1_final_output has 4 objects
+
 3) The name of the proteins involved in the Binary interaction detected (Experimental Protein-binary Pearson correlatio nhigher than the filter) and its Pearson correlation of thes significant binary interactions.
 
 ```{r}
@@ -219,6 +207,13 @@ out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[4]]
 
 
 # Data Processing (Input of matrix with protein_id as first column and Factions)
+The following steps are recommended for pre-processing the data before getting into mCP:
+
+1. Normalize the data between fractions in experiments.  
+2. Replace missing values by 0.
+2. For comparison the normalization of the data to plot complexome profiling plots can be done inside each protein complexe by activateion the relativization fuction relative= TRUE in ccp_plotter function.
+3. Normalize per Biologica replicates if fractionation is reproducible. 
+
   Most of the time we measure samples per duplicate in co-fractionation experiemnt, mCP provide a function to deal with these extensive number of columns. The function input can be a data.frame imported by the following function read.table
 ```{r}
 NAmatrix_P2_1 <- read.table("Hek293_P2_1.csv",sep =",",dec = ".", header= T)
