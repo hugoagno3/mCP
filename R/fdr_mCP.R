@@ -81,16 +81,58 @@ fdr_mCP<-   function (corum_database, experiment_data, N_fractions = 35,
   papa<- as.data.frame(ifelse(VS>=VES,1,0))
   disco_11<- data.frame(Discovered= rowSums(papa))
   ##############################################################
-  res_DF <- data.frame(complex_names,Hits_in_experiment = standar_Experiment$hits, False_positives = disco_11$Discovered, FDR =disco_11$Discovered/n_simulations, 
-                       N_subunits = as.numeric(table(corum_database$complex_name)[complex_names]),rbind(res_matrix)) #,rbind(res_matrix) to include the hits in each simulation
+  res_DF <- data.frame(complex_names,
+                       Hits_in_experiment = standar_Experiment$hits,
+                       False_positives = disco_11$Discovered,
+                       FDR =disco_11$Discovered/n_simulations, 
+                       N_subunits = as.numeric(table(corum_database$complex_name)[complex_names]),
+                       rbind(res_matrix)) #,rbind(res_matrix) to include the hits in each simulation
   res_DF<- res_DF %>% dplyr::filter(FDR<= fdr_limit)
   filti<- res_DF$complex_names
   out_Hek_P2_1 <-  Output_cpp_plotter[filti]
+  N_detected <- as.data.frame(sapply(out_Hek_P2_1, function(x){return(nrow(unique(x[[1]][["data"]][,"protein_id"])))}))
+  colnames(N_detected)<-"N_detected"
+  ################################################################################################################
+  UniprotIDs <- as.data.frame(sapply(out_Hek_P2_1, function(x){
+    return(paste(unique(x[[1]][["data"]][,"protein_id"]), collapse = ";", sep = ""))
+  }))
+  df_collapsed <- apply(UniprotIDs, 1, function(x) {paste(unlist(eval(parse(text=x))), collapse = ";")})
+  UniprotIDs_1<- as.data.frame(df_collapsed)
+  colnames(UniprotIDs_1)<-"uni_ids"
+  ####################################################################################################
+  interx <- as.data.frame(sapply(out_Hek_P2_1, function(x){
+    return(paste(unique(x[[3]][["interactions"]][]), collapse = ";", sep = ""))
+  }))
+  colnames(interx)<-"interac"
+  ###################################################################################################
+  Pearsx<- as.data.frame(sapply(out_Hek_P2_1, function(x){
+    return(paste(unique(x[[3]][["Cor"]][]), collapse = ";", sep = ""))
+  }))
+  colnames(Pearsx)<-"pearson"
+  ################################################################################################################
+  Protnames <- as.data.frame(sapply(out_Hek_P2_1, function(x){
+    return(paste(unique(x[[1]][["data"]][,"prot_name"]), collapse = ";", sep = ""))
+  }))
+  df_collapsed_prot <- apply(Protnames, 1, function(x) {paste(unlist(eval(parse(text=x))), collapse = ";")})
+  protnames_1<- as.data.frame(df_collapsed_prot)
+  colnames(protnames_1)<-"prot_name"
+  ################################################################################################################
+  porc_detected<- 100*(N_detected/res_DF[,"N_subunits"])
+  colnames(porc_detected)[1]<-"porc_detected"                     
   ############################################################
   if (save_file) {
-    write.csv(res_DF, file = paste0(file_name,".csv"), row.names = FALSE)
-     VS_f<- res_DF %>% dplyr::select(1,3,4,6:(5+n_simulations))
-     write.csv(VS_f, file = paste0(file_name,"MontecarloSimulationFDR_results.csv"), row.names = FALSE)
+    write.csv(res_DF, file = paste0(file_name, "MontecarloSimulationFDR_results.csv"), row.names = FALSE)
+    VS_f<- data.frame(complex_names= res_DF[,"complex_names"],
+                      Hits_in_experiment = res_DF[,"Hits_in_experiment"],
+                      res_DF[,"FDR"],
+                      N_detected = N_detected,
+                      N_subunits = res_DF[,"N_subunits"],
+                      UniprotID = UniprotIDs_1[,"uni_ids"],
+                      Gen_Symbol = protnames_1[,"prot_name"],
+                      Ids_binary_Interactions= interx[,"interac"],
+                      Correlation_Binary_interactions= Pearsx[,"pearson"],
+                      Percentage_detected =porc_detected[,"porc_detected"])
+    write.csv(VS_f, file = paste0(file_name,"main.csv"), row.names = FALSE) 
   }
   sink(paste0(file_name, "_FDR.txt"))
   print("Fold discovery rate results")

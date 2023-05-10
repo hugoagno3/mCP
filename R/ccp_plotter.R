@@ -84,12 +84,11 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fract
     ########### interactomics
     pectores<- corMat
     pectores<- gdata::unmatrix(pectores)
-    pere<- as.data.frame(pectores[pectores>filter], row.names = TRUE)
-    pere$pairs<- rownames(pere)
-    colnames(pere)[1]<- "Pearson"
-    pere_1<- pere %>% dplyr::distinct(pairs, .keep_all = TRUE) %>%
-      dplyr::filter(!Pearson==1) %>% filter(row_number() %% 2 == 0)
-    perek_2<- list(interactions=pere_1$pairs, Pearson= pere_1$Pearson)
+    pere<- as.data.frame(pectores[pectores>filter & pectores<1])
+    colnames(pere)[1]<- "Cor"
+    pere_1<- pere %>% dplyr::distinct(Cor, .keep_all = TRUE) 
+    pere_1$pairs<- rownames(pere_1)
+    perek_2<- list(interactions=pere_1$pairs, Cor= pere_1$Cor)
     ###########
     tri <- corMat[upper.tri(corMat)]
     tri[is.na(tri)] <- 0
