@@ -62,7 +62,6 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fract
                                                                                                                                Sys.Date()), format = "pdf", display_weights = FALSE,
                          standard_weights = list(list(x = 9, label = "1236 KDa"), list(x = 13, label = "720 KDa"))) 
 {
-
   assertthat::assert_that(is.list(standard_weights))
   assertthat::assert_that(all(sapply(standard_weights, function(standard) length(standard) == 
                                        2)))
@@ -80,7 +79,6 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fract
         height = 6)
   }
   for (i in seq_along(complex_list)) {
-    #print("begin")
     data <- complex_list[[i]]$data
     corMat <- complex_list[[i]]$corMat
     ########### interactomics
@@ -94,7 +92,6 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fract
     ###########
     tri <- corMat[upper.tri(corMat)]
     tri[is.na(tri)] <- 0
-    #print("begin")
     if (nrow(data) > N_fractions & !all(data["Intensity"] == 
                                         0)) {
       if (any(tri > filter)) {
@@ -103,7 +100,6 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fract
         if (relative) {data <- data %>%group_by(protein_id) %>%
           mutate(Intensity = Intensity/max(Intensity, na.rm=TRUE))
         }
-        #print("begin")
         p <- ggplot2::ggplot(data, ggplot2::aes(x = SEC_FR, 
                                                 y = Intensity, ggplot2::ggtitle(complex_name), 
                                                 col = prot_name)) + ggplot2::geom_line() + 
@@ -119,22 +115,18 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fract
                                 angle = 90, color = "grey")
           }
         }
-        #print("begin")
         plots_list <- c(plots_list, list(c(list(p),list(vere),list(perek_2))))
         cp_names <- c(cp_names, as.character(data$complex_name[1]))
-        #print("begin")
         if (tolower(format) == "pdf") {
           print(p)
         }
       }
     }
   }
-  #print("end")
   if (tolower(format) == "pdf") {
     dev.off()
   }
   names(plots_list) <- cp_names
-  #print("end")
   ######## heatmaps part
   while (!is.null(dev.list())) {
     dev.off()
@@ -173,15 +165,3 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fract
   print(paste0(c_counter, " Complexes were detected"))
   return(plots_list)
 }
-help(cpp_plotter)
-WT<- cpp_plotter(complex_list = Condition_1 ,
-                              format = "pdf", 
-                              output_name = "wt_m_CP_analysis",
-                              filter = 0.93,
-                              N_fractions = 12,
-                              heat_map = FALSE,
-                              relative = FALSE,
-                              display_weights = TRUE,
-                              standard_weights = list(list(x =11, label= "1049KDa"), 
-                                                      list(x = 13, label ="720 KDa")))
-)
