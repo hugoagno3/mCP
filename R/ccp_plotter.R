@@ -143,8 +143,10 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fract
       if (nrow(data) > N_fractions & !all(data["Intensity"] == 
                                           0)) {
         if (any(tri > filter)) {
+          corMat[is.na(corMat)] <- 0 ##
           g <-heatmap(corMat, scale = "none", main = unique(data$complex_name))
-          d<- corrr::network_plot (complex_list[[i]][["CorMat_rrr"]], min_cor = 0.3)
+          complex_list[[i]][["CorMat_rrr"]][is.na(complex_list[[i]][["CorMat_rrr"]])]<-0 ##
+          d<- corrr::network_plot (complex_list[[i]][["CorMat_rrr"]], min_cor = 0.3) 
           
           cp_names <- c(cp_names, as.character(data$complex_name[1]))
           if (tolower(format) == "pdf" & heat_map) {
