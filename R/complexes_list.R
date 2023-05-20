@@ -44,14 +44,39 @@ mcp_list <- function(corum_database, experiment_data, N_fractions = 34, specie =
   df <- dplyr::inner_join(corum_database, Matrix_Clast1, by = 'protein_id')
   
   
+  max_attempts <- 5  # Number of maximum attempts
+  current_attempt <- 1  # Current attempt count
   
-  prot_names <- gprofiler2::gconvert(
-    query = df$protein_id,
-    organism =specie ,
-    target = "ENSG",
-    mthreshold = 1,
-    filter_na = FALSE
-  ) %>% 
+  while (current_attempt <= max_attempts) {
+    prot_names <- try({gprofiler2::gconvert(
+      query = df$protein_id,
+      organism =specie ,
+      target = "ENSG",
+      mthreshold = 1,
+      filter_na = FALSE
+    )}, silent = TRUE)  
+    
+    # Check if the function call was successful
+    if (!inherits(prot_names, "try-error")) {
+      # Function call was successful, break out of the loop
+      break
+    }
+    
+    # Function call failed, increment the attempt count
+    current_attempt <- current_attempt + 1
+    
+    # Wait for some time before the next attempt
+    Sys.sleep(5)  # Adjust the sleep time as per your requirement
+  }
+  # Check if the maximum number of attempts was reached
+  if (current_attempt > max_attempts) {
+    # Handle the case when the function call consistently failed
+    print("Function call failed after multiple attempts.")
+  } else {
+    # Function call was successful
+    print("Function call succeeded.")
+  } 
+  prot_names<- prot_names %>%
     dplyr::select(name, input) %>% #TODO: include description?
     dplyr::mutate(name = ifelse(is.na(name), yes = input, no = name)) %>% # replace NA
     dplyr::rename(protein_id = input)
@@ -90,5 +115,89 @@ mcp_list <- function(corum_database, experiment_data, N_fractions = 34, specie =
   VER<-sapply(output, extri)
   names(output)<- VER
   return(output)
+}
+
+mCP_test <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapiens",
+                     method_cor="pearson", heatmap_seaborn= TRUE, format="pdf", output_name= mCP_analysis,
+                     filter=0.93, heat_map= TRUE, relative= FALSE, display_weights=TRUE, 
+                     standard_weights=TRUE, fdr_limit=0.05 , n_simulations=185){
+  
+  # initialiye progress bar
+  
+  pb <- txtProgressBar(min= 0, max= 10, style =  3)
+  
+  # Record the start time
+  start_time <- Sys.time()
+  
+  # step1: Run mcp_list function
+  #pb$tick(msg = "Running mcp_list function...")
+  CL_hek_P2_1<- mcp_list_test(corum_database = corum_database,
+                              experiment_data = experiment_data, 
+                              N_fractions = N_fractions, 
+                              specie = specie,
+                              method_cor = method_cor, 
+                              heatmap_seaborn = heatmap_seaborn)
+  # Print message and elapsed time
+  cat("mcp_list function completed in", difftime(Sys.time(), start_time), "seconds.\n")
+  
+  # Update progress bar
+  t<-10/(1.5+5.4+3.75*n_simulations+5.4)
+  setTxtProgressBar(pb, 1.5*t)
+  
+  # Step 2:  Run cpp_plotter function
+  #pb$tick(msg = "Running cpp_plotter function...")
+  
+  out_Hek_P2_1 <- cpp_plotter(complex_list = CL_hek_P2_1,
+                              format = format, 
+                              output_name = paste0("all_Candidates_", output_name),
+                              filter = filter, N_fractions = N_fractions,
+                              heat_map = heat_map,
+                              relative = relative,
+                              display_weights = display_weights,
+                              standard_weights = standard_weights)
+  # Print message and elapsed time
+  cat("cpp_plotter function completed in", difftime(Sys.time(), start_time), "seconds.\n")
+  # Step 3: Run fdr_mCP function
+  #pb$tick(msg = "Running fdr_mCP function...")
+  
+  # Update progress bar
+  setTxtProgressBar(pb, 5.4*t)
+  
+  FDR_DIANN_dDIA_P2_1_<- fdr_mCP(corum_database = corum_database,
+                                 Output_cpp_plotter = out_Hek_P2_1, 
+                                 experiment_data = experiment_data,
+                                 file_name = output_name,
+                                 N_fractions = N_fractions,
+                                 specie = specie,
+                                 filter = filter,
+                                 fdr_limit = fdr_limit,
+                                 n_simulations = n_simulations, )
+  
+  
+  filist<- names(FDR_DIANN_dDIA_P2_1_)
+  CL_list_fdr<-CL_hek_P2_1[filist]
+  # Update progress bar
+  setTxtProgressBar(pb, 5.4*t)
+  out_Hek_P2_1 <- cpp_plotter(complex_list = CL_list_fdr,
+                              format = format, 
+                              output_name = output_name,
+                              filter = filter, N_fractions = N_fractions,
+                              heat_map = heat_map,
+                              relative = relative,
+                              display_weights = display_weights,
+                              standard_weights = standard_weights)
+  
+  # # Calculate the elapsed time and print it to the console
+  # end_time <- Sys.time()
+  # elapsed_time <- end_time - start_time
+  # cat("Elapsed time:", round(elapsed_time, 2), "mins\n")
+  
+  # Print message and elapsed time
+  cat("fdr_mCP function completed in", difftime(Sys.time(), start_time), "seconds.\n")
+  # Update progress bar
+  setTxtProgressBar(pb, 10) 
+  # End progress bar
+  close(pb)
+  return(out_Hek_P2_1)
 }
 
