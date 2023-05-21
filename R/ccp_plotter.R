@@ -9,6 +9,7 @@
 #' @param format should be "pdf" to plots pdf. There is an additional possible value is ".": this will omit pdf. In both cases the user will have a list of plot for the detected protein complexes in R. 
 #' @param relative could be = FALSE or TRUE. When TRUE the plots will be relative to the maximum intensity of each protiens. When FALSE, the plot will be the intensities detected in the experiment without relativization. This option is useful when some of the proteins in a protein protein complex are not easy to detect in the Mass spectrometer
 #' @param heat_map could be = FALSE or TRUE. When TRUE it will plot heat maps of all protein complexes detected after filter them by Pearson correlation. When the algorithm of correlation is not Pearson is should be always FALSE. 
+#' @param heatmap_seaborn could be = FALSE or TRUE. When TRUE it will plot networks heatmaps of all protein complexes detected after filter them by Pearson correlation. 
 #' @param display_weights TRUE or FALSE statement to display molecular weight markers in the complexome profiling plots. 
 #' @param standard_weights following core= list(list(x =11, label= "1049KDa"), list(x = 13, label ="720 KDa"))). It is possible to add many markers. you have to extend the code, for example to add a thrid marker= list(list(x =11, label= "1049KDa"), list(x=12, label="900 kDa"), list(x = 13, label ="720 KDa"))). Display_weights muss be TRUE. 
 #'
@@ -57,7 +58,7 @@
 #'                            standard_weights = list(list(x =11, label= "1049KDa"), 
 #'                                                    list(x = 13, label ="720 KDa")))
 
-cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fractions = 35, filter = 0.93, output_name = paste0("complexes_detected_", 
+cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALSE, complex_list, N_fractions = 35, filter = 0.93, output_name = paste0("complexes_detected_", 
                                                                                                                                Sys.Date()), format = "pdf", display_weights = FALSE,
                          standard_weights = list(list(x = 9, label = "1236 KDa"), list(x = 13, label = "720 KDa"))) 
 {
@@ -81,6 +82,10 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fract
     data <- complex_list[[i]]$data
     corMat <- complex_list[[i]]$corMat
     ########### interactomics
+    if(sum(dim(corMat))==0 | nrow(data) < N_fractions | all(data["Intensity"] == 
+                                                            0)){
+      next
+    }
     pectores<- corMat
     pectores<- gdata::unmatrix(pectores)
     pere<- as.data.frame(pectores[pectores>filter & pectores<1])
@@ -91,8 +96,8 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fract
     ###########
     tri <- corMat[upper.tri(corMat)]
     tri[is.na(tri)] <- 0
-    if (nrow(data) > N_fractions & !all(data["Intensity"] == 
-                                        0)) {
+    # if (nrow(data) > N_fractions & !all(data["Intensity"] == 
+    #                                     0)) {
       if (any(tri > filter)) {
         vere<- data.frame(Hits= length(which(tri > filter)))
         c_counter <- c_counter + 1
@@ -120,7 +125,7 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fract
           print(p)
         }
       }
-    }
+    #}
   }
   if (tolower(format) == "pdf") {
     dev.off()
@@ -138,28 +143,38 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, complex_list, N_fract
     for (i in seq_along(complex_list)) {
       data <- complex_list[[i]]$data
       corMat <- complex_list[[i]]$corMat
+      if(sum(dim(corMat))==0 | nrow(data) < N_fractions | all(data["Intensity"] == 
+                                                              0)){
+        next
+      } 
       tri <- corMat[upper.tri(corMat)]
       tri[is.na(tri)] <- 0
-      if (nrow(data) > N_fractions & !all(data["Intensity"] == 
-                                          0)) {
+      # if (nrow(data) > N_fractions & !all(data["Intensity"] == 
+      #                                     0)) {
         if (any(tri > filter)) {
           corMat[is.na(corMat)] <- 0 ##
           g <-heatmap(corMat, scale = "none", main = unique(data$complex_name))
+          if (heatmap_seaborn){
           complex_list[[i]][["CorMat_rrr"]][is.na(complex_list[[i]][["CorMat_rrr"]])]<-0 ##
           d<- corrr::network_plot (complex_list[[i]][["CorMat_rrr"]], min_cor = 0.3) 
-          
+        }
           cp_names <- c(cp_names, as.character(data$complex_name[1]))
           if (tolower(format) == "pdf" & heat_map) {
             print(g)
+          if(heatmap_seaborn){
             print(d)
           }
+          }
+          if (heatmap_seaborn){
           plots_list_heatmaps <- c(plots_list_heatmaps, list(c(list(d))))
         }
       }
-    }
+
+      }
     dev.off()
-    names(plots_list_heatmaps) <- names(plots_list)
-    plots_list <- Map(c, plots_list, plots_list_heatmaps)
+    if(heatmap_seaborn){
+      names(plots_list_heatmaps) <- names(plots_list)
+      plots_list <- Map(c, plots_list, plots_list_heatmaps)}
   }
   
   ##### End of heatmap 

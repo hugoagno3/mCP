@@ -7,6 +7,7 @@
 cpp_plotter(
   relative = FALSE,
   heat_map = FALSE,
+  heatmap_seaborn = FALSE,
   complex_list,
   N_fractions = 35,
   filter = 0.93,
@@ -21,6 +22,8 @@ cpp_plotter(
 \item{relative}{could be = FALSE or TRUE. When TRUE the plots will be relative to the maximum intensity of each protiens. When FALSE, the plot will be the intensities detected in the experiment without relativization. This option is useful when some of the proteins in a protein protein complex are not easy to detect in the Mass spectrometer}
 
 \item{heat_map}{could be = FALSE or TRUE. When TRUE it will plot heat maps of all protein complexes detected after filter them by Pearson correlation. When the algorithm of correlation is not Pearson is should be always FALSE.}
+
+\item{heatmap_seaborn}{could be = FALSE or TRUE. When TRUE it will plot networks heatmaps of all protein complexes detected after filter them by Pearson correlation.}
 
 \item{complex_list}{a list output from mcp_list function. It contains all potential protein complexes presents in the experiment and CORUM database. Each element of the list is has its corresponding complex name.}
 
