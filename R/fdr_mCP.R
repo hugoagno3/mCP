@@ -66,9 +66,15 @@ fdr_mCP<-   function (corum_database, experiment_data, N_fractions = 35,
   })
   FDs[is.na(FDs)] <- 0
   
-  res_matrix <- matrix(0,nrow = length(complex_names),ncol = n_simulations,dimnames = list(complex_names,paste0("Simulation_hits_",1:n_simulations)))
-  for(i in 1:n_simulations){
-    res_matrix[names(X[[i]])[names(X[[i]]) %in% rownames(res_matrix)],i] <- sapply(sapply(X[[i]],"[[",2),"[[",1)[names(X[[i]]) %in% rownames(res_matrix)]
+  res_matrix <- matrix(0, nrow = length(complex_names), ncol = n_simulations, dimnames = list(complex_names, paste0("Simulation_hits_", 1:n_simulations)))
+  
+  res_matrix <- matrix(0, nrow = length(complex_names), ncol = n_simulations, dimnames = list(complex_names, paste0("Simulation_hits_", 1:n_simulations)))
+  
+  for (i in 1:n_simulations) {
+    subset_rows <- names(X[[i]])[names(X[[i]]) %in% rownames(res_matrix)]
+    subset_values <- sapply(sapply(X[[i]], "[[", 2), "[[", 1)[names(X[[i]]) %in% rownames(res_matrix)]
+    
+    res_matrix[subset_rows, i] <- ifelse(length(subset_values) > 0, subset_values, 0)
   }
   ############################################################## 
   res_DF_1 <- data.frame(complex_names,Hits = standar_Experiment$hits, Discovered = FDs, rel.discoveries =FDs/n_simulations, 
