@@ -27,7 +27,7 @@
 #'                       heatmap_seaborn = TRUE)
 #' 
 #' 
-mcp_list <- function(corum_database, experiment_data, N_fractions = 34, specie = "mmusculus", method_cor= "pearson", heatmap_seaborn= TRUE) {
+mcp_list <-  function(corum_database, experiment_data, N_fractions = 34, specie = "mmusculus", method_cor= "pearson", heatmap_seaborn= TRUE) {
   
   # datacleaning
   # - check user input
@@ -44,14 +44,39 @@ mcp_list <- function(corum_database, experiment_data, N_fractions = 34, specie =
   df <- dplyr::inner_join(corum_database, Matrix_Clast1, by = 'protein_id')
   
   
+  max_attempts <- 5  # Number of maximum attempts
+  current_attempt <- 1  # Current attempt count
   
-  prot_names <- gprofiler2::gconvert(
-    query = df$protein_id,
-    organism =specie ,
-    target = "ENSG",
-    mthreshold = 1,
-    filter_na = FALSE
-  ) %>% 
+  while (current_attempt <= max_attempts) {
+    prot_names <- try({gprofiler2::gconvert(
+      query = df$protein_id,
+      organism =specie ,
+      target = "ENSG",
+      mthreshold = 1,
+      filter_na = FALSE
+    )}, silent = TRUE)  
+    
+    # Check if the function call was successful
+    if (!inherits(prot_names, "try-error")) {
+      # Function call was successful, break out of the loop
+      break
+    }
+    
+    # Function call failed, increment the attempt count
+    current_attempt <- current_attempt + 1
+    
+    # Wait for some time before the next attempt
+    Sys.sleep(5)  # Adjust the sleep time as per your requirement
+  }
+  # Check if the maximum number of attempts was reached
+  if (current_attempt > max_attempts) {
+    # Handle the case when the function call consistently failed
+    print("Function call failed after multiple attempts.")
+  } else {
+    # Function call was successful
+    print("Function call succeeded.")
+  } 
+  prot_names<- prot_names %>%
     dplyr::select(name, input) %>% #TODO: include description?
     dplyr::mutate(name = ifelse(is.na(name), yes = input, no = name)) %>% # replace NA
     dplyr::rename(protein_id = input)
@@ -91,4 +116,3 @@ mcp_list <- function(corum_database, experiment_data, N_fractions = 34, specie =
   names(output)<- VER
   return(output)
 }
-
