@@ -143,6 +143,7 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
                               output_name = output_name,
                               filter = filter, N_fractions = N_fractions,
                               heat_map = heat_map,
+                              heatmap_seaborn= heatmap_seaborn,
                               relative = relative,
                               display_weights = display_weights,
                               standard_weights = standard_weights)
