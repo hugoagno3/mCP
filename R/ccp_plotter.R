@@ -82,8 +82,7 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALS
     data <- complex_list[[i]]$data
     corMat <- complex_list[[i]]$corMat
     ########### interactomics
-    if(sum(dim(corMat))==0 | nrow(data) < N_fractions | all(data["Intensity"] == 
-                                                            0)){
+    if(sum(dim(corMat))==0 | nrow(data) < N_fractions | all(data["Intensity"] == 0)){
       next
     }
     pectores<- corMat
@@ -143,8 +142,7 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALS
     for (i in seq_along(complex_list)) {
       data <- complex_list[[i]]$data
       corMat <- complex_list[[i]]$corMat
-      if(sum(dim(corMat))==0 | nrow(data) < N_fractions | all(data["Intensity"] == 
-                                                              0)){
+      if(sum(dim(corMat))==0 | nrow(data) < N_fractions | all(data["Intensity"] == 0)){
         next
       } 
       tri <- corMat[upper.tri(corMat)]
