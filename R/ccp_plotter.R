@@ -155,13 +155,20 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALS
           g <-heatmap(corMat, scale = "none", main = unique(data$complex_name))
           if (heatmap_seaborn){
           complex_list[[i]][["CorMat_rrr"]][is.na(complex_list[[i]][["CorMat_rrr"]])]<-0 ##
-          d<- corrr::network_plot (complex_list[[i]][["CorMat_rrr"]], min_cor = 0.3) 
+          
+          if(sum(apply(complex_list[[i]][["CorMat_rrr"]][, -1], 1, duplicated))==0){
+            d<- corrr::network_plot (complex_list[[i]][["CorMat_rrr"]], min_cor = 0.3)  
+          }
+          else{
+            d<-  as.data.frame(complex_list[[i]][["CorMat_rrr"]]) %>% ggplot(aes(y=term))+ geom_bar()+ ggtitle("Error on the matrix, please try manually")
+          }
+      
         }
           cp_names <- c(cp_names, as.character(data$complex_name[1]))
           if (tolower(format) == "pdf" & heat_map) {
             print(g)
           if(heatmap_seaborn){
-       
+                
            print(d)
           }
           }
