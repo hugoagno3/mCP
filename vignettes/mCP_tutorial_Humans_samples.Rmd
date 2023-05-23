@@ -95,8 +95,11 @@ out_Hek_P2_1_teste <- mCP(corum_database = Corum_Humans_Database,
                           fdr_limit = 0.05,
                           n_simulations= 9,
                           display_weights = TRUE,
-                          standard_weights = list(list(x =11, label= "1049KDa"), 
-                                             list(x = 13, label ="720 KDa")))
+                          standard_weights = list(list(x =6, label= "2700 KDa"), 
+                                                          list(x = 11, label ="950 KDa"),
+                                                          list(x = 14, label = "750 KDa"), 
+                                                          list(x =27, label ="146 KDa"),
+                                                          list(x =30, label ="60 KDa")))
 ```
  # Outputs plots per Protein complex detected:
 ```{r pressure123, eval=FALSE, include=FALSE}

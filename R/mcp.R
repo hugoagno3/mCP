@@ -49,8 +49,11 @@
 #'                                      fdr_limit = 0.05,
 #'                                      n_simulations= 7,
 #'                                      display_weights = TRUE,
-#'                                      standard_weights = list(list(x =11, label= "1049KDa"), 
-#'                                                              list(x = 13, label ="720 KDa")))
+#'                                      standard_weights = list(list(x =6, label= "2700 KDa"), 
+#'                                                         list(x = 11, label ="950 KDa"),
+#'                                                         list(x = 14, label = "750 KDa"), 
+#'                                                         list(x =27, label ="146 KDa"),
+#'                                                         list(x =30, label ="60 KDa")))
 #'                                                              
 #'Co-fractionation experiments with C12E8 mild-detergent_Mouse (89FR)
 #'

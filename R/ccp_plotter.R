@@ -161,7 +161,8 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALS
           if (tolower(format) == "pdf" & heat_map) {
             print(g)
           if(heatmap_seaborn){
-            print(d)
+       
+           print(d)
           }
           }
           if (heatmap_seaborn){
