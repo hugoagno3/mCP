@@ -15,11 +15,12 @@
 #'
 #' @return A list of protein complexes filter by pearson correlation, a pdf file with the detected as protein complexes profiles. A pdf with heatmaps of the detected protein complexes. A txt file with numbers about general false positive when atleast 1 hit is consider as filter. A CVS file containing all protein complexes detected, hits of binary interactions inside the protein complexes, FDR detected by MonteCarloSimulation.
 #' @import gprofiler2
+#' @import ggplot2
 #' @import gdata
 #' @import corrr
 #' @import dplyr
 #' @import assertthat
-#' 
+#'  
 #' @export
 #'
 #' @examples For the exaple load the 2 datasets and run mcp_list function and then cpp_ploter 
@@ -32,8 +33,12 @@
 #'                            heat_map = TRUE,
 #'                            relative = FALSE,
 #'                            display_weights = TRUE,
-#'                            standard_weights = list(list(x =11, label= "1049KDa"), 
-#'                                                    list(x = 13, label ="720 KDa")))
+#'                            standard_weights = list(list(x =6, label= "2700 KDa"), 
+#'                                               list(x = 11, label ="950 KDa"),
+#'                                               list(x = 14, label = "750 KDa"), 
+#'                                               list(x =27, label ="146 KDa"),
+#'                                               list(x =30, label ="60 KDa")))
+#'                                               
 #'### To generate an example
 #'data(Hek293_P2_1)
 #'
@@ -55,8 +60,13 @@
 #'                            heat_map = TRUE,
 #'                            relative = FALSE,
 #'                            display_weights = TRUE,
-#'                            standard_weights = list(list(x =11, label= "1049KDa"), 
-#'                                                    list(x = 13, label ="720 KDa")))
+#'                            standard_weights = list(list(x =6, label= "2700 KDa"), 
+#'                                               list(x = 11, label ="950 KDa"),
+#'                                               list(x = 14, label = "750 KDa"), 
+#'                                               list(x =27, label ="146 KDa"),
+#'                                               list(x =30, label ="60 KDa")))
+
+
 
 cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALSE, complex_list, N_fractions = 35, filter = 0.93, output_name = paste0("complexes_detected_", 
                                                                                                                                Sys.Date()), format = "pdf", display_weights = FALSE,
