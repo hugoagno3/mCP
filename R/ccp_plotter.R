@@ -160,7 +160,8 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALS
             d<- corrr::network_plot (complex_list[[i]][["CorMat_rrr"]], min_cor = 0.3)  
           }
           else{
-            d<-  as.data.frame(complex_list[[i]][["CorMat_rrr"]]) %>% ggplot(aes(y=term))+ geom_bar()+ ggtitle("Error on the matrix, please try manually")
+            colname<- colnames(complex_list[[i]][["CorMat_rrr"]])[1]
+            d<-  as.data.frame(complex_list[[i]][["CorMat_rrr"]]) %>% ggplot(aes(y={{colname}}))+ geom_bar()+ ggtitle("Error on the matrix, please try manually")
           }
       
         }
