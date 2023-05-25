@@ -76,19 +76,25 @@ To process the input data, we need to run *Option 1*- the mCP function or *Optio
  
 ```{r pressure3, eval=FALSE, include=FALSE}
 library(mCP)
+```
+```{r pressure3A, eval=FALSE, include=FALSE}
 # Read the Corum protein complex database file
       data(Corum_Humans_Database)
+```
+```{r pressure3B, eval=FALSE, include=FALSE}
 # Read the experiment files
       data(Hek293_P2_1)
-##### Example #####
-out_Hek_P2_1_teste <- mCP(corum_database = Corum_Humans_Database,
+```
+```{r pressure3C, eval=FALSE, include=FALSE}
+      ##### Example #####
+mCP_Hek_P2_1 <- mCP(corum_database = Corum_Humans_Database,
                           experiment_data = Hek293_P2_1, 
                           N_fractions = 35, 
                           specie = "hsapiens",
                           method_cor = "pearson",
                           heatmap_seaborn = TRUE,
                           format = "pdf", 
-                          output_name = "m_CP_analysis_2",
+                          output_name = "m_CP_analysis",
                           filter = 0.93,
                           heat_map = TRUE,
                           relative = FALSE,
