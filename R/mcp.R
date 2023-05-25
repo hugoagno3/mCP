@@ -49,8 +49,11 @@
 #'                                      fdr_limit = 0.05,
 #'                                      n_simulations= 7,
 #'                                      display_weights = TRUE,
-#'                                      standard_weights = list(list(x =11, label= "1049KDa"), 
-#'                                                              list(x = 13, label ="720 KDa")))
+#'                                      standard_weights = list(list(x =6, label= "2700 KDa"), 
+#'                                                         list(x = 11, label ="950 KDa"),
+#'                                                         list(x = 14, label = "750 KDa"), 
+#'                                                         list(x =27, label ="146 KDa"),
+#'                                                         list(x =30, label ="60 KDa")))
 #'                                                              
 #'Co-fractionation experiments with C12E8 mild-detergent_Mouse (89FR)
 #'
@@ -97,7 +100,7 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
                          method_cor = method_cor, 
                          heatmap_seaborn = heatmap_seaborn)
   # Print message and elapsed time
-  cat("mcp_list function completed in", difftime(Sys.time(), start_time), "mins.\n")
+  cat("mcp_list function completed in", difftime(Sys.time(), start_time), "seconds.\n")
   
   # Update progress bar
   t<-10/(1.5+5.4+3.75*n_simulations+5.4)
@@ -111,11 +114,12 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
                               output_name = paste0("all_Candidates_", output_name),
                               filter = filter, N_fractions = N_fractions,
                               heat_map = heat_map,
+                              heatmap_seaborn= heatmap_seaborn,
                               relative = relative,
                               display_weights = display_weights,
                               standard_weights = standard_weights)
   # Print message and elapsed time
-  cat("cpp_plotter function completed in", difftime(Sys.time(), start_time), "mins.\n")
+  cat("cpp_plotter function completed in", difftime(Sys.time(), start_time), "seconds.\n")
   # Step 3: Run fdr_mCP function
   #pb$tick(msg = "Running fdr_mCP function...")
   
@@ -142,6 +146,7 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
                               output_name = output_name,
                               filter = filter, N_fractions = N_fractions,
                               heat_map = heat_map,
+                              heatmap_seaborn= heatmap_seaborn,
                               relative = relative,
                               display_weights = display_weights,
                               standard_weights = standard_weights)
@@ -152,7 +157,7 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
   # cat("Elapsed time:", round(elapsed_time, 2), "mins\n")
   
   # Print message and elapsed time
-  cat("fdr_mCP function completed in", difftime(Sys.time(), start_time), "mins.\n")
+  cat("fdr_mCP function completed in", difftime(Sys.time(), start_time), "seconds.\n")
   # Update progress bar
   setTxtProgressBar(pb, 10) 
   # End progress bar

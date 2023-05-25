@@ -27,7 +27,7 @@
 #'                       heatmap_seaborn = TRUE)
 #' 
 #' 
-mcp_list <- function(corum_database, experiment_data, N_fractions = 34, specie = "mmusculus", method_cor= "pearson", heatmap_seaborn= TRUE) {
+mcp_list <-  function(corum_database, experiment_data, N_fractions = 34, specie = "mmusculus", method_cor= "pearson", heatmap_seaborn= TRUE) {
   
   # datacleaning
   # - check user input
