@@ -44,7 +44,7 @@ This function performs different matrix from your experimental matrix and evalua
 }
 \examples{
 data(Corum_Humans_Database)
-date()
+
 FDR_DIANN_dDIA_P2_1_<- fdr_mCP(corum_database= Corum_Humans_Database,
 Output_cpp_plotter = out_Hek_P2_1, 
 experiment_data=Hek293_P2_1,

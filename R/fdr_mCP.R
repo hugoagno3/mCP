@@ -21,7 +21,7 @@
 #'
 #' @examples
 #' data(Corum_Humans_Database)
-#' date()
+#' 
 #' FDR_DIANN_dDIA_P2_1_<- fdr_mCP(corum_database= Corum_Humans_Database,
 #'Output_cpp_plotter = out_Hek_P2_1, 
 #'experiment_data=Hek293_P2_1,
@@ -65,9 +65,9 @@ fdr_mCP<-   function (corum_database, experiment_data, N_fractions = 35,
   })
   FDs[is.na(FDs)] <- 0
   res_matrix <- matrix(0,nrow = length(complex_names),ncol = n_simulations,dimnames = list(complex_names,paste0("Simulation_hits_",1:n_simulations)))
-  
-  
-  for (i in 1:n_simulations) {
+
+    for (i in 1:n_simulations) {
+
     subset_rows <- names(X[[i]])[names(X[[i]]) %in% rownames(res_matrix)]
     subset_values <- sapply(sapply(X[[i]], "[[", 2), "[[", 1)[names(X[[i]]) %in% rownames(res_matrix)]
     
