@@ -69,14 +69,14 @@ Co-fractionation experiments with NP-40 mild-detergent_Humans(Hek293 cells)
 
 data("Corum_Humans_Database")
 data("Hek293_P2_1")
-mCP_TEND_out_Hek_P2_1_teste_11 <- mCP(corum_database = Corum_Humans_Database,
+mCP_Hek_P2_1 <- mCP(corum_database = Corum_Humans_Database,
                                      experiment_data = Hek293_P2_1, 
                                      N_fractions = 35, 
                                      specie = "hsapiens",
                                      method_cor = "pearson",
                                      heatmap_seaborn = TRUE,
                                      format = "pdf", 
-                                     output_name = "INTO_m_CP_analysis_7",
+                                     output_name = "mCP_Hek293_P2_1",
                                      filter = 0.93,
                                      heat_map = TRUE,
                                      relative = FALSE,

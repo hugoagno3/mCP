@@ -17,6 +17,7 @@
 #' @import corrr
 #' @import dplyr
 #' @import assertthat
+#' @import ggplot2
 #' @export
 #'
 #' @examples

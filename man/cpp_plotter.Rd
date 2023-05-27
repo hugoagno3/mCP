@@ -56,8 +56,12 @@ For the exaple load the 2 datasets and run mcp_list function and then cpp_ploter
                            heat_map = TRUE,
                            relative = FALSE,
                            display_weights = TRUE,
-                           standard_weights = list(list(x =11, label= "1049KDa"), 
-                                                   list(x = 13, label ="720 KDa")))
+                           standard_weights = list(list(x =6, label= "2700 KDa"), 
+                                              list(x = 11, label ="950 KDa"),
+                                              list(x = 14, label = "750 KDa"), 
+                                              list(x =27, label ="146 KDa"),
+                                              list(x =30, label ="60 KDa")))
+                                              
 ### To generate an example
 data(Hek293_P2_1)
 
@@ -79,6 +83,9 @@ out_Hek_P2_1 <- cpp_plotter(complex_list = CL_hek_P2_1,
                            heat_map = TRUE,
                            relative = FALSE,
                            display_weights = TRUE,
-                           standard_weights = list(list(x =11, label= "1049KDa"), 
-                                                   list(x = 13, label ="720 KDa")))
+                           standard_weights = list(list(x =6, label= "2700 KDa"), 
+                                              list(x = 11, label ="950 KDa"),
+                                              list(x = 14, label = "750 KDa"), 
+                                              list(x =27, label ="146 KDa"),
+                                              list(x =30, label ="60 KDa")))
 }
