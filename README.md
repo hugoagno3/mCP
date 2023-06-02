@@ -25,7 +25,7 @@ we provide a detailed explanation about the functions at the end of this tutoria
 To install the mCP package from GitHub, run the following code:
 ```{r pressure, echo=FALSE}
 library(devtools)
-devtools::install_github("hugoagno3/mCP")
+devtools::install_github("hugoagno3/mCP", biuld_vignette= TRUE)
 ```
 
 # Data input 
