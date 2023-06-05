@@ -39,6 +39,7 @@ fdr_mCP<-   function (corum_database, experiment_data, N_fractions = 35,
 {
  ifelse(length(names(Output_cpp_plotter))>0, standar_Experiment<- extract_mcp(Output_cpp_plotter), return(print("0 Protein Complexes detected")))
   ######## simulation##########
+  set.seed(123)
   X <- replicate(n_simulations, {
     experiment_data <- experiment_data
     Indeces_in_Corum <- experiment_data$protein_id %in% 

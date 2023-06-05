@@ -20,6 +20,7 @@ Imports:
     corrr,
     gprofiler2,
     readr,
+    ggplot2,
     dplyr(>= 1.0.0)
   
  
