@@ -35,7 +35,7 @@
 
 fdr_mCP<-    function (corum_database, experiment_data, N_fractions = 35, 
                        specie = "hsapiens", filter = 0.93, n_simulations = 10, 
-                       Output_cpp_plotter, file_name = "exp_id", save_file = TRUE, fdr_limit= 0.05) 
+                       Output_cpp_plotter= Output_cpp_plotter, file_name = "exp_id", save_file = TRUE, fdr_limit= 0.05) 
 {
   ifelse(length(names(Output_cpp_plotter))>0, standar_Experiment<- extract_mcp(Output_cpp_plotter), return(print("0 Protein Complexes detected")))
   complex_names <-  names(Output_cpp_plotter)
@@ -52,6 +52,7 @@ fdr_mCP<-    function (corum_database, experiment_data, N_fractions = 35,
   
   
   X <- replicate(n_simulations, {
+    Output_cpp_plotter<- Output_cpp_plotter
     experiment_data <- experiment_data
     Indeces_in_Corum <- experiment_data$protein_id %in% 
       corum_database$protein_id
