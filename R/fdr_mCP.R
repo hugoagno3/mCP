@@ -67,7 +67,7 @@ fdr_mCP<-    function (corum_database, experiment_data, N_fractions = 35,
     CL_hek_P1_2_a <- CL_hek_P1_2_a [names(Output_cpp_plotter)]
     out_Hek_p1_2_a <-cpp_plt_sim (complex_list = CL_hek_P1_2_a, #lapply(ee,filti)
                                   output_name = paste0(format(Sys.time(), "%H_%M_%OS3"),
-                                                       "fake.pdf"), format = ".", filter = ee, 
+                                                       "fake.pdf"), format = ".", 
                                   N_fractions = N_fractions, display_weights = FALSE)                    
  
   })
