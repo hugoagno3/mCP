@@ -8,6 +8,7 @@ cpp_plt_sim(
   relative = FALSE,
   heat_map = FALSE,
   heatmap_seaborn = FALSE,
+  Output_cpp_plotter = Output_cpp_plotter,
   complex_list,
   N_fractions = 35,
   output_name = paste0("complexes_detected_", Sys.Date()),

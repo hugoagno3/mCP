@@ -11,7 +11,7 @@ fdr_mCP(
   specie = "hsapiens",
   filter = 0.93,
   n_simulations = 10,
-  Output_cpp_plotter,
+  Output_cpp_plotter = Output_cpp_plotter,
   file_name = "exp_id",
   save_file = TRUE,
   fdr_limit = 0.05
