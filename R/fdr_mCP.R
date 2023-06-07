@@ -33,13 +33,24 @@
 #'n_simulations= 2)
 #' 
 
-fdr_mCP<-   function (corum_database, experiment_data, N_fractions = 35, 
-                      specie = "hsapiens", filter = 0.93, n_simulations = 10, 
-                      Output_cpp_plotter, file_name = "exp_id", save_file = TRUE, fdr_limit= 0.05) 
+fdr_mCP<-    function (corum_database, experiment_data, N_fractions = 35, 
+                       specie = "hsapiens", filter = 0.93, n_simulations = 10, 
+                       Output_cpp_plotter, file_name = "exp_id", save_file = TRUE, fdr_limit= 0.05) 
 {
- ifelse(length(names(Output_cpp_plotter))>0, standar_Experiment<- extract_mcp(Output_cpp_plotter), return(print("0 Protein Complexes detected")))
+  ifelse(length(names(Output_cpp_plotter))>0, standar_Experiment<- extract_mcp(Output_cpp_plotter), return(print("0 Protein Complexes detected")))
+  complex_names <-  names(Output_cpp_plotter)
   ######## simulation##########
   set.seed(123)
+  #####################Specific filter for FRD according to the average of Person binary interaction of each protein complex. 
+  e <- function(z) {
+    means <- lapply(z, function(x) {
+      mean(x[[3]][["Cor"]], na.rm = TRUE)
+    })
+    return(means)
+  }
+  ee<-e (Output_cpp_plotter)
+  
+  
   X <- replicate(n_simulations, {
     experiment_data <- experiment_data
     Indeces_in_Corum <- experiment_data$protein_id %in% 
@@ -53,13 +64,13 @@ fdr_mCP<-   function (corum_database, experiment_data, N_fractions = 35,
     CL_hek_P1_2_a <- mcp_list(corum_database = corum_database, 
                               experiment_data = experiment_data, N_fractions = N_fractions, 
                               specie = specie, heatmap_seaborn = FALSE)
-    out_Hek_p1_2_a <- cpp_plotter(complex_list = CL_hek_P1_2_a, 
-                                  output_name = paste0(format(Sys.time(), "%H_%M_%OS3"), 
-                                                       "fake.pdf"), format = ".", filter = filter, 
-                                  N_fractions = N_fractions, display_weights = FALSE)
-    #standar_simulation<- extract_mcp(out_Hek_p1_2_a)
+    CL_hek_P1_2_a <- CL_hek_P1_2_a [names(out_Hek_P2_1)]
+    out_Hek_p1_2_a <-cpp_plt_sim (complex_list = CL_hek_P1_2_a, #lapply(ee,filti)
+                                  output_name = paste0(format(Sys.time(), "%H_%M_%OS3"),
+                                                       "fake.pdf"), format = ".", filter = ee, 
+                                  N_fractions = N_fractions, display_weights = FALSE)                    
+ 
   })
-  complex_names <-  names(Output_cpp_plotter)
   FDs <- sapply(complex_names, function(comp_name) {
     return(sum(sapply(X, function(Simulation) {
       return(comp_name %in% names(Simulation) && Simulation[[comp_name]][[2]][1,1] >= standar_Experiment[comp_name,"hits"])
@@ -67,9 +78,9 @@ fdr_mCP<-   function (corum_database, experiment_data, N_fractions = 35,
   })
   FDs[is.na(FDs)] <- 0
   res_matrix <- matrix(0,nrow = length(complex_names),ncol = n_simulations,dimnames = list(complex_names,paste0("Simulation_hits_",1:n_simulations)))
-
-    for (i in 1:n_simulations) {
-
+  
+  for (i in 1:n_simulations) {
+    
     subset_rows <- names(X[[i]])[names(X[[i]]) %in% rownames(res_matrix)]
     subset_values <- sapply(sapply(X[[i]], "[[", 2), "[[", 1)[names(X[[i]]) %in% rownames(res_matrix)]
     
