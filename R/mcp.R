@@ -21,6 +21,9 @@
 #' @param standard_weights following core= list(list(x =11, label= "1049KDa"), list(x = 13, label ="720 KDa"))). It is possible to add many markers. you have to extend the code, for example to add a thrid marker= list(list(x =11, label= "1049KDa"), list(x=12, label="900 kDa"), list(x = 13, label ="720 KDa"))). Display_weights muss be TRUE 
 #' @param fdr_limit report only protein complexes detected with a false discovery rate lower than a numeric value, for example = 0.05. 
 #' @param n_simulations This is the number of simulations we recomend 185 simulations (this part could take 12 hrs for human dataset).
+#' @param Risk_fraction  is a number indicating the fraction where all monomeric components of the protein complex should be present. It is set to 85% of the n_fraction. 
+#' @param monomeric_filter a TRUE or FALSE setting that takes out potential protein complexes sie a hight porcentaje of monomeric conformation. This is related to the previous filter by defoult is off so the user can decide. 
+#'
 #'
 #' @return a list of protein complexes plots, the significant interactions, binary pairs proteins detected, and a network heatmap based.
 #' @export
@@ -82,7 +85,8 @@
 mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapiens",
                 method_cor="pearson", heatmap_seaborn= TRUE, format="pdf", output_name= mCP_analysis,
                 filter=0.93, heat_map= TRUE, relative= FALSE, display_weights=TRUE, 
-                standard_weights=TRUE, fdr_limit=0.05 , n_simulations=185){
+                standard_weights=TRUE, fdr_limit=0.05 , n_simulations=185,
+                Risk_fraction=floor(N_fractions*0.85) , monomeric_filter= monomeric_filter){
   
   # initialiye progress bar
   
@@ -134,8 +138,10 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
                                  specie = specie,
                                  filter = filter,
                                  fdr_limit = fdr_limit,
-                                 n_simulations = n_simulations, )
-  
+                                 n_simulations = n_simulations,
+                                 Risk_fraction= Risk_fraction,
+                                 monomeric_filter= monomeric_filter)
+                                 
   
   filist<- names(FDR_DIANN_dDIA_P2_1_)
   CL_list_fdr<-CL_hek_P2_1[filist]
