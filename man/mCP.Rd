@@ -19,7 +19,9 @@ mCP(
   display_weights = TRUE,
   standard_weights = TRUE,
   fdr_limit = 0.05,
-  n_simulations = 185
+  n_simulations = 185,
+  Risk_fraction = floor(N_fractions * 0.85),
+  monomeric_filter = monomeric_filter
 )
 }
 \arguments{
@@ -50,6 +52,10 @@ mCP(
 \item{fdr_limit}{report only protein complexes detected with a false discovery rate lower than a numeric value, for example = 0.05.}
 
 \item{n_simulations}{This is the number of simulations we recomend 185 simulations (this part could take 12 hrs for human dataset).}
+
+\item{Risk_fraction}{is a number indicating the fraction where all monomeric components of the protein complex should be present. It is set to 85\% of the n_fraction.}
+
+\item{monomeric_filter}{a TRUE or FALSE setting that takes out potential protein complexes sie a hight porcentaje of monomeric conformation. This is related to the previous filter by defoult is off so the user can decide.}
 
 \item{relativea}{TRUE or FALSE statement to plot relative complexome profiling plots, useful to compare between conditions.}
 }

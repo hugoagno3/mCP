@@ -14,7 +14,9 @@ fdr_mCP(
   Output_cpp_plotter = Output_cpp_plotter,
   file_name = "exp_id",
   save_file = TRUE,
-  fdr_limit = 0.05
+  fdr_limit = 0.05,
+  Risk_fraction = floor(N_fractions * 0.85),
+  monomeric_filter = FALSE
 )
 }
 \arguments{
@@ -35,6 +37,10 @@ fdr_mCP(
 \item{file_name}{this is the file name of the output, is a string, It should be writen within "". For example "outputname"}
 
 \item{save_file}{could be TRUE or FALSE it generate an csv file with results of Fold Discovery Rate per protein complexes}
+
+\item{Risk_fraction}{is a number indicating the fraction where all monomeric components of the protein complex should be present. It is set to 85\% of the n_fraction.}
+
+\item{monomeric_filter}{a TRUE or FALSE setting that takes out potential protein complexes sie a hight porcentaje of monomeric conformation. This is related to the previous filter by defoult is off so the user can decide.}
 }
 \value{
 a list of controlled FDr Portein compleses.
