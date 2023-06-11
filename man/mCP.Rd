@@ -21,7 +21,8 @@ mCP(
   fdr_limit = 0.05,
   n_simulations = 185,
   Risk_fraction = floor(N_fractions * 0.85),
-  monomeric_filter = monomeric_filter
+  monomeric_filter = monomeric_filter,
+  set_seed = TRUE
 )
 }
 \arguments{
@@ -57,9 +58,9 @@ mCP(
 
 \item{monomeric_filter}{a TRUE or FALSE setting that takes out potential protein complexes sie a hight porcentaje of monomeric conformation. This is related to the previous filter by defoult is off so the user can decide.}
 
-\item{relativea}{TRUE or FALSE statement to plot relative complexome profiling plots, useful to compare between conditions.}
-
 \item{set_seed}{a TRUE or FALSE setting to standarise simulations.}
+
+\item{relativea}{TRUE or FALSE statement to plot relative complexome profiling plots, useful to compare between conditions.}
 }
 \value{
 a list of protein complexes plots, the significant interactions, binary pairs proteins detected, and a network heatmap based.

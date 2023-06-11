@@ -38,7 +38,9 @@
 
 fdr_mCP<-    function (corum_database, experiment_data, N_fractions = 35, 
                        specie = "hsapiens", filter = 0.93, n_simulations = 10, 
-                       Output_cpp_plotter= Output_cpp_plotter, file_name = "exp_id", save_file = TRUE, fdr_limit= 0.05, Risk_fraction = floor(N_fractions*0.85), monomeric_filter= FALSE, set_seed= TRUE) 
+                       Output_cpp_plotter= Output_cpp_plotter, file_name = "exp_id", 
+                       save_file = TRUE, fdr_limit= 0.05, Risk_fraction = floor(N_fractions*0.85), 
+                       monomeric_filter= FALSE, set_seed= TRUE) 
 {
   ifelse(length(names(Output_cpp_plotter))>0, standar_Experiment<- extract_mcp(Output_cpp_plotter), return(print("0 Protein Complexes detected")))
   complex_names <-  names(Output_cpp_plotter)
@@ -176,7 +178,7 @@ fdr_mCP<-    function (corum_database, experiment_data, N_fractions = 35,
     print(paste0("PPC_candidate_Detected= ", length(Output_cpp_plotter)))
     print(paste0("PPC_Detected= ", length(out_Hek_P2_2)))
     print(paste0("SD_Fdr= ", sd(sapply(X, "length")/length(Output_cpp_plotter))))
-    print(paste0("Filter"= , filter))
+    print(paste0("filter=" , filter))
     print(paste0("number of simulations= ", n_simulations))
     print(paste0("fdr_limit", fdr_limit))
     print(paste0("Monomeric_risk_vec= ", length(VS_f$Monomeric_risk[VS_f$Monomeric_risk==TRUE])))
@@ -191,7 +193,7 @@ fdr_mCP<-    function (corum_database, experiment_data, N_fractions = 35,
   print(paste0("PPC_candidate_Detected= ", length(Output_cpp_plotter)))
   print(paste0("PPC_Detected= ", length(out_Hek_P2_1)))
   print(paste0("SD_Fdr= ", sd(sapply(X, "length")/length(Output_cpp_plotter))))
-  print(paste0("Filter= ", filter))
+  print(paste0("filter= ", filter))
   print(paste0("number of simulations= ", n_simulations))
   print(paste0("fdr_limit= ", fdr_limit))
   print(paste0("Monomeric_risk_vec= ", length(VS_f$Monomeric_risk[VS_f$Monomeric_risk==TRUE])))
