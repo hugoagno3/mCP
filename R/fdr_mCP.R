@@ -12,6 +12,7 @@
 #' @param save_file could be TRUE or FALSE it generate an csv file with results of Fold Discovery Rate per protein complexes
 #' @param Risk_fraction  is a number indicating the fraction where all monomeric components of the protein complex should be present. It is set to 85% of the n_fraction. 
 #' @param monomeric_filter a TRUE or FALSE setting that takes out potential protein complexes sie a hight porcentaje of monomeric conformation. This is related to the previous filter by defoult is off so the user can decide. 
+#' @param set_seed a TRUE or FALSE setting to standarise simulations. 
 #'
 #' @return a list of controlled FDr Portein compleses. 
 #' @import gprofiler2

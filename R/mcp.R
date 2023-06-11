@@ -23,7 +23,7 @@
 #' @param n_simulations This is the number of simulations we recomend 185 simulations (this part could take 12 hrs for human dataset).
 #' @param Risk_fraction  is a number indicating the fraction where all monomeric components of the protein complex should be present. It is set to 85% of the n_fraction. 
 #' @param monomeric_filter a TRUE or FALSE setting that takes out potential protein complexes sie a hight porcentaje of monomeric conformation. This is related to the previous filter by defoult is off so the user can decide. 
-#' @param set_seed a TRUE or FALSE setting to standarize simulations. 
+#' @param set_seed a TRUE or FALSE setting to standarise simulations. 
 #'
 #' @return a list of protein complexes plots, the significant interactions, binary pairs proteins detected, and a network heatmap based.
 #' @export
@@ -86,7 +86,7 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
                 method_cor="pearson", heatmap_seaborn= TRUE, format="pdf", output_name= mCP_analysis,
                 filter=0.93, heat_map= TRUE, relative= FALSE, display_weights=TRUE, 
                 standard_weights=TRUE, fdr_limit=0.05 , n_simulations=185,
-                Risk_fraction=floor(N_fractions*0.85) , monomeric_filter= monomeric_filter){
+                Risk_fraction=floor(N_fractions*0.85) , monomeric_filter= monomeric_filter, set_seed= TRUE){
   
   # initialiye progress bar
   

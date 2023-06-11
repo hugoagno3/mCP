@@ -42,6 +42,8 @@ fdr_mCP(
 \item{Risk_fraction}{is a number indicating the fraction where all monomeric components of the protein complex should be present. It is set to 85\% of the n_fraction.}
 
 \item{monomeric_filter}{a TRUE or FALSE setting that takes out potential protein complexes sie a hight porcentaje of monomeric conformation. This is related to the previous filter by defoult is off so the user can decide.}
+
+\item{set_seed}{a TRUE or FALSE setting to standarise simulations.}
 }
 \value{
 a list of controlled FDr Portein compleses.
