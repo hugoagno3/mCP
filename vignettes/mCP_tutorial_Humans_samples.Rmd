@@ -283,7 +283,7 @@ Hek_293_MA_P2_1 <- Calc_mean_matrix(NAmatrix = NAmatrix_P2_1,
 
 Note: The user can also use its own scrip to generate the average of the replicates. This function is limited to 2 replicates. It is our traditional measurement. mCP do not acepts NA values. All NA values in our case are replaced by 0. 
 
-# How does mCP works deteil fo the functions and explanation step by step
+# How does mCP works 
 
 The `mCP` package provides the following functions:
 
