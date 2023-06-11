@@ -1,8 +1,9 @@
 #'
 #' cpp_plt_sim
 #'
-#' @description The cpp_plt_sim() is an intermediet function used in Monte-Carlo-Simulations. The function is prepared to use a different filter according to the average of pearson correllation of the proiten complex to be evaluated. prot. It function requires a list of potential protein complexes as input. The function first filters out any complexes composed of less than 2 components with non-zero intensities. Then, it applies a filter based on the minimum definition of a protein complex, keeping only complexes with at least one significant co-elution hit. The function also filters the list of complexes based on the presence of co-eluting proteins, requiring at least one binary interaction higher than the filter for proteins within the candidate complex. Finally, cpp_plt_sim() generates complexome profiling plots, heatmaps, and network plots of the proteins within the selected complexes.
+#' @description The cpp_plt_sim() is an intermediate function used in Monte-Carlo-Simulations fdr_mCP(). The function is the same function that cpp_plotter(), but it is prepared to use a vector of different filters according to the average of pearson correlation of the proiten complex to be evaluated (higher that the first filter). protein. It function requires a list of potential protein complexes as input. The function first filters out any complexes composed of less than 2 components with non-zero intensities. Then, it applies a filter based on the minimum definition of a protein complex, keeping only complexes with at least one significant co-elution hit. The function also filters the list of complexes based on the presence of co-eluting proteins, requiring at least one binary interaction higher than the filter for proteins within the candidate complex. Finally, cpp_plt_sim() generates complexome profiling plots, heatmaps, and network plots of the proteins within the selected complexes.
 #' @param complex_list a list output from mcp_list function. It contains all potential protein complexes presents in the experiment and CORUM database. Each element of the list is has its corresponding complex name.
+#' @param Output_cpp_plotter in an input list of plots fitered by arbitrary filter. This list is obtained by cpp_plotter().
 #' @param N_fractions The number of fractions obtained in the co-fractionation experiment.
 #' @param output_name main core name for the files to be printed, it is a string: see example. 
 #' @param format should be "pdf" to plots pdf. There is an additional possible value is ".": this will omit pdf. In both cases the user will have a list of plot for the detected protein complexes in R. 
@@ -24,19 +25,19 @@
 #'
 #' @examples For the exaple load the 2 datasets and run mcp_list function and then cpp_ploter 
 #'
-#'#'out_Hek_P2_1 <- cpp_plotter(complex_list = CL_hek_P2_1,
-#'                            format = "pdf", 
-#'                            output_name = "m_CP_analysis",
-#'                            filter = 0.93,
-#'                            N_fractions = 35,
-#'                            heat_map = TRUE,
-#'                            relative = FALSE,
-#'                            display_weights = TRUE,
-#'                            standard_weights = list(list(x =6, label= "2700 KDa"), 
-#'                                               list(x = 11, label ="950 KDa"),
-#'                                               list(x = 14, label = "750 KDa"), 
-#'                                               list(x =27, label ="146 KDa"),
-#'                                               list(x =30, label ="60 KDa")))
+#' dyn_out_Hek_P2_1 <- cpp_plt_sim (complex_list = CL_hek_P2_1,
+#'                               Output_cpp_plotter= out_Hek_P2_1,
+#'                               format = "pdf", 
+#'                               output_name = "m_CP_analysis",
+#'                               N_fractions = 35,
+#'                               heat_map = TRUE,
+#'                               relative = FALSE,
+#'                               display_weights = TRUE,
+#'                               standard_weights = list(list(x =6, label= "2700 KDa"), 
+#'                                                  list(x = 11, label ="950 KDa"),
+#'                                                  list(x = 14, label = "750 KDa"), 
+#'                                                  list(x =27, label ="146 KDa"),
+#'                                                  list(x =30, label ="60 KDa")))
 #'                                               
 #'### To generate an example
 #'data(Hek293_P2_1)
@@ -54,7 +55,7 @@
 #'out_Hek_P2_1 <- cpp_plotter(complex_list = CL_hek_P2_1,
 #'                            format = "pdf", 
 #'                            output_name = "m_CP_analysis",
-#'                            filter = 0.93,
+#'                            filter = 0.81,
 #'                            N_fractions = 35,
 #'                            heat_map = TRUE,
 #'                            relative = FALSE,
@@ -64,8 +65,24 @@
 #'                                               list(x = 14, label = "750 KDa"), 
 #'                                               list(x =27, label ="146 KDa"),
 #'                                               list(x =30, label ="60 KDa")))
+#'                                               
+#'############### Run cpp_plt_sim 
+#' dyn_out_Hek_P2_1 <- cpp_plt_sim (complex_list = CL_hek_P2_1,
+#'                                  Output_cpp_plotter= out_Hek_P2_1,
+#'                                  format = "pdf", 
+#'                                  output_name = "m_CP_analysis",
+#'                                  N_fractions = 35,
+#'                                  heat_map = TRUE,
+#'                                  relative = FALSE,
+#'                                  display_weights = TRUE,
+#'                                  standard_weights = list(list(x =6, label= "2700 KDa"), 
+#'                                                     list(x = 11, label ="950 KDa"),
+#'                                                     list(x = 14, label = "750 KDa"), 
+#'                                                     list(x =27, label ="146 KDa"),
+#'                                                     list(x =30, label ="60 KDa")))
+#'                                      
 
-
+ 
 
 cpp_plt_sim<- function (relative = FALSE, heat_map = FALSE, heatmap_seaborn = FALSE, Output_cpp_plotter= Output_cpp_plotter,
                                       complex_list, N_fractions = 35, output_name = paste0("complexes_detected_", 

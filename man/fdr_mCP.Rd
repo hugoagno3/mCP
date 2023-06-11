@@ -9,7 +9,7 @@ fdr_mCP(
   experiment_data,
   N_fractions = 35,
   specie = "hsapiens",
-  filter = 0.93,
+  filter = 0.81,
   n_simulations = 10,
   Output_cpp_plotter = Output_cpp_plotter,
   file_name = "exp_id",
@@ -60,7 +60,7 @@ experiment_data=Hek293_P2_1,
 file_name = "m_CP_analysis",
 N_fractions = 35,
 specie = "hsapiens",
-filter=0.93,
+filter=0.81,
 n_simulations= 2)
 
 }

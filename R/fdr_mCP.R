@@ -32,12 +32,12 @@
 #'file_name = "m_CP_analysis",
 #'N_fractions = 35,
 #'specie = "hsapiens",
-#'filter=0.93,
+#'filter=0.81,
 #'n_simulations= 2)
 #' 
 
 fdr_mCP<-    function (corum_database, experiment_data, N_fractions = 35, 
-                       specie = "hsapiens", filter = 0.93, n_simulations = 10, 
+                       specie = "hsapiens", filter = 0.81, n_simulations = 10, 
                        Output_cpp_plotter= Output_cpp_plotter, file_name = "exp_id", 
                        save_file = TRUE, fdr_limit= 0.05, Risk_fraction = floor(N_fractions*0.85), 
                        monomeric_filter= FALSE, set_seed= TRUE) 

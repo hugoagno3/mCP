@@ -13,7 +13,7 @@ mCP(
   heatmap_seaborn = TRUE,
   format = "pdf",
   output_name = mCP_analysis,
-  filter = 0.93,
+  filter = 0.81,
   heat_map = TRUE,
   relative = FALSE,
   display_weights = TRUE,
@@ -21,7 +21,7 @@ mCP(
   fdr_limit = 0.05,
   n_simulations = 185,
   Risk_fraction = floor(N_fractions * 0.85),
-  monomeric_filter = monomeric_filter,
+  monomeric_filter = FALSE,
   set_seed = TRUE
 )
 }
@@ -86,11 +86,14 @@ mCP_Hek_P2_1 <- mCP(corum_database = Corum_Humans_Database,
                                      heatmap_seaborn = TRUE,
                                      format = "pdf", 
                                      output_name = "mCP_Hek293_P2_1",
-                                     filter = 0.93,
+                                     filter = 0.81,
                                      heat_map = TRUE,
                                      relative = FALSE,
                                      fdr_limit = 0.05,
                                      n_simulations= 7,
+                                     monomeric_filter = FALSE,
+                                     Risk_fraction = 31,
+                                     set_seed = FALSE,
                                      display_weights = TRUE,
                                      standard_weights = list(list(x =6, label= "2700 KDa"), 
                                                         list(x = 11, label ="950 KDa"),
@@ -101,23 +104,29 @@ mCP_Hek_P2_1 <- mCP(corum_database = Corum_Humans_Database,
 Co-fractionation experiments with C12E8 mild-detergent_Mouse (89FR)
 
 data("Corum_Mouse_Database")
-data("WT_R14DEL_Mouse")
+data("CM_LV_1")
 mCP_TEND_out_WT_Mouse_Cardiac <- mCP(corum_database = Corum_Mouse_Database,
-                                    experiment_data = WT_R14DEL_Mouse, 
-                                    N_fractions = 89, 
+                                    experiment_data = CM_LV_1, 
+                                    N_fractions = 35, 
                                     specie = "mmusculus",
                                     method_cor = "pearson",
                                     heatmap_seaborn = TRUE,
                                     format = "pdf", 
                                     output_name = "INTO_m_CP_mouse_analysis_8",
-                                    filter = 0.93,
+                                    filter = 0.81,
                                     heat_map = TRUE,
                                     relative = FALSE,
                                     fdr_limit = 0.05,
                                     n_simulations= 14,
+                                    monomeric_filter = FALSE,
+                                    Risk_fraction = 31,
+                                    set_seed = TRUE,
                                     display_weights = TRUE,
-                                    standard_weights =  list(
-                                      list(x = 44, label = "2.010 KDa"), 
-                                      list(x = 32.07, label = "158 KDa"), 
-                                      list(x = 33.8, label = "44 KDa")))
+                                    standard_weights =  list( 
+                                    list(x = 9, label = "1048 KDa"), 
+                                    list(x = 11.5, label = "720 KDa"),
+                                    list(x = 16, label = "480 KDa"),
+                                    list(x = 21, label = "242 KDa"),
+                                    list(x = 25, label = "242 KDa"),
+                                    list(x = 29, label = "166 KDa")))
 }

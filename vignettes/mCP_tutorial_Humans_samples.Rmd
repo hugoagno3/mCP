@@ -30,13 +30,18 @@ we provide a detailed explanation about the functions at the end of this tutoria
 # Installation
 
 To install the mCP package from GitHub, run the following code:
-```{r pressure1, eval=FALSE, include=FALSE}
+
+```{r pressure1, eval=FALSE, message=FALSE, warning=FALSE, include=TRUE}
 library(devtools)
 devtools::install_github("hugoagno3/mCP")
 ```
 
 
-# Data input (two files Corum database and Experimental wide format results)
+# Data input 
+Two files are needed:
+- Corum database 
+- Experimental wide format results
+
    mCP R package is focused on detection of protein complexes and it accepts only protein data as an input matrix. The mass spectrometry data aquisition can be done by Data Dependent Acquisition mode or Data independent Aquisition.  The following steps are recommended for pre-processing the data before getting into mCP:
 
 1. Normalize the data between fractions in experiments.  
@@ -50,9 +55,7 @@ To perform targeted protein complexes detection, two input files are needed:
            2- An experiment file *data.frame* with your experiment results in wide-format- first column called "protein_id" and the next columns contains protein intensity and belong to the fractions in the co-fractionation experiment: can be numerics names from 1 to the last number of fractions, for example 1,2,3,..,35 for 35 fractions, means 35 columns.
            In this example, we will use the Corum_Humans_Database file as the protein complex database and the Hek293_P2_1.csv and Hek293_P2_2.csv files as the experiment files.
 
-```{r pressure2, echo=FALSE}
-library(readr)
-library(dplyr)
+```{r pressure2, eval=FALSE, message=FALSE, include=TRUE}
 
 # Read the Corum protein complex database file
       data(Corum_Humans_Database)
@@ -60,10 +63,11 @@ library(dplyr)
 # Read the experiment files
       data(Hek293_P2_1)
 ```
-
+`Note`: The use of incorrect importing file functions for your files in R can affect the mCP R package as for example usign read.limit() to import an .csv file. Showed to affect. 
 # Data Processing (Input of matrix with long names wide format)
 
 To process the input data, we need to run *Option 1*- the mCP function or *Option 2* 3 functions provided by our mCP package.
+
 # Option 1: Running mCP function
    This function is an integrated function of mCP package, that needs as input an experimental data and returns a list of plots, binary total hits, id of proteins of binary hits and heatmaps_seaborn of know protein complexes detected in CORUM database. In addition, it plots  6 files as  outputs: 
  1- pdf file with All candidates detected as protein complexes profiles from Corum database.
@@ -74,18 +78,21 @@ To process the input data, we need to run *Option 1*- the mCP function or *Optio
  6- CVS file containing all protein complexes detected, hits of binary interactions inside the protein complexes, FDR detected by MonteCarloSimulation.
    An example can be found here:
  
-```{r pressure3, eval=FALSE, include=FALSE}
+```{r pressure3, eval=FALSE, message=FALSE, include=TRUE}
 library(mCP)
 ```
-```{r pressure3A, eval=FALSE, include=FALSE}
+
+```{r pressure3A, eval=FALSE, include=TRUE}
 # Read the Corum protein complex database file
       data(Corum_Humans_Database)
 ```
-```{r pressure3B, eval=FALSE, include=FALSE}
+
+```{r pressure3B, eval=FALSE, include=TRUE}
 # Read the experiment files
       data(Hek293_P2_1)
 ```
-```{r pressure3C, eval=FALSE, include=FALSE}
+
+```{r pressure3C, eval=FALSE, include=TRUE}
       ##### Example #####
 mCP_Hek_P2_1 <- mCP(corum_database = Corum_Humans_Database,
                           experiment_data = Hek293_P2_1, 
@@ -95,11 +102,14 @@ mCP_Hek_P2_1 <- mCP(corum_database = Corum_Humans_Database,
                           heatmap_seaborn = TRUE,
                           format = "pdf", 
                           output_name = "m_CP_analysis",
-                          filter = 0.93,
+                          filter = 0.81,
                           heat_map = TRUE,
                           relative = FALSE,
                           fdr_limit = 0.05,
                           n_simulations= 9,
+                          monomeric_filter = FALSE,
+                          Risk_fraction = 31,
+                          set_seed = TRUE,
                           display_weights = TRUE,
                           standard_weights = list(list(x =6, label= "2700 KDa"), 
                                                           list(x = 11, label ="950 KDa"),
@@ -108,9 +118,9 @@ mCP_Hek_P2_1 <- mCP(corum_database = Corum_Humans_Database,
                                                           list(x =30, label ="60 KDa")))
 ```
  # Outputs plots per Protein complex detected:
-```{r pressure123, eval=FALSE, include=FALSE}
+
  mCP_TEND_out_Hek_P2_1_teste_11$`Respiratory chain complex I (intermediate VII/650kD), mitochondrial`
- ```
+
  [[1]]
  ![respiratory mitochondrial](https://user-images.githubusercontent.com/82643524/236703671-d1cdcda6-73c0-4ede-8258-679c28fe234e.png)
 [[2]]
@@ -127,14 +137,11 @@ mCP_Hek_P2_1 <- mCP(corum_database = Corum_Humans_Database,
  
  [[4]]
  ![seahet mitochondrial respiratory](https://user-images.githubusercontent.com/82643524/236703676-5ac98435-02b4-48d8-a1b6-e4ceeeae5737.png)
-```
- 
- 
- 
- 
-# Option 2: Runn mCP function individually
 
-```{r pressure4, eval=FALSE, include=FALSE}
+# Option 2: Runn mCP function individually
+The following code guide you to get the output step by step
+
+```{r pressure4, eval=FALSE, include=TRUE}
 library(dplyr)
 library(mCP)
 # Read the Corum protein complex database file
@@ -152,7 +159,7 @@ CL_hek_P2_1<- mcp_list(corum_database =  Corum_Humans_Database,
 out_Hek_P2_1 <- cpp_plotter(complex_list = CL_hek_P2_1,
                             format = "pdf", 
                             output_name = "m_CP_analysis",
-                            filter = 0.93,
+                            filter = 0.81,
                             N_fractions = 35,
                             heat_map = TRUE,
                             relative = FALSE,
@@ -167,7 +174,10 @@ FDR_DIANN_dDIA_Hek_P2_1_<- fdr_mCP(corum_database= Corum_Humans_Database,
                               N_fractions = 35,
                               specie = "hsapiens",
                               fdr_limit = 0.05,
-                              filter=0.93,
+                              filter=0.81,
+                              Risk_fraction = 31,
+                              monomeric_filter = FALSE,
+                              set_seed = TRUE,
                               n_simulations= 185)
 ##Note this function will perform a FDR filter and simultation it is important to do the simulation with the same filter then the previous function. if filter value is different the simulation do not makes sense. 
 ```
@@ -177,19 +187,21 @@ Note that if you wish to have the plots of this last FDR protein complexes  you 
 
 ```{r5}
 #### list to plot
-   CL_final_output<- CL_hek_P2_1[names(out_Hek_P2_1)]
+   CL_final_output<- CL_hek_P2_1[names(FDR_DIANN_dDIA_Hek_P2_1_)]
 #### Then run again this list on the cpp_plotter function as follows. 
    out_Hek_P2_1_final_output <- cpp_plotter(complex_list = CL_final_output,
                             format = "pdf", 
                             output_name = "m_CP_analysis",
-                            filter = 0.93,
+                            filter = 0.81,
                             N_fractions = 35,
                             heat_map = TRUE,
                             relative = FALSE,
                             display_weights = TRUE,
-                            standard_weights = list(list(x =11, label= "1049KDa"), 
-                                                    list(x = 13, label ="720 KDa")))
-
+                            standard_weights = list(list(x =6, label= "2700 KDa"), 
+                                                          list(x = 11, label ="950 KDa"),
+                                                          list(x = 14, label = "750 KDa"), 
+                                                          list(x =27, label ="146 KDa"),
+                                                          list(x =30, label ="60 KDa")))
 ```
 
 ### PLots
@@ -241,9 +253,9 @@ out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[4]]
 ```{r10}
 NAmatrix_P2_1 <- read.table("Hek293_P2_1.csv",sep =",",dec = ".", header= T)
 ```
-  once imported you will get this file, we provide it in the R package, just write data(NAmatrix_P2_1)
+  once imported you will get this file, we provide it in the R package, just write:
 ```{r11}
-
+ data(NAmatrix_P2_1)
 ```
 ##  After that you can run the funtion calc_mean_matrix
   The function calc mean matrix will recognize the replicates by a tag like _A_ and _B_ as part of the names for the MS file and the *Frac_index*. It is the position in which you can find the number of fraction in the column name separated by underscores. for example the frac_index=5 is date_Surname_Measurement_A_01 because the number for the fraction is 5 spaces between underscores, like a_b_c_d_FractionNumber. 
@@ -283,11 +295,14 @@ The `mCP` package provides the following functions:
  *my_protein_complex_mcp_list[1][1]* is a dataframe composed of the Id proteins of the proteins, names, and fractions and its correspondig intensities per fraction. Names are annotated to the uniprot accesion Ids by a repository R package called gprofiler2. 
 
  *my_protein_complex_mcp_list[1][2]* is a correlation matrix of these elements,  this correlation matrix is done by Pearson correlations (but kendall and spearman algoriths are also posible in that step). and calculates a matrix correlation between all detected component of each present protein complex.
+ 
+The list of potential protein complexes is the input for the next function called cpp_plotter. This is the first filter for  Then it filters protein complexes composed by at least 2 component with intensities different from cero. Then the first filter is runned: The filter is based in a minimun definition of protien complex. So in this step it keep only protein complexes with at least one significant coelution hit.
+
 
 - `cpp_plotter()`: The cpp_plotter() function takes a list of potential protein complexes as input. The function first filters out any complexes composed of less than 2 components with non-zero intensities. Then, it applies a filter based on the minimum definition of a protein complex, keeping only complexes with at least one significant co-elution hit. The function also filters the list of complexes based on the presence of co-eluting proteins, requiring at least one binary interaction higher than the filter for proteins within the candidate complex. Finally, cpp_plotter() generates complexome profiling plots, heatmaps, and network plots of the proteins within the selected complexes.
 
-The list of potential protein complexes is the input for the next function called cpp_plotter. This is the first filter for  Then it filters protein complexes composed by at least 2 component with intensities different from cero. Then the first filter is runned: The filter is based in a minimun definition of protien complex. So in this step it keep only protein complexes with at least one significant coelution hit.
-filters the list of protein complexes based on the presence of co-eluting proteins calculates as a minimun of 1 binary interactions higher that the filter of protien within the candidate protein complex and creates complexome profiling plots, heatmaps and networks plots of proteins with in protein complexes of the selected complexes.
+- `cpp_plt_sim()`: Is an intermediate function used in Monte-Carlo-Simulations fdr_mCP(). The function is the same function that cpp_plotter(), but it is prepared to use a vector of different filters according to the average of pearson correllation detected to each protein complex (higher than the first filter). The function requires a list of potential protein complexes as input. The function first filters out any complexes composed of less than 2 components with non-zero intensities. Then, it applies a filter based on the minimum definition of a protein complex, keeping only complexes with at least one significant co-elution hit. The function also filters the list of complexes based on the presence of co-eluting proteins, requiring at least one binary interaction higher than the filter for proteins within the candidate complex. Finally, cpp_plt_sim() generates complexome profiling plots, heatmaps, and network plots of the proteins within the selected complexes.
+
 
 *my_protein_complex_mpp_ploter[1][1]* The first object is a profile of proteins, fractions vs intensities.
 *my_protein_complex_mpp_ploter[1][2]* The second object is the number of Hits detected in the experiment as the number of significant binary interactions. So binare pearson correlations values in the experiment higher than a filter.  
@@ -296,7 +311,6 @@ filters the list of protein complexes based on the presence of co-eluting protei
 *my_protein_complex_mpp_ploter[1][4]* Network heatmap constructed from the correlation matrix.
 
 
-
-- `mcp_fdr()`:
+- `mcp_fdr()`: This function performs different matrix from your experimental matrix and evaluates this "fake matrix" into  mCP workflow by using the selected filter then calculates the FDR based in montecarlo simulations and the real result of protein complexes detected in your experiment.
 
 
