@@ -37,12 +37,14 @@
 
 fdr_mCP<-    function (corum_database, experiment_data, N_fractions = 35, 
                        specie = "hsapiens", filter = 0.93, n_simulations = 10, 
-                       Output_cpp_plotter= Output_cpp_plotter, file_name = "exp_id", save_file = TRUE, fdr_limit= 0.05, Risk_fraction = floor(N_fractions*0.85), monomeric_filter= FALSE) 
+                       Output_cpp_plotter= Output_cpp_plotter, file_name = "exp_id", save_file = TRUE, fdr_limit= 0.05, Risk_fraction = floor(N_fractions*0.85), monomeric_filter= FALSE, set_seed= TRUE) 
 {
   ifelse(length(names(Output_cpp_plotter))>0, standar_Experiment<- extract_mcp(Output_cpp_plotter), return(print("0 Protein Complexes detected")))
   complex_names <-  names(Output_cpp_plotter)
   ######## simulation##########
-  set.seed(123)
+  if (set_seed){
+        set.seed(123)
+  }
   #####################Specific filter for FRD according to the average of Person binary interaction of each protein complex. 
   e <- function(z) {
     means <- lapply(z, function(x) {

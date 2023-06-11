@@ -58,6 +58,8 @@ mCP(
 \item{monomeric_filter}{a TRUE or FALSE setting that takes out potential protein complexes sie a hight porcentaje of monomeric conformation. This is related to the previous filter by defoult is off so the user can decide.}
 
 \item{relativea}{TRUE or FALSE statement to plot relative complexome profiling plots, useful to compare between conditions.}
+
+\item{set_seed}{a TRUE or FALSE setting to standarize simulations.}
 }
 \value{
 a list of protein complexes plots, the significant interactions, binary pairs proteins detected, and a network heatmap based.

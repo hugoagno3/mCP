@@ -16,7 +16,8 @@ fdr_mCP(
   save_file = TRUE,
   fdr_limit = 0.05,
   Risk_fraction = floor(N_fractions * 0.85),
-  monomeric_filter = FALSE
+  monomeric_filter = FALSE,
+  set_seed = TRUE
 )
 }
 \arguments{
