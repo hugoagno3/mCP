@@ -191,7 +191,7 @@ fdr_mCP<-    function (corum_database, experiment_data, N_fractions = 35,
   print(paste0("PPC_candidate_Detected= ", length(Output_cpp_plotter)))
   print(paste0("PPC_Detected= ", length(out_Hek_P2_1)))
   print(paste0("SD_Fdr= ", sd(sapply(X, "length")/length(Output_cpp_plotter))))
-  print(paste0("Filter"=, filter))
+  print(paste0("Filter=", filter))
   print(paste0("number of simulations= ", n_simulations))
   print(paste0("fdr_limit= ", fdr_limit))
   print(paste0("Monomeric_risk_vec= ", length(VS_f$Monomeric_risk[VS_f$Monomeric_risk==TRUE])))
