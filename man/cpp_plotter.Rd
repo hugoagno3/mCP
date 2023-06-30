@@ -13,6 +13,7 @@ cpp_plotter(
   filter = 0.93,
   output_name = paste0("complexes_detected_", Sys.Date()),
   format = "pdf",
+  mw = FALSE,
   display_weights = FALSE,
   standard_weights = list(list(x = 9, label = "1236 KDa"), list(x = 13, label =
     "720 KDa"))
@@ -34,6 +35,8 @@ cpp_plotter(
 \item{output_name}{main core name for the files to be printed, it is a string: see example.}
 
 \item{format}{should be "pdf" to plots pdf. There is an additional possible value is ".": this will omit pdf. In both cases the user will have a list of plot for the detected protein complexes in R.}
+
+\item{mw}{true false statement for mw conversion (requires std weights in kDa)}
 
 \item{display_weights}{TRUE or FALSE statement to display molecular weight markers in the complexome profiling plots.}
 

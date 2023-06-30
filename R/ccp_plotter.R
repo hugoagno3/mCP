@@ -12,6 +12,7 @@
 #' @param heatmap_seaborn could be = FALSE or TRUE. When TRUE it will plot networks heatmaps of all protein complexes detected after filter them by Pearson correlation. 
 #' @param display_weights TRUE or FALSE statement to display molecular weight markers in the complexome profiling plots. 
 #' @param standard_weights following core= list(list(x =11, label= "1049KDa"), list(x = 13, label ="720 KDa"))). It is possible to add many markers. you have to extend the code, for example to add a thrid marker= list(list(x =11, label= "1049KDa"), list(x=12, label="900 kDa"), list(x = 13, label ="720 KDa"))). Display_weights muss be TRUE. 
+#' @param mw true false statement for mw conversion (requires std weights in kDa)
 #'
 #' @return A list of protein complexes filter by pearson correlation, a pdf file with the detected as protein complexes profiles. A pdf with heatmaps of the detected protein complexes. A txt file with numbers about general false positive when atleast 1 hit is consider as filter. A CVS file containing all protein complexes detected, hits of binary interactions inside the protein complexes, FDR detected by MonteCarloSimulation.
 #' @import gprofiler2
@@ -20,6 +21,7 @@
 #' @import corrr
 #' @import dplyr
 #' @import assertthat
+#' @import  readr
 #'  
 #' @export
 #'
@@ -69,7 +71,7 @@
 
 
 cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALSE, complex_list, N_fractions = 35, filter = 0.93, output_name = paste0("complexes_detected_", 
-                                                                                                                               Sys.Date()), format = "pdf", display_weights = FALSE,
+                                                                                                                                                       Sys.Date()), format = "pdf", mw= FALSE, display_weights = FALSE,
                          standard_weights = list(list(x = 9, label = "1236 KDa"), list(x = 13, label = "720 KDa"))) 
 {
   assertthat::assert_that(is.list(standard_weights))
@@ -84,6 +86,10 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALS
   while (!is.null(dev.list())) {
     dev.off()
   }
+  if ((mw & !is.list(standard_weights)) | (mw & length(standard_weights)<2)){
+    stop("standard_weights parameter missed or you have less than 2 points")
+  }
+  
   if (tolower(format) == "pdf") {
     pdf(file = paste0(output_name, ".", format), width = 8, 
         height = 6)
@@ -107,18 +113,55 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALS
     tri[is.na(tri)] <- 0
     # if (nrow(data) > N_fractions & !all(data["Intensity"] == 
     #                                     0)) {
-      if (any(tri > filter)) {
-        vere<- data.frame(Hits= length(which(tri > filter)))
-        c_counter <- c_counter + 1
-        if (relative) {data <- data %>%group_by(protein_id) %>%
-          mutate(Intensity = Intensity/max(Intensity, na.rm=TRUE))
-        }
+    if (any(tri > filter)) {
+      vere<- data.frame(Hits= length(which(tri > filter)))
+      c_counter <- c_counter + 1
+      if (relative) {data <- data %>%group_by(protein_id) %>%
+        mutate(Intensity = Intensity/max(Intensity, na.rm=TRUE))
+      }
+      if (mw){ # if plotting with molecular weight is prefered
+        x_values = sapply(standard_weights,"[[","x")
+        y_values = sapply(standard_weights,"[[","label")
+        y_values = log10(parse_number(y_values))
+        mw_model = lm(y_values~x_values)
+        # # plot
+        # p <- ggplot2::ggplot(data, ggplot2::aes(x = 10**(mw_model$coefficients["x_values"] * SEC_FR + mw_model$coefficients["(Intercept)"]) , 
+        #                                         y = Intensity, ggplot2::ggtitle(complex_name), 
+        #                                         col = prot_name)) + ggplot2::geom_line() + 
+        #    ggplot2::scale_x_continuous(name = "Molecular Weight", 
+        #                                breaks = 10**(mw_model$coefficients["x_values"] * seq(1, N_fractions, 5) + mw_model$coefficients["(Intercept)"]) ) + 
+        #                                 ggplot2::ggtitle(data$complex_name) + 
+        #                                 ggplot2::theme_minimal()
+        
+        
+        p <- ggplot2::ggplot(data, ggplot2::aes(x = SEC_FR , 
+                                                y = Intensity, ggplot2::ggtitle(complex_name), 
+                                                col = prot_name)) + ggplot2::geom_line() + 
+          ggplot2::scale_x_continuous(name = "Molecular Weight [kDa]", labels = round(10**(mw_model$coefficients["x_values"] * seq(1, N_fractions, 5) + mw_model$coefficients["(Intercept)"])),
+                                      breaks = seq(1, N_fractions, 5))+ 
+          ggplot2::ggtitle(data$complex_name) + 
+          ggplot2::theme_minimal()
+        
+        
+        # if (display_weights) {
+        #   for (weight in standard_weights) {
+        #     p <- p + ggplot2::geom_vline(xintercept = weight$x, 
+        #                                  colour = "grey", linetype = "dashed") + 
+        #       ggplot2::annotate("text", x = weight$x - 
+        #                           0.5, y = mean(data$Intensity), label = weight$label, 
+        #                         angle = 90, color = "grey")
+        #   }
+        # }
+      }
+      
+      else{ #if ploting with fraction labeling is prefered
         p <- ggplot2::ggplot(data, ggplot2::aes(x = SEC_FR, 
                                                 y = Intensity, ggplot2::ggtitle(complex_name), 
                                                 col = prot_name)) + ggplot2::geom_line() + 
           ggplot2::scale_x_continuous(name = "Fractions", 
                                       breaks = seq(1, N_fractions, 5)) + ggplot2::ggtitle(data$complex_name) + 
           ggplot2::theme_minimal()
+        print("Hello the wrong chunk is running")
         if (display_weights) {
           for (weight in standard_weights) {
             p <- p + ggplot2::geom_vline(xintercept = weight$x, 
@@ -128,12 +171,14 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALS
                                 angle = 90, color = "grey")
           }
         }
-        plots_list <- c(plots_list, list(c(list(p),list(vere),list(perek_2))))
-        cp_names <- c(cp_names, as.character(data$complex_name[1]))
-        if (tolower(format) == "pdf") {
-          print(p)
-        }
       }
+      
+      plots_list <- c(plots_list, list(c(list(p),list(vere),list(perek_2))))
+      cp_names <- c(cp_names, as.character(data$complex_name[1]))
+      if (tolower(format) == "pdf") {
+        print(p)
+      }
+    }
     #}
   }
   if (tolower(format) == "pdf") {
@@ -160,10 +205,10 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALS
       tri[is.na(tri)] <- 0
       # if (nrow(data) > N_fractions & !all(data["Intensity"] == 
       #                                     0)) {
-        if (any(tri > filter)) {
-          corMat[is.na(corMat)] <- 0 ##
-          g <-heatmap(corMat, scale = "none", main = unique(data$complex_name))
-          if (heatmap_seaborn){
+      if (any(tri > filter)) {
+        corMat[is.na(corMat)] <- 0 ##
+        g <-heatmap(corMat, scale = "none", main = unique(data$complex_name))
+        if (heatmap_seaborn){
           complex_list[[i]][["CorMat_rrr"]][is.na(complex_list[[i]][["CorMat_rrr"]])]<-0 ##
           
           if(sum(apply(complex_list[[i]][["CorMat_rrr"]][, -1], 1, duplicated))==0){
@@ -173,22 +218,22 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALS
             colname<- colnames(complex_list[[i]][["CorMat_rrr"]])[1]
             d<-  as.data.frame(complex_list[[i]][["CorMat_rrr"]]) %>% ggplot(aes(y={{colname}}))+ geom_bar()+ ggtitle("Error on the matrix, please try manually")
           }
-      
+          
         }
-          cp_names <- c(cp_names, as.character(data$complex_name[1]))
-          if (tolower(format) == "pdf" & heat_map) {
-            print(g)
+        cp_names <- c(cp_names, as.character(data$complex_name[1]))
+        if (tolower(format) == "pdf" & heat_map) {
+          print(g)
           if(heatmap_seaborn){
-                
-           print(d)
+            
+            print(d)
           }
-          }
-          if (heatmap_seaborn){
+        }
+        if (heatmap_seaborn){
           plots_list_heatmaps <- c(plots_list_heatmaps, list(c(list(d))))
         }
       }
-
-      }
+      
+    }
     dev.off()
     if(heatmap_seaborn){
       names(plots_list_heatmaps) <- names(plots_list)
