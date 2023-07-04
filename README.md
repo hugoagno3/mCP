@@ -17,7 +17,8 @@ In the last section,the user can find how to run an extra function called `Calc_
 we provide a detailed explanation about the functions at the end of this tutorial.
 
 
-![Rplot](https://github.com/hugoagno3/mCP/assets/82643524/8d8bcd06-5190-4fd2-9e89-c73471832508)
+
+![Rplot02](https://github.com/hugoagno3/mCP/assets/82643524/0f62593f-a702-4330-98f9-c569c9f46ca8)
 
 ![heat eIF3 complex](https://user-images.githubusercontent.com/82643524/236703288-735a5d6e-25aa-49b9-8520-071a3df7ea4c.png)
 ![Eif3j heatmap](https://user-images.githubusercontent.com/82643524/236703265-8cd3be1e-4252-4878-8f91-58481916cb84.png)
