@@ -30,9 +30,10 @@
 #'#'out_Hek_P2_1 <- cpp_plotter(complex_list = CL_hek_P2_1,
 #'                            format = "pdf", 
 #'                            output_name = "m_CP_analysis",
-#'                            filter = 0.93,
+#'                            filter = 0.81,
 #'                            N_fractions = 35,
 #'                            heat_map = TRUE,
+#'                            mw = TRUE,
 #'                            relative = FALSE,
 #'                            display_weights = TRUE,
 #'                            standard_weights = list(list(x =6, label= "2700 KDa"), 
@@ -57,10 +58,11 @@
 #'out_Hek_P2_1 <- cpp_plotter(complex_list = CL_hek_P2_1,
 #'                            format = "pdf", 
 #'                            output_name = "m_CP_analysis",
-#'                            filter = 0.93,
+#'                            filter = 0.81,
 #'                            N_fractions = 35,
 #'                            heat_map = TRUE,
 #'                            relative = FALSE,
+#'                            mw = TRUE,
 #'                            display_weights = TRUE,
 #'                            standard_weights = list(list(x =6, label= "2700 KDa"), 
 #'                                               list(x = 11, label ="950 KDa"),
@@ -70,9 +72,12 @@
 
 
 
-cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALSE, complex_list, N_fractions = 35, filter = 0.93, output_name = paste0("complexes_detected_", 
-                                                                                                                                                       Sys.Date()), format = "pdf", mw= FALSE, display_weights = FALSE,
-                         standard_weights = list(list(x = 9, label = "1236 KDa"), list(x = 13, label = "720 KDa"))) 
+cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALSE,
+                         complex_list, N_fractions = 35, filter = 0.81,
+                         output_name = paste0("complexes_detected_", 
+                         Sys.Date()), format = "pdf", mw= FALSE, display_weights = FALSE,
+                         standard_weights = list(list(x = 9, label = "1236 KDa"),
+                                                 list(x = 13, label = "720 KDa"))) 
 {
   assertthat::assert_that(is.list(standard_weights))
   assertthat::assert_that(all(sapply(standard_weights, function(standard) length(standard) == 
@@ -116,24 +121,15 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALS
     if (any(tri > filter)) {
       vere<- data.frame(Hits= length(which(tri > filter)))
       c_counter <- c_counter + 1
-      if (relative) {data <- data %>%group_by(protein_id) %>%
+    if (relative) {data <- data %>%group_by(protein_id) %>%
         mutate(Intensity = Intensity/max(Intensity, na.rm=TRUE))
       }
-      if (mw){ # if plotting with molecular weight is prefered
+    if (mw){ # if plotting with molecular weight is prefered
         x_values = sapply(standard_weights,"[[","x")
         y_values = sapply(standard_weights,"[[","label")
         y_values = log10(parse_number(y_values))
         mw_model = lm(y_values~x_values)
-        # # plot
-        # p <- ggplot2::ggplot(data, ggplot2::aes(x = 10**(mw_model$coefficients["x_values"] * SEC_FR + mw_model$coefficients["(Intercept)"]) , 
-        #                                         y = Intensity, ggplot2::ggtitle(complex_name), 
-        #                                         col = prot_name)) + ggplot2::geom_line() + 
-        #    ggplot2::scale_x_continuous(name = "Molecular Weight", 
-        #                                breaks = 10**(mw_model$coefficients["x_values"] * seq(1, N_fractions, 5) + mw_model$coefficients["(Intercept)"]) ) + 
-        #                                 ggplot2::ggtitle(data$complex_name) + 
-        #                                 ggplot2::theme_minimal()
-        
-        
+ 
         p <- ggplot2::ggplot(data, ggplot2::aes(x = SEC_FR , 
                                                 y = Intensity, ggplot2::ggtitle(complex_name), 
                                                 col = prot_name)) + ggplot2::geom_line() + 
@@ -141,17 +137,6 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALS
                                       breaks = seq(1, N_fractions, 5))+ 
           ggplot2::ggtitle(data$complex_name) + 
           ggplot2::theme_minimal()
-        
-        
-        # if (display_weights) {
-        #   for (weight in standard_weights) {
-        #     p <- p + ggplot2::geom_vline(xintercept = weight$x, 
-        #                                  colour = "grey", linetype = "dashed") + 
-        #       ggplot2::annotate("text", x = weight$x - 
-        #                           0.5, y = mean(data$Intensity), label = weight$label, 
-        #                         angle = 90, color = "grey")
-        #   }
-        # }
       }
       
       else{ #if ploting with fraction labeling is prefered
@@ -161,7 +146,6 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALS
           ggplot2::scale_x_continuous(name = "Fractions", 
                                       breaks = seq(1, N_fractions, 5)) + ggplot2::ggtitle(data$complex_name) + 
           ggplot2::theme_minimal()
-        print("Hello the wrong chunk is running")
         if (display_weights) {
           for (weight in standard_weights) {
             p <- p + ggplot2::geom_vline(xintercept = weight$x, 

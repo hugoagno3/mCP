@@ -53,6 +53,7 @@
 #'                                      fdr_limit = 0.05,
 #'                                      n_simulations= 7,
 #'                                      monomeric_filter = FALSE,
+#'                                      mw = TRUE,
 #'                                      Risk_fraction = 31,
 #'                                      set_seed = FALSE,
 #'                                      display_weights = TRUE,
@@ -82,6 +83,7 @@
 #'                                     monomeric_filter = FALSE,
 #'                                     Risk_fraction = 31,
 #'                                     set_seed = TRUE,
+#'                                     mw = TRUE
 #'                                     display_weights = TRUE,
 #'                                     standard_weights =  list( 
 #'                                     list(x = 9, label = "1048 KDa"), 
