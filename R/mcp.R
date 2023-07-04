@@ -23,7 +23,8 @@
 #' @param n_simulations This is the number of simulations we recomend 185 simulations (this part could take 12 hrs for human dataset).
 #' @param Risk_fraction  is a number indicating the fraction where all monomeric components of the protein complex should be present. It is set to 85% of the n_fraction. 
 #' @param monomeric_filter a TRUE or FALSE setting that takes out potential protein complexes sie a hight porcentaje of monomeric conformation. This is related to the previous filter by defoult is off so the user can decide. 
-#' @param set_seed a TRUE or FALSE setting to standarise simulations. 
+#' @param set_seed a TRUE or FALSE setting to standarise simulations.
+#' @param mw TRUE or FALSE setting plot moleculare weight (requires std weights in kDa). 
 #'
 #' @return a list of protein complexes plots, the significant interactions, binary pairs proteins detected, and a network heatmap based.
 #' @export
@@ -52,6 +53,7 @@
 #'                                      fdr_limit = 0.05,
 #'                                      n_simulations= 7,
 #'                                      monomeric_filter = FALSE,
+#'                                      mw = TRUE,
 #'                                      Risk_fraction = 31,
 #'                                      set_seed = FALSE,
 #'                                      display_weights = TRUE,
@@ -81,6 +83,7 @@
 #'                                     monomeric_filter = FALSE,
 #'                                     Risk_fraction = 31,
 #'                                     set_seed = TRUE,
+#'                                     mw = TRUE
 #'                                     display_weights = TRUE,
 #'                                     standard_weights =  list( 
 #'                                     list(x = 9, label = "1048 KDa"), 
@@ -95,7 +98,7 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
                 method_cor="pearson", heatmap_seaborn= TRUE, format="pdf", output_name= mCP_analysis,
                 filter=0.81, heat_map= TRUE, relative= FALSE, display_weights=TRUE, 
                 standard_weights=TRUE, fdr_limit=0.05 , n_simulations=185,
-                Risk_fraction=floor(N_fractions*0.85) , monomeric_filter= FALSE, set_seed= TRUE){
+                Risk_fraction=floor(N_fractions*0.85) , monomeric_filter= FALSE, set_seed= TRUE, mw= FALSE){
   
   # initialiye progress bar
   
@@ -130,7 +133,7 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
                               heatmap_seaborn= heatmap_seaborn,
                               relative = relative,
                               display_weights = display_weights,
-                              standard_weights = standard_weights)
+                              standard_weights = standard_weights, mw=mw)
   # Print message and elapsed time
   cat("cpp_plotter function completed in", difftime(Sys.time(), start_time), "seconds.\n")
   # Step 3: Run fdr_mCP function
@@ -165,7 +168,7 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
                               heatmap_seaborn= heatmap_seaborn,
                               relative = relative,
                               display_weights = display_weights,
-                              standard_weights = standard_weights)
+                              standard_weights = standard_weights,mw=mw)
   
   # # Calculate the elapsed time and print it to the console
   # end_time <- Sys.time()

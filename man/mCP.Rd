@@ -22,7 +22,8 @@ mCP(
   n_simulations = 185,
   Risk_fraction = floor(N_fractions * 0.85),
   monomeric_filter = FALSE,
-  set_seed = TRUE
+  set_seed = TRUE,
+  mw = FALSE
 )
 }
 \arguments{
@@ -60,6 +61,8 @@ mCP(
 
 \item{set_seed}{a TRUE or FALSE setting to standarise simulations.}
 
+\item{mw}{TRUE or FALSE setting plot moleculare weight (requires std weights in kDa).}
+
 \item{relativea}{TRUE or FALSE statement to plot relative complexome profiling plots, useful to compare between conditions.}
 }
 \value{
@@ -92,6 +95,7 @@ mCP_Hek_P2_1 <- mCP(corum_database = Corum_Humans_Database,
                                      fdr_limit = 0.05,
                                      n_simulations= 7,
                                      monomeric_filter = FALSE,
+                                     mw = TRUE,
                                      Risk_fraction = 31,
                                      set_seed = FALSE,
                                      display_weights = TRUE,
@@ -121,6 +125,7 @@ mCP_TEND_out_WT_Mouse_Cardiac <- mCP(corum_database = Corum_Mouse_Database,
                                     monomeric_filter = FALSE,
                                     Risk_fraction = 31,
                                     set_seed = TRUE,
+                                    mw = TRUE
                                     display_weights = TRUE,
                                     standard_weights =  list( 
                                     list(x = 9, label = "1048 KDa"), 
