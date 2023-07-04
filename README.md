@@ -101,6 +101,8 @@ mCP_Hek_P2_1 <- mCP(corum_database = Corum_Humans_Database,
  mCP_TEND_out_Hek_P2_1_teste_11$`Respiratory chain complex I (intermediate VII/650kD), mitochondrial`
 
  [[1]]
+![Respirationry chain complex I for github](https://github.com/hugoagno3/mCP/assets/82643524/c7b4d75f-3e35-4a49-9f20-ea85d887c79b)
+
  ![respiratory mitochondrial](https://user-images.githubusercontent.com/82643524/236703671-d1cdcda6-73c0-4ede-8258-679c28fe234e.png)
 [[2]]
   Hits
