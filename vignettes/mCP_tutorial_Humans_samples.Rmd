@@ -23,8 +23,7 @@ This vignette provides a step-by-step guide to using the `mCP` package to analyz
 We provide a processing with "hsapiens" dataset Hek293 processed by BNE page of 35 fractions. We explain in the last section how to run an extra function that will be very useful for getting the input matrix as the average of the replicates in the experiment. All functions have different options, therefore 
 we provide a detailed explanation about the functions at the end of this tutorial.
 
-
-![Rplot02](https://github.com/hugoagno3/TEST/assets/82643524/c77a3cae-0da6-4636-9939-2dc0b5cf47b8)
+![eif3 sixth](https://github.com/hugoagno3/git-test/assets/82643524/34528810-3cbc-4bd6-9df5-fd9ec7b591b0)
 
 
 ![heat eIF3 complex](https://user-images.githubusercontent.com/82643524/236703288-735a5d6e-25aa-49b9-8520-071a3df7ea4c.png)
@@ -126,7 +125,7 @@ mCP_Hek_P2_1 <- mCP(corum_database = Corum_Humans_Database,
  mCP_TEND_out_Hek_P2_1_teste_11$`Respiratory chain complex I (intermediate VII/650kD), mitochondrial`
 
  [[1]]
- ![respiratory mitochondrial](https://user-images.githubusercontent.com/82643524/236703671-d1cdcda6-73c0-4ede-8258-679c28fe234e.png)
+![respiratory vignette](https://github.com/hugoagno3/git-test/assets/82643524/7395675d-00dd-4f7f-a6cc-9f35122fe043)
 [[2]]
   Hits
 1    9
@@ -216,7 +215,7 @@ The output list out_Hek_P2_1_final_output has a list of protein complexes each p
 out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[1]]
  knitr::include_graphics("my_plot.png")
 ```
-![13S condensin Complex](https://user-images.githubusercontent.com/82643524/236702562-3e656a6d-3272-422f-9419-2c698a1d0a09.png)
+![condensin 13s](https://github.com/hugoagno3/git-test/assets/82643524/85db2719-eb81-4500-81b0-2873f8929b4c)
 
 2) The second object is the number of Hits detected in the experiment as the number of significant binary interactions. So binare pearson correlations values in the experiment higher than a filter.  
 
