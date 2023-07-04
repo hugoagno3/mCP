@@ -191,7 +191,7 @@ The output list out_Hek_P2_1_final_output has a list of protein complexes each p
 out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[1]]
  knitr::include_graphics("my_plot.png")
 ```
-![13S condensin Complex](https://user-images.githubusercontent.com/82643524/236702562-3e656a6d-3272-422f-9419-2c698a1d0a09.png)
+![13s condensin complex for hithub](https://github.com/hugoagno3/mCP/assets/82643524/9bfe668f-a8d2-4ad3-b335-e2dc8243dc5a)
 
 2) The second object is the number of Hits detected in the experiment as the number of significant binary interactions. So binare pearson correlations values in the experiment higher than a filter.  
 
