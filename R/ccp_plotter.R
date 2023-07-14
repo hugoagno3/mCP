@@ -136,7 +136,7 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALS
           ggplot2::scale_x_continuous(name = "Molecular Weight [kDa]", labels = round(10**(mw_model$coefficients["x_values"] * seq(1, N_fractions, 5) + mw_model$coefficients["(Intercept)"])),
                                       breaks = seq(1, N_fractions, 5))+ 
           ggplot2::ggtitle(data$complex_name) + 
-          ggplot2::theme_minimal()
+          ggplot2::theme_light() + ggplot2::theme(axis.text.x = element_text(angle = 90))
       }
       
       else{ #if ploting with fraction labeling is prefered
@@ -145,7 +145,7 @@ cpp_plotter <- function (relative= FALSE, heat_map= FALSE, heatmap_seaborn= FALS
                                                 col = prot_name)) + ggplot2::geom_line() + 
           ggplot2::scale_x_continuous(name = "Fractions", 
                                       breaks = seq(1, N_fractions, 5)) + ggplot2::ggtitle(data$complex_name) + 
-          ggplot2::theme_minimal()
+          ggplot2::theme_light()  
         if (display_weights) {
           for (weight in standard_weights) {
             p <- p + ggplot2::geom_vline(xintercept = weight$x, 
