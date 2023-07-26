@@ -10,7 +10,7 @@ mcp_list(
   N_fractions = 34,
   specie = "mmusculus",
   method_cor = "pearson",
-  heatmap_seaborn = TRUE
+  network = TRUE
 )
 }
 \arguments{
@@ -22,12 +22,12 @@ mcp_list(
 
 \item{method_cor}{A string that indicates the correlation algorithm to make the matrix correlation. It can be "kendall", "spearman" or "pearson" (default "pearson")}
 
-\item{heatmap_seaborn}{a logical value indicating whether to perform a correlation matrix compatible with a network plot from the corrr package (default TRUE).}
+\item{network}{a logical value indicating whether to perform a correlation matrix compatible with a network plot from the corrr package (default TRUE).}
 
 \item{organism}{A string that indicates the specie. It could be "mmusculus", "hsapiens". Check gconvert vignette for more options https://cran.r-project.org/web/packages/gprofiler2/vignettes/gprofiler2.html}
 }
 \value{
-a list of potential protein complexes in the experiment which has two elements inside the data of the protein complex detected and its correlation matrix. If  heatmap_seaborn= TRUE it also includes a correlataion matrix made by the corrr package funcion correlate()
+a list of potential protein complexes in the experiment which has two elements inside the data of the protein complex detected and its correlation matrix. If  network= TRUE it also includes a correlataion matrix made by the corrr package funcion correlate()
 }
 \description{
 This function produces a list of potential protein complexes. Its input is an experimental matrix and the CORUM database.
@@ -41,7 +41,7 @@ CL_hek_P2_1<- mcp_list(corum_database =  Corum_Humans_Database,
                       N_fractions = 35, 
                       specie = "hsapiens",
                       method_cor = "pearson",
-                      heatmap_seaborn = TRUE)
+                      network = TRUE)
 
 
 }

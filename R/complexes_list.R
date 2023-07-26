@@ -6,9 +6,9 @@
 #' @param N_fractions The number of fractions obtained in the co-fractionation experiment.
 #' @param organism A string that indicates the specie. It could be "mmusculus", "hsapiens". Check gconvert vignette for more options https://cran.r-project.org/web/packages/gprofiler2/vignettes/gprofiler2.html
 #' @param method_cor A string that indicates the correlation algorithm to make the matrix correlation. It can be "kendall", "spearman" or "pearson" (default "pearson")
-#' @param heatmap_seaborn a logical value indicating whether to perform a correlation matrix compatible with a network plot from the corrr package (default TRUE).
+#' @param network a logical value indicating whether to perform a correlation matrix compatible with a network plot from the corrr package (default TRUE).
 #'
-#' @return a list of potential protein complexes in the experiment which has two elements inside the data of the protein complex detected and its correlation matrix. If  heatmap_seaborn= TRUE it also includes a correlataion matrix made by the corrr package funcion correlate() 
+#' @return a list of potential protein complexes in the experiment which has two elements inside the data of the protein complex detected and its correlation matrix. If  network= TRUE it also includes a correlataion matrix made by the corrr package funcion correlate() 
 #' @export
 #' @import gprofiler2
 #' @import gdata
@@ -24,10 +24,10 @@
 #'                       N_fractions = 35, 
 #'                       specie = "hsapiens",
 #'                       method_cor = "pearson",
-#'                       heatmap_seaborn = TRUE)
+#'                       network = TRUE)
 #' 
 #' 
-mcp_list <-  function(corum_database, experiment_data, N_fractions = 34, specie = "mmusculus", method_cor= "pearson", heatmap_seaborn= TRUE) {
+mcp_list <-  function(corum_database, experiment_data, N_fractions = 34, specie = "mmusculus", method_cor= "pearson", network= TRUE) {
   
   # datacleaning
   # - check user input
@@ -98,14 +98,14 @@ mcp_list <-  function(corum_database, experiment_data, N_fractions = 34, specie 
         tidyr::spread(key = "prot_name", value = "Intensity") %>%
         dplyr::select(!c(complex_id, complex_name, SEC_FR)) %>%
         cor(method= method_cor)
-      if (heatmap_seaborn & method_cor=="pearson") {
+      if (network & method_cor=="pearson") {
         corMat_rrr <- subset %>% 
           dplyr::select(!protein_id) %>%  distinct(prot_name, SEC_FR,.keep_all = TRUE) %>% 
           tidyr::spread(key = "prot_name", value = "Intensity") %>%
           dplyr::select(!c(complex_id, complex_name, SEC_FR)) %>%
           corrr::correlate(method= method_cor, diagonal = 1)
       }
-      ifelse(heatmap_seaborn & method_cor=="pearson",return(list(data = subset, corMat = corMat, CorMat_rrr= corMat_rrr)),return(list(data = subset, corMat = corMat)))
+      ifelse(network & method_cor=="pearson",return(list(data = subset, corMat = corMat, CorMat_rrr= corMat_rrr)),return(list(data = subset, corMat = corMat)))
       #  return(list(data = subset, corMat = corMat, CorMat_rrr= corMat_rrr))
     })
   extri<- function(x){

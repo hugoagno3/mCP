@@ -7,7 +7,7 @@
 cpp_plotter(
   relative = FALSE,
   heat_map = FALSE,
-  heatmap_seaborn = FALSE,
+  network = FALSE,
   complex_list,
   N_fractions = 35,
   filter = 0.81,
@@ -24,7 +24,7 @@ cpp_plotter(
 
 \item{heat_map}{could be = FALSE or TRUE. When TRUE it will plot heat maps of all protein complexes detected after filter them by Pearson correlation. When the algorithm of correlation is not Pearson is should be always FALSE.}
 
-\item{heatmap_seaborn}{could be = FALSE or TRUE. When TRUE it will plot networks heatmaps of all protein complexes detected after filter them by Pearson correlation.}
+\item{network}{could be = FALSE or TRUE. When TRUE it will plot networks heatmaps of all protein complexes detected after filter them by Pearson correlation.}
 
 \item{complex_list}{a list output from mcp_list function. It contains all potential protein complexes presents in the experiment and CORUM database. Each element of the list is has its corresponding complex name.}
 
@@ -76,7 +76,7 @@ experiment_data = Hek293_P2_1,
 N_fractions = 35, 
 specie = "hsapiens",
 method_cor = "pearson",
-heatmap_seaborn = TRUE)
+network = TRUE)
 
 ##### Run the output of mcp_list into the cpp_ploter function. 
 out_Hek_P2_1 <- cpp_plotter(complex_list = CL_hek_P2_1,

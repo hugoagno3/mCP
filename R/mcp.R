@@ -11,7 +11,7 @@
 #' @param N_fractions number of protein fractions obtained in the co-fractionation experiment. 
 #' @param specie = could be "mmusculus", "hsapiens" , check gconvert vignette for more options (gprofiler2 package) https://cran.r-project.org/web/packages/gprofiler2/vignettes/gprofiler2.html
 #' @param method_cor = can be "kendall", "spearman" or "pearson" (default "pearson")
-#' @param heatmap_seaborn always TRUE perform a correlation matrix compatible with the heat map seaborn form corrr package. Not active only in the FDR function.
+#' @param network always TRUE perform a correlation matrix compatible with the heat map seaborn form corrr package. Not active only in the FDR function.
 #' @param format should be "pdf" to plots pdf. There is an additional possible value is ".": this will omit pdf. In both cases the user will have a list of plot for the detected protein complexes in R. 
 #' @param output_name main core name for the files to be printed, it is a string: see example. 
 #' @param filter targeted value of minimum accepted binary interaction hits between 2 proteins within a protein complex (we recomend a 0.93 value). 
@@ -44,7 +44,7 @@
 #'                                      N_fractions = 35, 
 #'                                      specie = "hsapiens",
 #'                                      method_cor = "pearson",
-#'                                      heatmap_seaborn = TRUE,
+#'                                      network = TRUE,
 #'                                      format = "pdf", 
 #'                                      output_name = "mCP_Hek293_P2_1",
 #'                                      filter = 0.81,
@@ -72,7 +72,7 @@
 #'                                     N_fractions = 35, 
 #'                                     specie = "mmusculus",
 #'                                     method_cor = "pearson",
-#'                                     heatmap_seaborn = TRUE,
+#'                                     network = TRUE,
 #'                                     format = "pdf", 
 #'                                     output_name = "INTO_m_CP_mouse_analysis_8",
 #'                                     filter = 0.81,
@@ -95,7 +95,7 @@
 
 
 mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapiens",
-                method_cor="pearson", heatmap_seaborn= TRUE, format="pdf", output_name= mCP_analysis,
+                method_cor="pearson", network= TRUE, format="pdf", output_name= mCP_analysis,
                 filter=0.81, heat_map= TRUE, relative= FALSE, display_weights=TRUE, 
                 standard_weights=TRUE, fdr_limit=0.05 , n_simulations=185,
                 Risk_fraction=floor(N_fractions*0.85) , monomeric_filter= FALSE, set_seed= TRUE, mw= FALSE){
@@ -114,7 +114,7 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
                          N_fractions = N_fractions, 
                          specie = specie,
                          method_cor = method_cor, 
-                         heatmap_seaborn = heatmap_seaborn)
+                         network = network)
   # Print message and elapsed time
   cat("mcp_list function completed in", difftime(Sys.time(), start_time), "seconds.\n")
   
@@ -130,7 +130,7 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
                               output_name = paste0("all_Candidates_", output_name),
                               filter = filter, N_fractions = N_fractions,
                               heat_map = heat_map,
-                              heatmap_seaborn= heatmap_seaborn,
+                              network= network,
                               relative = relative,
                               display_weights = display_weights,
                               standard_weights = standard_weights, mw=mw)
@@ -165,7 +165,7 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
                               output_name = output_name,
                               filter = filter, N_fractions = N_fractions,
                               heat_map = heat_map,
-                              heatmap_seaborn= heatmap_seaborn,
+                              network= network,
                               relative = relative,
                               display_weights = display_weights,
                               standard_weights = standard_weights,mw=mw)

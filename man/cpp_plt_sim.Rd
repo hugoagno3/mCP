@@ -7,7 +7,7 @@
 cpp_plt_sim(
   relative = FALSE,
   heat_map = FALSE,
-  heatmap_seaborn = FALSE,
+  network = FALSE,
   Output_cpp_plotter = Output_cpp_plotter,
   complex_list,
   N_fractions = 35,
@@ -23,7 +23,7 @@ cpp_plt_sim(
 
 \item{heat_map}{could be = FALSE or TRUE. When TRUE it will plot heat maps of all protein complexes detected after filter them by Pearson correlation. When the algorithm of correlation is not Pearson is should be always FALSE.}
 
-\item{heatmap_seaborn}{could be = FALSE or TRUE. When TRUE it will plot networks heatmaps of all protein complexes detected after filter them by Pearson correlation.}
+\item{network}{could be = FALSE or TRUE. When TRUE it will plot networks heatmaps of all protein complexes detected after filter them by Pearson correlation.}
 
 \item{Output_cpp_plotter}{in an input list of plots fitered by arbitrary filter. This list is obtained by cpp_plotter().}
 
@@ -72,7 +72,7 @@ experiment_data = Hek293_P2_1,
 N_fractions = 35, 
 specie = "hsapiens",
 method_cor = "pearson",
-heatmap_seaborn = TRUE)
+network = TRUE)
 
 ##### Run the output of mcp_list into the cpp_ploter function. 
 out_Hek_P2_1 <- cpp_plotter(complex_list = CL_hek_P2_1,

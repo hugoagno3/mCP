@@ -10,7 +10,7 @@ mCP(
   N_fractions = 35,
   specie = "hsapiens",
   method_cor = "pearson",
-  heatmap_seaborn = TRUE,
+  network = TRUE,
   format = "pdf",
   output_name = mCP_analysis,
   filter = 0.81,
@@ -37,7 +37,7 @@ mCP(
 
 \item{method_cor}{= can be "kendall", "spearman" or "pearson" (default "pearson")}
 
-\item{heatmap_seaborn}{always TRUE perform a correlation matrix compatible with the heat map seaborn form corrr package. Not active only in the FDR function.}
+\item{network}{always TRUE perform a correlation matrix compatible with the heat map seaborn form corrr package. Not active only in the FDR function.}
 
 \item{format}{should be "pdf" to plots pdf. There is an additional possible value is ".": this will omit pdf. In both cases the user will have a list of plot for the detected protein complexes in R.}
 
@@ -86,7 +86,7 @@ mCP_Hek_P2_1 <- mCP(corum_database = Corum_Humans_Database,
                                      N_fractions = 35, 
                                      specie = "hsapiens",
                                      method_cor = "pearson",
-                                     heatmap_seaborn = TRUE,
+                                     network = TRUE,
                                      format = "pdf", 
                                      output_name = "mCP_Hek293_P2_1",
                                      filter = 0.81,
@@ -114,7 +114,7 @@ mCP_TEND_out_WT_Mouse_Cardiac <- mCP(corum_database = Corum_Mouse_Database,
                                     N_fractions = 35, 
                                     specie = "mmusculus",
                                     method_cor = "pearson",
-                                    heatmap_seaborn = TRUE,
+                                    network = TRUE,
                                     format = "pdf", 
                                     output_name = "INTO_m_CP_mouse_analysis_8",
                                     filter = 0.81,
