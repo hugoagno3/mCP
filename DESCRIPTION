@@ -1,5 +1,5 @@
 Package: mCP
-Title: What the Package Does (One Line, Title Case)
+Title: Targeted detection of protein complexes form Co-fractionation mass spectrometry experiments.
 Version: 0.0.0.9000
 Authors@R: 
     person("Hugo", "Amedei", , "Hugo.amedei@med.uni-goettingen.de", role = c("aut", "cre"),
