@@ -9,12 +9,11 @@ mini-Complexome Profiler (mCP)
 
 # Overview 
 
-The `mCP` package provides a set of functions for targeted protein complex detection in mass spectrometry-based proteomics co-fractionation experiments. It is designed to work with experimental data in the form of protein abundance matrices, and to compare the data to the CORUM database of known protein complexes to identify complexes that are present in the experimental data. The package contains two datasets as example: one example for "hsapiens" and on efor "mmusculus" Co fractionation experiment. 
+The `mCP` package provides a set of functions for targeted protein complex detection from data generated from co-fractionation mass spectrometry-based proteomics experiments. It is designed to work with experimental data in the form of protein abundance matrices. The program, identifies protein complexes present in the experimental data, using an external protein complexes database (e.g. CORUM or Complex Portal). The R package contains co-fractionation experiment datasets as examples of two different species: Homo sapiens (Hek293T cells) and Mus musculus (cardiomyocytes). 
 
 This vignette provides a step-by-step guide to using the `mCP` package to analyze proteomics data and identify protein complexes of interest.
-We provide an Experimental dataset Hek293 called "hsapiens" fractionated by BNE-PAGE of about 35 fractions.
-In the last section,the user can find how to run an extra function called `Calc_mean_matrix()` that will be very useful for getting the input matrix as the average of the replicates in the experiment. All functions have different options, therefore 
-we provide a detailed explanation about the functions at the end of this tutorial.
+In this tutorial, we will analyze a single co-fractionation experiment. An experimental dataset "Homo sapiens", derived from Hek293T cells, fractionated by BNE-PAGE (35 fractions).
+In addition, we provide a detailed explanation of all of the R package functions at the end of this tutorial.
 
 
 
@@ -32,27 +31,32 @@ devtools::install_github("hugoagno3/mCP", biuld_vignette= TRUE)
 ```
 
 # Data input 
- In this tutorial, we will use the Corum_Humans_Database file as the protein complex database and the Hek293_P2_1 file as experiment files. To perform targeted protein complexes detection, only these two input files are needed:
+ In this tutorial, we will use the Corum_Humans_Database file as the external protein complex reference database, and the Hek293_P2_1 file as experimental input. To perform targeted protein complex detection, only these two input files are needed:
 ```{r pressure, echo=FALSE}
 # Open the Corum protein complex database file
       data(Corum_Humans_Database)
 # open the experiment files
       data(Hek293_P2_1)
 ```
-* A CORUM database of protein complexes (or a targeted list of interest) dataframe with 3 columns:´  col1= "complex_id", col2= "complex_name" and col3= "protein_id").
-* An experiment file *data.frame* with your experiment results in wide-format- first column called "protein_id" with a single uniprot accession per row as elements and the next columns contain protein intensity detected in the fractions in the co-fractionation experiment: can be numerics names from 1 to the last number of fractions, for example 1,2,3,..,35 for 35 fractions, means 35 columns.
+* A CORUM database of protein complexes (or a targeted list of interest) data frame with 3 columns:´  col1= "complex_id", col2= "complex_name" and col3= "protein_id").
+* An experiment file *data.frame* with your experimental results in wide format. The first column is called "protein_id", with a single UniProt accession per row as elements. The rest of the columns contain protein intensities detected in each fraction of the co-fractionation experiment. The column's names of the fractions. It can be numeric names from 1 to the last number of fractions. For example, 1,2,3,..,35 for 35 fractions, means 35 columns.
 
-Note: mCP R package is focused on detection of protein complexes and it accepts only protein data Level as an input matrix. The mass spectrometry data aquisition can be done by Data Dependent Acquisition mode or Data independent Aquisition.  
+Note: The mCP R package is focused on the detection of protein complexes and it accepts only protein data Level as an input matrix. The mass spectrometry data acquisition can be done by Data Dependent Acquisition mode or Data independent Aquisition.  
 
 # Data Processing
 
 To process the input data, we need to run *Option 1*- the mCP function or *Option 2*- 3 functions provided by our mCP package.
 # Option 1: Running mCP function
-   This function is an integrated function of mCP package, that needs as input an experimental data and returns a list of plots, binary total hits, id of proteins of binary hits and heatmaps_seaborn of know protein complexes detected in CORUM database. In addition, it plots  6 files as  outputs: 
- 1- pdf file with All candidates detected as protein complexes profiles from Corum database.
- 2- pdf with with all candidates heatmaps of the detected protein complexes.
- 3- pdf file with the detected as protein complexes profiles with a controlled FDR.
- 4- pdf with heatmaps of the detected protein complexes with a controlled FDR.
+   mCP() is an integrated function of mCP R-package. It requires an experimental protein abundance matrix dataset as input, and returns the following: a list of protein complexes with a controlled FDR detected. Each detected protein complex is an element of the resulting list composed by four elements.
+   1- One fraction profile plot (absolute or relative abundance of each protein vs. fraction).
+   2- The number of binary interactions (protein-protein) with a Pearson correlation higher than the filter (number of total binary hits).
+   3- The id of proteins of binary hits.
+   4- A heatmaps_seaborn of known protein complexes detected in the protein complexes database, in this tutorial we use the CORUM database (http://mips.helmholtz-muenchen.de/corum/).
+   The above data is outputted in the following format: 
+ 1- pdf file with fraction-profile plots (absolute or relative abundance of each protein vs. fraction) of each potential protein complexes to be detected. Before the FDR analysis.
+ 2- pdf with heatmaps of potential candidates from 1 (before the FDR analysis).
+ 3- pdf file with the detected protein complexes profiles with a controlled FDR (this is analogous to 1, but without protein complexes, excluded based on FDR evaluation).
+ 4- pdf with heatmaps of the detected protein complexes with a controlled FDR (this is analogous to 2, but without proteins complexes excluded based on FDR evaluation.
  5- txt file with numbers about general false positive when at least 1 hit is consider as filter.
  6- CVS file containing all protein complexes detected, hits of binary interactions inside the protein complexes, FDR detected by MonteCarloSimulation.
    An example can be found here:
@@ -229,7 +233,7 @@ out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[4]]
 
 
 # Data Processing (Input of matrix with protein_id as first column and Factions)
-  Most of the time we measure samples per duplicate in co-fractionation experiemnt, mCP provide a function to deal with these extensive number of columns. The function input can be a data.frame imported by the following function read.table
+  In a typical co-fractionation experiment, samples are measured per duplicate. mCP R package provides a function to deal with this extensive number of columns. The function input can be a data.frame imported by the following function read.table
 ```{r10}
 NAmatrix_P2_1 <- read.table("Hek293_P2_1.csv",sep =",",dec = ".", header= T)
 ```
@@ -261,20 +265,20 @@ Hek_293_MA_P2_1 <- Calc_mean_matrix(NAmatrix = NAmatrix_P2_1,
                             save_name = "Hek293_P2_1.csv")
 ```
 
-Note: The user can also use its own scrip to generate the average of the replicates. This function is limited to 2 replicates. It is our traditional measurement. mCP do not acepts NA values. All NA values in our case are replaced by 0. 
+Note: The user can also use theri own scrip to generate the average of replicate experiments. At the moment, this function is limited to 2 replicates. mCP function does not acepts NA values. All NA values in our case are replaced by 0. 
 
-# How does mCP works 
+# How mCP works 
 
 The `mCP` package provides the following functions:
 
 - `Calc_mean_matrix()`: pre-processes the data before running `mcp_list()`.
 
-- `mcp_list()`: Extracts Potential protein complexes in the experiment from CORUM database.
-    It extract intensities of all protein complexes from the CORUM database and generates a list of all potential protein complexes presents. Each element of the list is identified as a detected potential protein complex and named with its corresponding complex name. Each protein complex element contains 2 elements: 
+- `mcp_list()`: Extracts potential protein complexes from experimental dataset, using the protein complexes database as a reference.
+    This function extract intensities of all protein complexes from the protein complexes database (CORUM or complexe portal) and generates a list of all potential protein complexes present in the experimental dataset. Each element of the list is identified as a detected potential protein complex and named with its corresponding complex name. Each protein complex element contains 2 elements: 
 
  *my_protein_complex_mcp_list[1][1]* is a dataframe composed of the Id proteins of the proteins, names, and fractions and its correspondig intensities per fraction. Names are annotated to the uniprot accesion Ids by a repository R package called gprofiler2. 
 
- *my_protein_complex_mcp_list[1][2]* is a correlation matrix of these elements,  this correlation matrix is done by Pearson correlations (but kendall and spearman algoriths are also posible in that step). and calculates a matrix correlation between all detected component of each present protein complex.
+ *my_protein_complex_mcp_list[1][2]* is a correlation matrix of these elements,  this correlation matrix is done by Pearson correlations (but kendall and spearman algoriths are also posible in that step). and calculates a matrix correlation between all detected component of each detected protein complex.
  
 The list of potential protein complexes is the input for the next function called cpp_plotter. This is the first filter for  Then it filters protein complexes composed by at least 2 component with intensities different from cero. Then the first filter is runned: The filter is based in a minimun definition of protien complex. So in this step it keep only protein complexes with at least one significant coelution hit.
 
