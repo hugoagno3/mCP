@@ -56,8 +56,8 @@ To process the input data, we need to run *Option 1*- the mCP function or *Optio
  1- pdf file with fraction-profile plots (absolute or relative abundance of each protein vs. fraction) of each potential protein complexes to be detected. Before the FDR analysis.
  2- pdf with heatmaps of potential candidates from 1 (before the FDR analysis).
  3- pdf file with the detected protein complexes profiles with a controlled FDR (this is analogous to 1, but without protein complexes, excluded based on FDR evaluation).
- 4- pdf with heatmaps of the detected protein complexes with a controlled FDR (this is analogous to 2, but without proteins complexes excluded based on FDR evaluation.
- 5- txt file with numbers about general false positive when at least 1 hit is consider as filter.
+ 4- pdf with heatmaps of the detected protein complexes with a controlled FDR (this is analogous to 2, but without protein complexes excluded based on FDR evaluation).
+ 5- txt file with numbers about general false positives.
  6- CVS file containing all protein complexes detected, hits of binary interactions inside the protein complexes, FDR detected by MonteCarloSimulation.
    An example can be found here:
  
@@ -123,7 +123,7 @@ mCP_Hek_P2_1 <- mCP(corum_database = Corum_Humans_Database,
  ![seahet mitochondrial respiratory](https://user-images.githubusercontent.com/82643524/236703676-5ac98435-02b4-48d8-a1b6-e4ceeeae5737.png)
 
 # Option 2: Runn mCP function individually
-The following code guide you to get the output step by step
+The following code guides you to get the output step-by-step
 
 ```{r pressure4, eval=FALSE, include=TRUE}
 library(dplyr)
@@ -163,10 +163,10 @@ FDR_DIANN_dDIA_Hek_P2_1_<- fdr_mCP(corum_database= Corum_Humans_Database,
                               monomeric_filter = FALSE,
                               set_seed = TRUE,
                               n_simulations= 185)
-##Note this function will perform a FDR filter and simultation it is important to do the simulation with the same filter then the previous function. if filter value is different the simulation do not makes sense. 
+##Note this function will perform an FDR filter and simulation it is important to do the simulation with the same filter then the previous function. if the filter value is different the simulation does not make sense. 
 ```
-## Last step to get the protein complexes filtered by FDR is to get back to the list and run cpp_plotter again.
-Note that if you wish to have the plots of this last FDR protein complexes  you could filter the names of the protein complexes detected into the first list (from mcp_list) and run cpp_ploter again. 
+## The last step to get the protein complexes filtered by FDR is to get back to the list and run cpp_plotter again.
+Note that if you wish to have the plots of this last FDR protein complexes you could filter the names of the protein complexes detected into the first list (from mcp_list) and run cpp_ploter again. 
 
 
 ```{r5}
@@ -197,7 +197,7 @@ out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[1]]
 ```
 ![13s condensin complex for hithub](https://github.com/hugoagno3/mCP/assets/82643524/9bfe668f-a8d2-4ad3-b335-e2dc8243dc5a)
 
-2) The second object is the number of Hits detected in the experiment as the number of significant binary interactions. So binare pearson correlations values in the experiment higher than a filter.  
+2) The second object is the number of hits detected in the experiment as the number of significant binary interactions. So, binary Pearson's correlation values in the experiment that are higher than a filter.  
 
 ```{r7}
  out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[2]]
@@ -209,7 +209,7 @@ out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[1]]
 
 
 ## The output list out_Hek_P2_1_final_output has 4 objects
-3) The name of the proteins involved in the Binary interaction detected (Experimental Protein-binary Pearson correlatio nhigher than the filter) and its Pearson correlation of thes significant binary interactions.
+3) The name of the proteins involved in the Binary interaction detected (Experimental Protein-binary Pearson correlation higher than the filter) and its Pearson correlation of the significant binary interactions.
 
 ```{r8}
 out_Hek_P2_1_final_output[["13S condensin complex;Condensin I complex"]][[3]]
@@ -241,8 +241,8 @@ NAmatrix_P2_1 <- read.table("Hek293_P2_1.csv",sep =",",dec = ".", header= T)
 ```{r11}
  data(NAmatrix_P2_1)
 ```
-##  After that you can run the funtion calc_mean_matrix
-  The function calc mean matrix will recognize the replicates by a tag like _A_ and _B_ as part of the names for the MS file and the *Frac_index*. It is the position in which you can find the number of fraction in the column name separated by underscores. for example the frac_index=5 is date_Surname_Measurement_A_01 because the number for the fraction is 5 spaces between underscores, like a_b_c_d_FractionNumber. 
+##  After that you can run the function calc_mean_matrix
+  The function calc mean matrix will recognize the replicates by a tag like _A_ and _B_ as part of the names for the MS file and the *Frac_index*. It is the position in which you can find the number of fractions in the column name separated by underscores. for example, the frac_index=5 is date_Surname_Measurement_A_01 because the number for the fraction is 5 spaces between underscores, like a_b_c_d_FractionNumber. 
 ```{r12}
   ###  Note: Here the frac_index= is 17. and the pattern_group= _A_ and pattern_group= _B_  
      names(Hek293_P2_1[,2])
@@ -252,7 +252,7 @@ NAmatrix_P2_1 <- read.table("Hek293_P2_1.csv",sep =",",dec = ".", header= T)
 
 ```
   
-  So we can run the function as follow. 
+  So we can run the function as follows. 
 
 ```{r13}
 
