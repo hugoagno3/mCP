@@ -63,16 +63,16 @@ To process the input data, we need to run *Option 1*- the mCP function or *Optio
  6- CVS file containing all protein complexes detected, hits of binary interactions inside the protein complexes, FDR detected by MonteCarloSimulation.
    An example can be found here:
  
-```{r pressure3, eval=FALSE, message=FALSE, include=TRUE}
+```{r pressure3, eval=FALSE, message=FALSE, include=FALSE}
 library(mCP)
 ```
 
-```{r pressure3A, eval=FALSE, include=TRUE}
+```{r pressure3A, eval=FALSE, include=FALSE}
 # Read the Corum protein complex database file
       data(Corum_Humans_Database)
 ```
 
-```{r pressure3B, eval=FALSE, include=TRUE}
+```{r pressure3B, eval=FALSE, include=FALSE}
 # Read the experiment files
       data(Hek293_P2_1)
 ```
