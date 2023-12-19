@@ -17,6 +17,17 @@ In this tutorial, we will analyze a single co-fractionation experiment. An exper
 In addition, we provide a detailed explanation of all of the R package functions at the end of this tutorial.
 
 
+![250872124-9bfe668f-a8d2-4ad3-b335-e2dc8243dc5a](https://github.com/hugoagno3/git-test/assets/82643524/33c0dd84-4406-4093-bc59-dc15e4ef00a3)
+
+
+![250870400-c7b4d75f-3e35-4a49-9f20-ea85d887c79b](https://github.com/hugoagno3/git-test/assets/82643524/6a521de6-a4d1-45bb-aa99-5bc618166bbc)
+
+
+![250868639-0f62593f-a702-4330-98f9-c569c9f46ca8](https://github.com/hugoagno3/git-test/assets/82643524/20c5bb9f-a755-4804-9008-44292f50d8de)
+
+
+
+
 ![Rplot02](https://github.com/hugoagno3/mCP/assets/82643524/0f62593f-a702-4330-98f9-c569c9f46ca8)
 
 ![heat eIF3 complex](https://user-images.githubusercontent.com/82643524/236703288-735a5d6e-25aa-49b9-8520-071a3df7ea4c.png)
