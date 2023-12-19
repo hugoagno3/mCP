@@ -16,6 +16,7 @@ This vignette provides a step-by-step guide to using the `mCP` package to analyz
 In this tutorial, we will analyze a single co-fractionation experiment. An experimental dataset "Homo sapiens", derived from Hek293T cells, fractionated by BNE-PAGE (35 fractions).
 In addition, we provide a detailed explanation of all of the R package functions at the end of this tutorial.
 
+https://private-user-images.githubusercontent.com/82643524/291553448-c0924ec2-5110-4f5d-8ccd-45d57b53a14f.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTEiLCJleHAiOjE3MDI5ODExODUsIm5iZiI6MTcwMjk4MDg4NSwicGF0aCI6Ii84MjY0MzUyNC8yOTE1NTM0NDgtYzA5MjRlYzItNTExMC00ZjVkLThjY2QtNDVkNTdiNTNhMTRmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFJV05KWUFYNENTVkVINTNBJTJGMjAyMzEyMTklMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjMxMjE5VDEwMTQ0NVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTA0N2QwNmIzOTIxYmQ5OGJkY2I0NTdlOWEzMmE4Y2ZmMGM0NzVkY2Q0MjU5ODY2ZDFmMGU2MWZiMjcwZDFkMzEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.hlkuJjIf2jRzjuzGI6XTPO7azImljU39Ijlv8bGfuts
 
 ![Rplot02](https://github.com/hugoagno3/mCP/assets/82643524/0f62593f-a702-4330-98f9-c569c9f46ca8)
 
