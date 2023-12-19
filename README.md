@@ -34,7 +34,7 @@ devtools::install_github("hugoagno3/mCP", biuld_vignette= TRUE)
 
 # Data input 
  In this tutorial, we will use the Corum_Humans_Database file as the external protein complex reference database, and the Hek293_P2_1 file as experimental input. To perform targeted protein complex detection, only these two input files are needed:
-```{r pressure, echo=FALSE}
+```{r pressure, echo=FALSE,eval=FALSE, message=FALSE, include=FALSE}
 # Open the Corum protein complex database file
       data(Corum_Humans_Database)
 # open the experiment files
@@ -77,7 +77,7 @@ library(mCP)
       data(Hek293_P2_1)
 ```
 
-```{r pressure3C, eval=FALSE, include=TRUE}
+```{r pressure3C, eval=FALSE, include=FALSE}
       ##### Example #####
 mCP_Hek_P2_1 <- mCP(corum_database = Corum_Humans_Database,
                           experiment_data = Hek293_P2_1, 
@@ -128,7 +128,7 @@ mCP_Hek_P2_1 <- mCP(corum_database = Corum_Humans_Database,
 # Option 2: Runn mCP function individually
 The following code guides you to get the output step-by-step
 
-```{r pressure4, eval=FALSE, include=TRUE}
+```{r pressure4, eval=FALSE, message=FALSE, include=FALSE}
 library(dplyr)
 library(mCP)
 # Read the Corum protein complex database file
@@ -166,8 +166,9 @@ FDR_DIANN_dDIA_Hek_P2_1_<- fdr_mCP(corum_database= Corum_Humans_Database,
                               monomeric_filter = FALSE,
                               set_seed = TRUE,
                               n_simulations= 185)
-##Note this function will perform an FDR filter and simulation it is important to do the simulation with the same filter then the previous function. If the filter value varies, the simulation loses its meaningfulness. 
 ```
+## Note this function will perform an FDR filter and simulation it is important to do the simulation with the same filter then the previous function. If the filter value varies, the simulation loses its meaningfulness. 
+
 ## The last step to get the protein complexes filtered by FDR is to get back to the list and run cpp_plotter again.
 Note that if you wish to have the plots of this last FDR protein complexes you could filter the names of the protein complexes detected into the first list (from mcp_list) and run cpp_ploter again. 
 
