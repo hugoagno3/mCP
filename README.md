@@ -29,7 +29,7 @@ In addition, we provide a detailed explanation of all of the R package functions
 To install the mCP package from GitHub, run the following code:
 ```{r20, echo=FALSE,eval=FALSE, message=FALSE, include=FALSE}
 library(devtools)
-devtools::install_github("hugoagno3/mCP", biuld_vignette= TRUE)
+devtools::install_github("hugoagno3/mCP", biuld_vignettes= TRUE)
 ```
 
 # Data input 
