@@ -10,7 +10,7 @@ mini-Complexome Profiler (mCP)
 
 # Overview 
 
-The `mCP` package provides a set of functions for targeted protein complex detection from data generated from co-fractionation mass spectrometry-based proteomics experiments. It is designed to work with experimental data in the form of protein abundance matrices. The program, identifies protein complexes present in the experimental data, using an external protein complexes database (e.g. CORUM or Complex Portal). The R package contains co-fractionation experiment datasets as examples of two different species: Homo sapiens (Hek293T cells) and Mus musculus (cardiomyocytes). 
+The `mCP` package provides a set of functions for targeted protein complex detection from co-fractionation mass spectrometry-based proteomics experiments. It is designed to work with experimental data in the form of protein abundance matrices. The program, identifies protein complexes present in the experimental data, using an external protein complexes database (e.g. CORUM or Complex Portal). The R package contains co-fractionation experiment datasets as examples of two different species: Homo sapiens (Hek293T cells) and Mus musculus (cardiomyocytes). 
 
 This vignette provides a step-by-step guide to using the `mCP` package to analyze proteomics data and identify protein complexes of interest.
 In this tutorial, we will analyze a single co-fractionation experiment. An experimental dataset "Homo sapiens", derived from Hek293T cells, fractionated by BNE-PAGE (35 fractions).
@@ -47,20 +47,24 @@ Note: The `mCP` R package is focused on the detection of protein complexes and i
 
 # Data Processing
 
-To process the input data, we need to run *Option 1*- the mCP function or *Option 2*- 3 functions provided by our `mCP` package.
+To process the input data, we need to *Option 1*- Run the mCP function or *Option 2*- Run 3 functions provided by our `mCP` package.
 # Option 1: Running mCP function
-   mCP() is an integrated function of `mCP` R-package. It requires an experimental protein abundance matrix dataset as input, and returns the following: a curated list of identified protein complexes, accompanied by a controlled False Discovery Rate filter (FDR). Each detected protein complex is an output element organized into the resulting list output of mCP. The output list is structured with four distinct elements.
-   1- One fraction profile plot (absolute or relative abundance of each protein vs. fraction).
-   2- The number of intra binary interactions (protein-protein) with a Pearson correlation value higher than the filter (number of total binary hits) within component of each protein complex in the experiment.
-   3- The id of proteins of binary hits.
-   4- A heatmaps_seaborn of known protein complexes detected in the protein complexes database, in this tutorial we use the CORUM database (http://mips.helmholtz-muenchen.de/corum/).
-   The above data is outputted in the following format: 
- 1- pdf file with fraction-profile plots (absolute or relative abundance of each protein vs. fraction) of each potential protein complex to be detected. Before the FDR analysis.
- 2- pdf with heatmaps of potential candidates from 1 (before the FDR analysis).
- 3- pdf file with the detected protein complexes profiles with a controlled FDR (this is analogous to 1, but without protein complexes, excluded based on FDR evaluation).
- 4- pdf with heatmaps of the detected protein complexes with a controlled FDR (this is analogous to 2, but without protein complexes excluded based on FDR evaluation).
- 5- txt file with numbers about general false positives.
- 6- CVS file containing all protein complexes detected, hits of binary interactions inside the protein complexes, FDR detected by MonteCarloSimulation.
+   mCP() is an integrated function of `mCP` R-package. It requires an experimental protein abundance matrix dataset as input, and returns the following:
+- A curated list of identified protein complexes, accompanied by a controlled False Discovery Rate filter (FDR). Each detected protein complex is an output element organized into the resulting list output of mCP.  
+  
+The output list is structured with four distinct elements.
+1. One fraction profile plot (absolute or relative abundance of each protein vs. fraction).
+2. The number of intra binary interactions (protein-protein) with a Pearson correlation value higher than the filter (number of total binary hits) within component of each protein complex in the experiment.
+3. The id of proteins of binary hits.
+4. A heatmaps_seaborn of known protein complexes detected in the protein complexes database, in this tutorial we use the CORUM database (http://mips.helmholtz-muenchen.de/corum/).  
+  
+The above data is outputted in the following format:   
+1. pdf file with fraction-profile plots (absolute or relative abundance of each protein vs. fraction) of each potential protein complex to be detected. Before the FDR analysis.
+2. pdf with heatmaps of potential candidates from 1 (before the FDR analysis).
+3. pdf file with the detected protein complexes profiles with a controlled FDR (this is analogous to 1, but without protein complexes, excluded based on FDR evaluation).
+4. pdf with heatmaps of the detected protein complexes with a controlled FDR (this is analogous to 2, but without protein complexes excluded based on FDR evaluation).
+5. txt file with numbers about general false positives.
+6. CVS file containing all protein complexes detected, hits of binary interactions inside the protein complexes, FDR detected by MonteCarloSimulation.
    An example can be found here:
  
 ```{r pressure3, eval=FALSE, message=FALSE, include=FALSE}
@@ -167,7 +171,7 @@ FDR_DIANN_dDIA_Hek_P2_1_<- fdr_mCP(corum_database= Corum_Humans_Database,
                               set_seed = TRUE,
                               n_simulations= 185)
 ```
-## Note this function will perform an FDR filter and simulation it is important to do the simulation with the same filter then the previous function. If the filter value varies, the simulation loses its meaningfulness. 
+Note this function will perform an FDR filter and simulation it is important to do the simulation with the same filter then the previous function. If the filter value varies, the simulation loses its meaningfulness. 
 
 ## The last step to get the protein complexes filtered by FDR is to get back to the list and run cpp_plotter again.
 Note that if you wish to have the plots of this last FDR protein complexes you could filter the names of the protein complexes detected into the first list (from mcp_list) and run cpp_ploter again. 
