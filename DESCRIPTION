@@ -3,7 +3,7 @@ Title: Targeted detection of protein complexes form Co-fractionation mass spectr
 Version: 0.0.0.9000
 Authors@R: 
     c(person("Hugo", "Amedei", , "hugoagno3@gmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           comment = c(ORCID = "YOUR-ORCID-ID")),
     person("Niels Benjamin", "Paul", role = c("aut")))
 Description: The mCP package provides a set of functions for targeted protein complex detection in mass spectrometry-based proteomics co-fractionation experiments. It is designed to work with experimental data in the form of protein abundance matrices, and to compare the data to the CORUM database of known protein complexes to identify complexes that are present in the experimental data.
 License: MIT + file LICENSE
