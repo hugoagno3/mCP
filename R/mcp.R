@@ -83,7 +83,7 @@
 #'                                     monomeric_filter = FALSE,
 #'                                     Risk_fraction = 31,
 #'                                     set_seed = TRUE,
-#'                                     mw = TRUE
+#'                                     mw = TRUE,
 #'                                     display_weights = TRUE,
 #'                                     standard_weights =  list( 
 #'                                     list(x = 9, label = "1048 KDa"), 
@@ -142,7 +142,7 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
   # Update progress bar
   setTxtProgressBar(pb, 5.4*t)
   
-  FDR_DIANN_dDIA_P2_1_<- fdr_mCP(corum_database = corum_database,
+  FDR_DIANN_dDIA_P2_1_<- fdr_mCP_standard(corum_database = corum_database,
                                  Output_cpp_plotter = out_Hek_P2_1, 
                                  experiment_data = experiment_data,
                                  file_name = output_name,

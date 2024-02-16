@@ -1,6 +1,6 @@
-#' fdr_mCP
+#' fdr_mCP_standard
 #' 
-#' @description This function performs different matrix from your experimental matrix and evaluates this "fake matrix" into  mCP workflow by using the selected filter then calculates the FDR based in montecarlo simulations and the real result of protein complexes detected in your experiment.
+#' @description This function performs different matrix from your experimental matrix and evaluates this "fake matrix" into  mCP workflow by using the selected filter then calculates the FDR based in Montecarlo Simulations (under assumption of independence of correlation coefficient) and the real result of protein complexes detected in your experiment.
 #' @param corum_database The corum data base. 
 #' @param experiment_data A matrix that has protein_id in the first column and the detected intensities in the other colums.
 #' @param N_fractions Number of fractions in your experimet
@@ -26,7 +26,7 @@
 #' @examples
 #' data(Corum_Humans_Database)
 #' 
-#' FDR_DIANN_dDIA_P2_1_<- fdr_mCP(corum_database= Corum_Humans_Database,
+#' FDR_DIANN_dDIA_P2_1_<- fdr_mCP_standard(corum_database= Corum_Humans_Database,
 #'Output_cpp_plotter = out_Hek_P2_1, 
 #'experiment_data=Hek293_P2_1,
 #'file_name = "m_CP_analysis",
@@ -36,28 +36,54 @@
 #'n_simulations= 2)
 #' 
 
-fdr_mCP<-    function (corum_database, experiment_data, N_fractions = 35, 
-                       specie = "hsapiens", filter = 0.81, n_simulations = 10, 
+
+fdr_mCP_standard<-    function (corum_database, experiment_data, N_fractions = N_fractions, 
+                       specie = "hsapiens", filter = 0.81, n_simulations = 185, 
                        Output_cpp_plotter= Output_cpp_plotter, file_name = "exp_id", 
-                       save_file = TRUE, fdr_limit= 0.05, Risk_fraction = floor(N_fractions*0.85), 
+                       save_file = TRUE, fdr_limit= fdr_limit, Risk_fraction = floor(N_fractions*0.85), 
                        monomeric_filter= FALSE, set_seed= TRUE) 
 {
-  ifelse(length(names(Output_cpp_plotter))>0, standar_Experiment<- extract_mcp(Output_cpp_plotter), return(print("0 Protein Complexes detected")))
+  
+    ifelse(length(names(Output_cpp_plotter))>0, standar_Experiment<- extract_mcp(Output_cpp_plotter), return(print("0 Protein Complexes detected")))
   complex_names <-  names(Output_cpp_plotter)
   ######## simulation##########
   if (set_seed){
-        set.seed(123)
+    set.seed(123)
   }
   #####################Specific filter for FRD according to the average of Person binary interaction of each protein complex. 
-  e <- function(z) {
-    means <- lapply(z, function(x) {
-      mean(x[[3]][["Cor"]], na.rm = TRUE)
+  ######
+  extract_elements <- function(x) {
+    lapply(x, function(inner_list) {
+      c(inner_list[2], inner_list[[3]][["Cor"]])
     })
-    return(means)
   }
-  ee<-e (Output_cpp_plotter)
   
+  extract_elements_2 <- function(x) {
+    lapply(x, function(inner_list) {
+      numeric_values <- as.numeric(inner_list)
+      sorted_values <- sort(numeric_values, decreasing = TRUE)
+      sorted_values
+    })
+  }
+  extract_elements_av <- function(x) {
+    lapply(x, function(inner_list) {
+      c(inner_list[[2]][["Hits"]])
+    })
+  }
+  subtract_positive <- function(vec, my_list) {
+    positive_indices <- vec > 0
+    my_list <- as.numeric(my_list)  # Convert my_list to numeric
+    vec <- as.numeric(vec)  # Convert vec to numeric
+    my_list[positive_indices] <- my_list[positive_indices] - vec[positive_indices]
+    return(my_list)
+  }
+  calculate_mean <- function(elements, num_elements) {
+    mean(elements[1:num_elements])
+  }
   
+  ######
+  
+  result_list <- list() 
   X <- replicate(n_simulations, {
     Output_cpp_plotter<- Output_cpp_plotter
     experiment_data <- experiment_data
@@ -70,62 +96,81 @@ fdr_mCP<-    function (corum_database, experiment_data, N_fractions = 35,
                                                                                 sum(Indeces_in_Corum), replace = F)]
     experiment_data$protein_id[Indeces_in_Corum] <- fake_Ids
     
-##### Make an mCP list function, that will put out the complexes if the number of hits is lower than the arbitrary filter in comparison to the complexes if that is not the case it will put the average if not it will put 0, that let the complex out.
+    ##### Make an mCP list function #red , that will put out the complexes if the number of hits is lower than the arbitrary filter in comparison to the complexes if that is not the case it will put the average if not it will put 0, that let the complex out.
     CL_hek_P1_2_a <- mcp_list(corum_database = corum_database, 
                               experiment_data = experiment_data, N_fractions = N_fractions, 
                               specie = specie, network = FALSE)
     CL_hek_P1_2_a <- CL_hek_P1_2_a [names(Output_cpp_plotter)]
-    out_Hek_p1_2_a <-cpp_plt_sim (complex_list = CL_hek_P1_2_a, Output_cpp_plotter= Output_cpp_plotter, #lapply(ee,filti)
-                                  output_name = paste0(format(Sys.time(), "%H_%M_%OS3"),
+    out_Hek_p1_2_a <-cpp_plotter (complex_list = CL_hek_P1_2_a,  #lapply(ee,filti)
+                                  output_name = paste0(format(Sys.time(), "%H_%M_%OS3"), filter = -1,
                                                        "fake.pdf"), format = ".", 
                                   N_fractions = N_fractions, display_weights = FALSE)                    
- 
-  })
-  FDs <- sapply(complex_names, function(comp_name) {
-    return(sum(sapply(X, function(Simulation) {
-      return(comp_name %in% names(Simulation) && Simulation[[comp_name]][[2]][1,1] >= standar_Experiment[comp_name,"hits"])
-    })))
-  })
-  FDs[is.na(FDs)] <- 0
-  res_matrix <- matrix(0,nrow = length(complex_names),ncol = n_simulations,dimnames = list(complex_names,paste0("Simulation_hits_",1:n_simulations)))
+    #### INTRODUCE HERE YOUR CODE CHANGE CCP_PLT_SIM BY ccp_plotter in line 78 as well. 
+    ###balance 
+    numb<- extract_elements_av(Output_cpp_plotter)
+    numb_fakes<- extract_elements_av(out_Hek_p1_2_a)
+    test<- extract_elements(out_Hek_p1_2_a)
+    test_1<- extract_elements_2 (test)
+    test_1_numb<-lapply(test_1, length)
+    vnumb<- as.vector(as.numeric(numb)) - as.vector(as.numeric(test_1_numb))
+    balance_list <- as.list(subtract_positive(vnumb, numb))
+    names(balance_list)<- complex_names
+    #### simulations pearson decoy calculation ####
+    test<- extract_elements(out_Hek_p1_2_a)
+    test_1<- extract_elements_2 (test)
+    means <- mapply(calculate_mean, test_1, balance_list)
+    means_1_fake<- as.data.frame(unlist(means))
+    #### experiment pearson calculation ####    
+    Exp_perso<- extract_elements(Output_cpp_plotter)
+    Exp_perso_1<- extract_elements_2 (Exp_perso)
+    means_exp <-as.data.frame(unlist(mapply(calculate_mean, Exp_perso_1, balance_list)))
+    #### filter matrix
+    Comparison_ppcs<- data.frame(Protein_name= complex_names, Exp=means_exp[,], decoy= means_1_fake[,])
+    Comparison_ppcs$decoy[is.na(Comparison_ppcs$decoy)]<-0
+    Comparison_ppcs_1<- Comparison_ppcs %>% mutate(False_positive= Exp-decoy)
+    Comparison_ppcs_1$evaluation<- ifelse (Comparison_ppcs_1$False_positive >=0,0,1)
+    result_list <- c(result_list, list(Comparison_ppcs_1))
+   
+  return(result_list)}, simplify = FALSE)
+
+  #res_matrix <- matrix(0,nrow = length(complex_names),ncol = n_simulations,dimnames = list(complex_names,paste0("Simulation_hits_",1:n_simulations)))
+  ### Create an empty matrixs :)
+  res_matrix_test <- matrix(0,nrow = length(complex_names),ncol = n_simulations, dimnames = list(complex_names,paste0("Simulation_hits_",1:n_simulations)))
   
-  for (i in 1:n_simulations) {
-    
-    subset_rows <- names(X[[i]])[names(X[[i]]) %in% rownames(res_matrix)]
-    subset_values <- sapply(sapply(X[[i]], "[[", 2), "[[", 1)[names(X[[i]]) %in% rownames(res_matrix)]
-    
-    res_matrix[subset_rows, i] <- ifelse(length(subset_values) > 0, subset_values, 0)
+  
+  for (i in 1:length(X)) {
+    column_values <- X[[i]][[1]][["evaluation"]]
+    res_matrix_test[, i] <- column_values
+    #res_matrix_test[column_values, i] <- ifelse(length(column_values) > 0, column_values, 0)
   }
-  
-  #### estimate Monomeric risk #################################################
+  print("done")
+  papa<- as.data.frame(res_matrix_test)
+  disco_11<- data.frame(Discovered= rowSums(papa))
+  print(disco_11)
+  fddd<- as.data.frame(disco_11$Discovered/n_simulations)
+  colnames(fddd)[1]<- "FDR"
+  ####  monomeric risk
   Max_positions <- sapply(Output_cpp_plotter,function(x){
     Intensity_profile <- x[[1]][["data"]] %>% group_by(SEC_FR) %>% summarise(AV_profile= mean(Intensity))
     return(which(Intensity_profile$AV_profile == max(Intensity_profile$AV_profile)))
   })
   
   Monomeric_risk_vec <- Max_positions > Risk_fraction
-  ############################################################## 
-  res_DF_1 <- data.frame(complex_names,Hits = standar_Experiment$hits, Discovered = FDs, rel.discoveries =FDs/n_simulations, 
-                         N_subunits = as.numeric(table(corum_database$complex_name)[complex_names]),rbind(res_matrix)) #,rbind(res_matrix) to include the hits in each simulation
-  ################################################################
-  ######################################################
-  #FDR_P11_today_50023 <- FDR_P11_2_801_tests_100
-  VS<-res_DF_1 %>% dplyr::select(6:(5+n_simulations))
-  VES<-res_DF_1$Hits
-  papa<- as.data.frame(ifelse(VS>=VES,1,0))
-  disco_11<- data.frame(Discovered= rowSums(papa))
-  ##############################################################
+  
   res_DF <- data.frame(complex_names, Monomeric_risk= Monomeric_risk_vec,
                        Hits_in_experiment = standar_Experiment$hits,
-                       False_positives = disco_11$Discovered,
-                       FDR =disco_11$Discovered/n_simulations, 
+                       False_positives = as.numeric(disco_11$Discovered),
+                       FDR =as.numeric(fddd$FDR), 
                        N_subunits = as.numeric(table(corum_database$complex_name)[complex_names]),
-                       rbind(res_matrix)) #,rbind(res_matrix) to include the hits in each simulation
+                       rbind(res_matrix_test)) #,rbind(res_matrix_test) to include the hits in each simulation
+  
+  colnames(res_DF)[5]<- "FDR"
   res_DF<- res_DF %>% dplyr::filter(FDR<= fdr_limit)
   filti<- res_DF$complex_names
   out_Hek_P2_1 <-  Output_cpp_plotter[filti]
   N_detected <- as.data.frame(sapply(out_Hek_P2_1, function(x){return(nrow(unique(x[[1]][["data"]][,"protein_id"])))}))
-  colnames(N_detected)<-"N_detected"
+  colnames(N_detected)<-"N_detected" 
+  print(res_DF)
   ################################################################################################################
   UniprotIDs <- as.data.frame(sapply(out_Hek_P2_1, function(x){
     return(paste(unique(x[[1]][["data"]][,"protein_id"]), collapse = ";", sep = ""))
@@ -170,7 +215,7 @@ fdr_mCP<-    function (corum_database, experiment_data, N_fractions = 35,
     write.csv(VS_f, file = paste0(file_name,"main.csv"), row.names = FALSE) 
   }
   if (monomeric_filter) {
-   
+    
     mono_filter<- VS_f$complex_names[VS_f$Monomeric_risk ==TRUE]
     out_Hek_P2_2<- out_Hek_P2_1 [! (names(out_Hek_P2_1) %in% mono_filter)] 
     
@@ -179,27 +224,27 @@ fdr_mCP<-    function (corum_database, experiment_data, N_fractions = 35,
     print(paste0("FDR (McS)= ", mean(sapply(X, "length")/length(Output_cpp_plotter))))
     print(paste0("PPC_candidate_Detected= ", length(Output_cpp_plotter)))
     print(paste0("PPC_Detected= ", length(out_Hek_P2_2)))
-    print(paste0("SD_Fdr= ", sd(sapply(X, "length")/length(Output_cpp_plotter))))
+    # print(paste0("SD_Fdr= ", sd(sapply(X, "length")/length(Output_cpp_plotter))))
     print(paste0("filter=" , filter))
     print(paste0("number of simulations= ", n_simulations))
     print(paste0("fdr_limit", fdr_limit))
     print(paste0("Monomeric_risk_vec= ", length(VS_f$Monomeric_risk[VS_f$Monomeric_risk==TRUE])))
     sink()
     
-      return(out_Hek_P2_2)
+    return(out_Hek_P2_2)
   }
   
   sink(paste0(file_name, "_FDR.txt"))
   print("Fold discovery rate results")
-  print(paste0("FDR (McS)= ", mean(sapply(X, "length")/length(Output_cpp_plotter))))
+  #print(paste0("FDR (McS)= ", mean(sapply(X, "length")/length(Output_cpp_plotter))))
   print(paste0("PPC_candidate_Detected= ", length(Output_cpp_plotter)))
   print(paste0("PPC_Detected= ", length(out_Hek_P2_1)))
-  print(paste0("SD_Fdr= ", sd(sapply(X, "length")/length(Output_cpp_plotter))))
+  #print(paste0("SD_Fdr= ", sd(sapply(X, "length")/length(Output_cpp_plotter))))
   print(paste0("filter= ", filter))
   print(paste0("number of simulations= ", n_simulations))
   print(paste0("fdr_limit= ", fdr_limit))
   print(paste0("Monomeric_risk_vec= ", length(VS_f$Monomeric_risk[VS_f$Monomeric_risk==TRUE])))
   sink()
-
+  
   return(out_Hek_P2_1)
 }
