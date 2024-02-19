@@ -1,6 +1,6 @@
-#' fdr_mCP_standard
+#' fdr_mCP_standard_modified
 #' 
-#' @description This function performs different matrix from your experimental matrix and evaluates this "fake matrix" into  mCP workflow by using the selected filter then calculates the FDR based in Montecarlo Simulations (under assumption of independence of correlation coefficient) and the real result of protein complexes detected in your experiment.
+#' @description This function needs as inputs a list of complexes outputs generates by mCP() or cpp_ploter, the experimental matrix and a Target list of protein complexes (CORUM or complex portal adapted). It  performs an FDR calculation based in Montecarlo Simulations (under assumption of independence of correlation coefficient). It performs two different set of sumulation to test connectivity (number of hit that correlates) and average of pearson correlations hits. Decoys are generated from the experimental matrix, then it evaluates this "fake matrix" into  mCP workflow by using an open filter to ensure decoys comparison, then it takes the pearson hits according to the first filter.ent.
 #' @param corum_database The corum data base. 
 #' @param experiment_data A matrix that has protein_id in the first column and the detected intensities in the other colums.
 #' @param N_fractions Number of fractions in your experimet
@@ -10,8 +10,8 @@
 #' @param Output_cpp_plotter output list of detected protein complexes function cpp_plotter
 #' @param file_name this is the file name of the output, is a string, It should be writen within "". For example "outputname"
 #' @param save_file could be TRUE or FALSE it generate an csv file with results of Fold Discovery Rate per protein complexes
-#' @param Risk_fraction  is a number indicating the fraction where all monomeric components of the protein complex should be present. It is set to 85% of the n_fraction. 
-#' @param monomeric_filter a TRUE or FALSE setting that takes out potential protein complexes sie a hight porcentaje of monomeric conformation. This is related to the previous filter by defoult is off so the user can decide. 
+#' @param Risk_fraction  is a number indicating the fraction where all monomeric components of the protein complex should be present. It is set to 85% of the n_fraction (when the experiment is performed from high molecular weight to low molecular weight). 
+#' @param monomeric_filter a TRUE or FALSE setting that takes out potential protein complexes site a hight porcentaje of monomeric conformation. This is related to the previous filter by defoult is off so the user can decide. 
 #' @param set_seed a TRUE or FALSE setting to standarise simulations. 
 #'
 #' @return a list of controlled FDr Portein compleses. 
@@ -24,32 +24,68 @@
 #' @export
 #'
 #' @examples
-#' data(Corum_Humans_Database)
 #' 
-#' FDR_DIANN_dDIA_P2_1_<- fdr_mCP_standard(corum_database= Corum_Humans_Database,
-#'Output_cpp_plotter = out_Hek_P2_1, 
-#'experiment_data=Hek293_P2_1,
-#'file_name = "m_CP_analysis",
-#'N_fractions = 35,
-#'specie = "hsapiens",
-#'filter=0.81,
-#'n_simulations= 2)
+#' data("Corum_Humans_Database")
+#' data("Hek293_P2_1")
+#' mCP_Hek_P2_1 <- mCP(corum_database = Corum_Humans_Database,
+#'                                      experiment_data = Hek293_P2_1, 
+#'                                      N_fractions = 35, 
+#'                                      specie = "hsapiens",
+#'                                      method_cor = "pearson",
+#'                                      network = TRUE,
+#'                                      format = "pdf", 
+#'                                      output_name = "mCP_Hek293_P2_1",
+#'                                      filter = 0.81,
+#'                                      heat_map = TRUE,
+#'                                      relative = FALSE,
+#'                                      fdr_limit = 0.05,
+#'                                      n_simulations= 7,
+#'                                      monomeric_filter = FALSE,
+#'                                      mw = TRUE,
+#'                                      dynamic = TRUE,
+#'                                      Risk_fraction = 31,
+#'                                      set_seed = FALSE,
+#'                                      display_weights = TRUE,
+#'                                      standard_weights = list(list(x =6, label= "2700 KDa"), 
+#'                                                         list(x = 11, label ="950 KDa"),
+#'                                                         list(x = 14, label = "750 KDa"), 
+#'                                                         list(x =27, label ="146 KDa"),
+#'                                                         list(x =30, label ="60 KDa")))
+#'
+#'  #### Run the function
+#'  FDR_DIANN_dDIA_P2_1_<- fdr_mCP_standard_modified (corum_database= Corum_Humans_Database,
+#'                                                  Output_cpp_plotter = mCP_Hek_P2_1, 
+#'                                                  experiment_data=Hek293_P2_1,
+#'                                                  file_name = "fdr_mCP_standard_modified_check",
+#'                                                  N_fractions = 35,
+#'                                                  specie = "hsapiens",
+#'                                                  filter=0.81,
+#'                                                  save_file = TRUE,
+#'                                                  fdr_limit = 0.05,
+#'                                                  n_simulations= 2,
+#'                                                  monomeric_filter= FALSE,
+#'                                                  set_seed= TRUE)
 #' 
 
 
-fdr_mCP_standard<-    function (corum_database, experiment_data, N_fractions = N_fractions, 
-                       specie = "hsapiens", filter = 0.81, n_simulations = 185, 
-                       Output_cpp_plotter= Output_cpp_plotter, file_name = "exp_id", 
-                       save_file = TRUE, fdr_limit= fdr_limit, Risk_fraction = floor(N_fractions*0.85), 
-                       monomeric_filter= FALSE, set_seed= TRUE) 
+fdr_mCP_standard_modified <-    function (corum_database, experiment_data, N_fractions = N_fractions, 
+                                specie = "hsapiens", filter = 0.81, n_simulations = 185, 
+                                Output_cpp_plotter= Output_cpp_plotter, file_name = "exp_id", 
+                                save_file = TRUE, fdr_limit= fdr_limit, Risk_fraction = floor(N_fractions*0.85), 
+                                monomeric_filter= FALSE, set_seed= TRUE) 
 {
   
-    ifelse(length(names(Output_cpp_plotter))>0, standar_Experiment<- extract_mcp(Output_cpp_plotter), return(print("0 Protein Complexes detected")))
+  ifelse(length(names(Output_cpp_plotter))>0, standar_Experiment<- extract_mcp(Output_cpp_plotter), return(print("0 Protein Complexes detected")))
   complex_names <-  names(Output_cpp_plotter)
   ######## simulation##########
   if (set_seed){
     set.seed(123)
   }
+  print("First Simulation") 
+  res_matrix<-fdr_mCP_connections(corum_database, experiment_data, N_fractions = N_fractions, 
+                         specie = specie, filter = filter, n_simulations = n_simulations, 
+                         Output_cpp_plotter= Output_cpp_plotter, fdr_limit= fdr_limit, set_seed= TRUE)
+  print("Second Simulation")  
   #####################Specific filter for FRD according to the average of Person binary interaction of each protein complex. 
   ######
   extract_elements <- function(x) {
@@ -130,24 +166,23 @@ fdr_mCP_standard<-    function (corum_database, experiment_data, N_fractions = N
     Comparison_ppcs_1<- Comparison_ppcs %>% mutate(False_positive= Exp-decoy)
     Comparison_ppcs_1$evaluation<- ifelse (Comparison_ppcs_1$False_positive >=0,0,1)
     result_list <- c(result_list, list(Comparison_ppcs_1))
-   
-  return(result_list)}, simplify = FALSE)
-
-  #res_matrix <- matrix(0,nrow = length(complex_names),ncol = n_simulations,dimnames = list(complex_names,paste0("Simulation_hits_",1:n_simulations)))
-  ### Create an empty matrixs :)
-  res_matrix_test <- matrix(0,nrow = length(complex_names),ncol = n_simulations, dimnames = list(complex_names,paste0("Simulation_hits_",1:n_simulations)))
+    
+    return(result_list)}, simplify = FALSE)
   
+   ### Create an empty matrixs :)
+  res_matrix_test <- matrix(0,nrow = length(complex_names),ncol = n_simulations, dimnames = list(complex_names,paste0("Simulation_hits_",1:n_simulations)))
   
   for (i in 1:length(X)) {
     column_values <- X[[i]][[1]][["evaluation"]]
     res_matrix_test[, i] <- column_values
     #res_matrix_test[column_values, i] <- ifelse(length(column_values) > 0, column_values, 0)
   }
-  print("done")
-  papa<- as.data.frame(res_matrix_test)
+##################
+  binary_result <- res_matrix + res_matrix_test
+  papa<- as.data.frame(binary_result)
   disco_11<- data.frame(Discovered= rowSums(papa))
-  print(disco_11)
-  fddd<- as.data.frame(disco_11$Discovered/n_simulations)
+  total<- n_simulations*2
+  fddd<- as.data.frame(disco_11$Discovered/total)
   colnames(fddd)[1]<- "FDR"
   ####  monomeric risk
   Max_positions <- sapply(Output_cpp_plotter,function(x){
@@ -162,7 +197,7 @@ fdr_mCP_standard<-    function (corum_database, experiment_data, N_fractions = N
                        False_positives = as.numeric(disco_11$Discovered),
                        FDR =as.numeric(fddd$FDR), 
                        N_subunits = as.numeric(table(corum_database$complex_name)[complex_names]),
-                       rbind(res_matrix_test)) #,rbind(res_matrix_test) to include the hits in each simulation
+                       rbind(binary_result)) #,rbind(binary_result) to include the hits in each simulation
   
   colnames(res_DF)[5]<- "FDR"
   res_DF<- res_DF %>% dplyr::filter(FDR<= fdr_limit)
@@ -170,7 +205,6 @@ fdr_mCP_standard<-    function (corum_database, experiment_data, N_fractions = N
   out_Hek_P2_1 <-  Output_cpp_plotter[filti]
   N_detected <- as.data.frame(sapply(out_Hek_P2_1, function(x){return(nrow(unique(x[[1]][["data"]][,"protein_id"])))}))
   colnames(N_detected)<-"N_detected" 
-  print(res_DF)
   ################################################################################################################
   UniprotIDs <- as.data.frame(sapply(out_Hek_P2_1, function(x){
     return(paste(unique(x[[1]][["data"]][,"protein_id"]), collapse = ";", sep = ""))
@@ -220,8 +254,8 @@ fdr_mCP_standard<-    function (corum_database, experiment_data, N_fractions = N
     out_Hek_P2_2<- out_Hek_P2_1 [! (names(out_Hek_P2_1) %in% mono_filter)] 
     
     sink(paste0(file_name, "_FDR.txt"))
-    print("Fold discovery rate results")
-    print(paste0("FDR (McS)= ", mean(sapply(X, "length")/length(Output_cpp_plotter))))
+    #print("Fold discovery rate results")
+    #print(paste0("FDR (McS)= ", mean(sapply(X, "length")/length(Output_cpp_plotter))))
     print(paste0("PPC_candidate_Detected= ", length(Output_cpp_plotter)))
     print(paste0("PPC_Detected= ", length(out_Hek_P2_2)))
     # print(paste0("SD_Fdr= ", sd(sapply(X, "length")/length(Output_cpp_plotter))))
@@ -245,6 +279,5 @@ fdr_mCP_standard<-    function (corum_database, experiment_data, N_fractions = N
   print(paste0("fdr_limit= ", fdr_limit))
   print(paste0("Monomeric_risk_vec= ", length(VS_f$Monomeric_risk[VS_f$Monomeric_risk==TRUE])))
   sink()
-  
   return(out_Hek_P2_1)
 }
