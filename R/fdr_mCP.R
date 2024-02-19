@@ -1,6 +1,10 @@
 #' fdr_mCP
 #' 
-#' @description This function performs different matrix from your experimental matrix and evaluates this "fake matrix" into  mCP workflow by using the selected filter then calculates the FDR based in montecarlo simulations and the real result of protein complexes detected in your experiment.
+#' @description This function performs performs simulations and comparison to detect False Positives.
+#'  This function needs as inputs a list of complexes outputs generates by mCP() or cpp_ploter, the experimental matrix and a Target list of protein complexes
+#'  (CORUM or complex portal adapted). The output is a list of filtered protein complexes by setting the fdr_limit in this case 5% (set as numeric value, e.g.= 0.05).  
+#'  It generates decoys matrices from the experimental matrix and evaluate this "fake matrix" into  mCP workflow by using the selected filter then calculates the FDR 
+#'  based in MonteCarlo simulations outputs.
 #' @param corum_database The corum data base. 
 #' @param experiment_data A matrix that has protein_id in the first column and the detected intensities in the other colums.
 #' @param N_fractions Number of fractions in your experimet
@@ -24,17 +28,46 @@
 #' @export
 #'
 #' @examples
-#' data(Corum_Humans_Database)
 #' 
-#' FDR_DIANN_dDIA_P2_1_<- fdr_mCP(corum_database= Corum_Humans_Database,
-#'Output_cpp_plotter = out_Hek_P2_1, 
-#'experiment_data=Hek293_P2_1,
-#'file_name = "m_CP_analysis",
-#'N_fractions = 35,
-#'specie = "hsapiens",
-#'filter=0.81,
-#'n_simulations= 2)
-#' 
+#' data("Corum_Humans_Database")
+#' data("Hek293_P2_1")
+#' mCP_Hek_P2_1 <- mCP(corum_database = Corum_Humans_Database,
+#'                                      experiment_data = Hek293_P2_1, 
+#'                                      N_fractions = 35, 
+#'                                      specie = "hsapiens",
+#'                                      method_cor = "pearson",
+#'                                      network = TRUE,
+#'                                      format = "pdf", 
+#'                                      output_name = "mCP_Hek293_P2_1",
+#'                                      filter = 0.81,
+#'                                      heat_map = TRUE,
+#'                                      relative = FALSE,
+#'                                      fdr_limit = 0.05,
+#'                                      n_simulations= 7,
+#'                                      monomeric_filter = FALSE,
+#'                                      mw = TRUE,
+#'                                      dynamic = TRUE,
+#'                                      Risk_fraction = 31,
+#'                                      set_seed = FALSE,
+#'                                      display_weights = TRUE,
+#'                                      standard_weights = list(list(x =6, label= "2700 KDa"), 
+#'                                                         list(x = 11, label ="950 KDa"),
+#'                                                         list(x = 14, label = "750 KDa"), 
+#'                                                         list(x =27, label ="146 KDa"),
+#'                                                         list(x =30, label ="60 KDa")))
+#'
+#'  #### Run the function
+#'FDR_DIANN_dDIA_P2_12_<- fdr_mCP (corum_database= Corum_Humans_Database,
+#'                                             Output_cpp_plotter = mCP_Hek_P2_1, 
+#'                                             experiment_data= Hek293_P2_1,
+#'                                             N_fractions = 35,
+#'                                             specie = "mmusculus",
+#'                                             filter=0.81,
+#'                                             n_simulations= 4,
+#'                                             fdr_limit = 0.05,
+#'                                             set_seed= TRUE)
+#'
+#'
 
 fdr_mCP<-    function (corum_database, experiment_data, N_fractions = 35, 
                        specie = "hsapiens", filter = 0.81, n_simulations = 10, 
