@@ -1,4 +1,4 @@
-#' mCP function: Targeted analysis of protein complexes extended to a low number of fractions. 
+#' mCP: Targeted analysis of protein complexes extended to a low number of fractions. 
 #'
 #' @description This function is an integrated function of mCP package, that needs as input an experimental data and returns a list of plots, binary total hits, id of proteins of binary hits and heatmaps_seaborn of know protein complexes detected in CORUM database. In addition, it plots 4 files as  outputs: 
 #' 1- pdf file with detected protein complexes profiles from Corum database.
@@ -25,6 +25,7 @@
 #' @param monomeric_filter a TRUE or FALSE setting that takes out potential protein complexes sie a hight porcentaje of monomeric conformation. This is related to the previous filter by defoult is off so the user can decide. 
 #' @param set_seed a TRUE or FALSE setting to standarise simulations.
 #' @param mw TRUE or FALSE setting plot moleculare weight (requires std weights in kDa). 
+#' @param dynamic TRUE or FALSE setting to activate the dynamic search. Technically dynamic= TRUE is a less restrictive search recommended for known protein complexes. While for denovo searches, we recomend the setting to be FALSE. It means double time for simulation and more restrictive results.  
 #'
 #' @return a list of protein complexes plots, the significant interactions, binary pairs proteins detected, and a network heatmap based.
 #' @export
@@ -54,6 +55,7 @@
 #'                                      n_simulations= 7,
 #'                                      monomeric_filter = FALSE,
 #'                                      mw = TRUE,
+#'                                      dynamic = TRUE,
 #'                                      Risk_fraction = 31,
 #'                                      set_seed = FALSE,
 #'                                      display_weights = TRUE,
@@ -83,7 +85,8 @@
 #'                                     monomeric_filter = FALSE,
 #'                                     Risk_fraction = 31,
 #'                                     set_seed = TRUE,
-#'                                     mw = TRUE
+#'                                     dynamic = TRUE,
+#'                                     mw = TRUE,
 #'                                     display_weights = TRUE,
 #'                                     standard_weights =  list( 
 #'                                     list(x = 9, label = "1048 KDa"), 
@@ -98,10 +101,11 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
                 method_cor="pearson", network= TRUE, format="pdf", output_name= mCP_analysis,
                 filter=0.81, heat_map= TRUE, relative= FALSE, display_weights=TRUE, 
                 standard_weights=TRUE, fdr_limit=0.05 , n_simulations=185,
-                Risk_fraction=floor(N_fractions*0.85) , monomeric_filter= FALSE, set_seed= TRUE, mw= FALSE){
-  
+                Risk_fraction=floor(N_fractions*0.85) , monomeric_filter= FALSE, set_seed= TRUE,
+                mw= FALSE, dynamic= TRUE){
+  #### mCP FDR conservative ####
   # initialiye progress bar
-  
+  if (dynamic){
   pb <- txtProgressBar(min= 0, max= 10, style =  3)
   
   # Record the start time
@@ -182,4 +186,88 @@ mCP <- function(corum_database, experiment_data, N_fractions=35, specie= "hsapie
   # End progress bar
   close(pb)
   return(out_Hek_P2_1)
+  }
+else {
+  pb <- txtProgressBar(min= 0, max= 10, style =  3)
+  
+  # Record the start time
+  start_time <- Sys.time()
+  
+  # step1: Run mcp_list function
+  #pb$tick(msg = "Running mcp_list function...")
+  CL_hek_P2_1<- mcp_list(corum_database = corum_database,
+                         experiment_data = experiment_data, 
+                         N_fractions = N_fractions, 
+                         specie = specie,
+                         method_cor = method_cor, 
+                         network = network)
+  # Print message and elapsed time
+  cat("mcp_list function completed in", difftime(Sys.time(), start_time), "seconds.\n")
+  
+  # Update progress bar
+  t<-10/(1.5+5.4+3.75*n_simulations+5.4)
+  setTxtProgressBar(pb, 1.5*t)
+  
+  # Step 2:  Run cpp_plotter function
+  #pb$tick(msg = "Running cpp_plotter function...")
+  
+  out_Hek_P2_1 <- cpp_plotter(complex_list = CL_hek_P2_1,
+                              format = format, 
+                              output_name = paste0("all_Candidates_", output_name),
+                              filter = filter, N_fractions = N_fractions,
+                              heat_map = heat_map,
+                              network= network,
+                              relative = relative,
+                              display_weights = display_weights,
+                              standard_weights = standard_weights, mw=mw)
+  # Print message and elapsed time
+  cat("cpp_plotter function completed in", difftime(Sys.time(), start_time), "seconds.\n")
+  # Step 3: Run fdr_mCP function
+  #pb$tick(msg = "Running fdr_mCP function...")
+  
+  # Update progress bar
+  setTxtProgressBar(pb, 5.4*t)
+  
+  FDR_DIANN_dDIA_P2_1_<- fdr_mCP_standard_modified(corum_database = corum_database,
+                                                   Output_cpp_plotter = out_Hek_P2_1, 
+                                                   experiment_data = experiment_data,
+                                                   file_name = output_name,
+                                                   N_fractions = N_fractions,
+                                                   specie = specie,
+                                                   filter = filter,
+                                                   fdr_limit = fdr_limit,
+                                                   n_simulations = n_simulations,
+                                                   Risk_fraction= Risk_fraction,
+                                                   monomeric_filter= monomeric_filter,
+                                                   set_seed= set_seed)
+  
+  
+  filist<- names(FDR_DIANN_dDIA_P2_1_)
+  CL_list_fdr<-CL_hek_P2_1[filist]
+  # Update progress bar
+  setTxtProgressBar(pb, 5.4*t)
+  out_Hek_P2_1 <- cpp_plotter(complex_list = CL_list_fdr,
+                              format = format, 
+                              output_name = output_name,
+                              filter = filter, N_fractions = N_fractions,
+                              heat_map = heat_map,
+                              network= network,
+                              relative = relative,
+                              display_weights = display_weights,
+                              standard_weights = standard_weights,mw=mw)
+  
+  # # Calculate the elapsed time and print it to the console
+  # end_time <- Sys.time()
+  # elapsed_time <- end_time - start_time
+  # cat("Elapsed time:", round(elapsed_time, 2), "mins\n")
+  
+  # Print message and elapsed time
+  cat("fdr_mCP function completed in", difftime(Sys.time(), start_time), "seconds.\n")
+  # Update progress bar
+  setTxtProgressBar(pb, 10) 
+  # End progress bar
+  close(pb)
+  return(out_Hek_P2_1)
 }
+} 
+
