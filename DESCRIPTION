@@ -23,5 +23,3 @@ Imports:
     readr,
     ggplot2,
     dplyr(>= 1.0.0)
-Depends: 
-    R (>= 2.10)
