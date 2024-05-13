@@ -5,6 +5,8 @@
 
 mini-Complexome Profiler (mCP) 
 
+pre-print here:
+doi: https://doi.org/10.1101/2024.04.22.590599
 
  "mCP_tutorial_Humans_samples"
 
