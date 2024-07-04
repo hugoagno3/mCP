@@ -8,8 +8,7 @@ mini-Complexome Profiler (mCP)
 pre-print here:
 doi: https://doi.org/10.1101/2024.04.22.590599
 
-I created mCP to aliveate the need of deep expertise in data analysis, but in case you need specific support service, I provide data analysis support that includes use of mCP, and interactomics tools for complexome profiling:
-[https://www.kolabtree.com/find-an-expert/hugo-alejandro-a.](https://www.kolabtree.com/create-project/hugo-alejandro-a.)
+I created mCP to aliveate the need of deep expertise in data analysis, but in case you need specific support I provide data analysis support that includes use of mCP, and interactomics tools for complexome profiling. Please reach me out my email: hugo.amedei@med.uni-goettingen.de or hugoagno3@gmail.com 
 
  "mCP_tutorial_Humans_samples"
 
