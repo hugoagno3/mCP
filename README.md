@@ -7,6 +7,8 @@ mini-Complexome Profiler (mCP)
 
 pre-print here:
 doi: https://doi.org/10.1101/2024.04.22.590599
+If you need specific support service quotation for data analysis:
+https://www.kolabtree.com/find-an-expert/hugo-alejandro-a.
 
  "mCP_tutorial_Humans_samples"
 
