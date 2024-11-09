@@ -7,6 +7,9 @@ mini-Complexome Profiler (mCP)
 
 the mCP publication can be found here:
 doi: https://doi.org/10.3389/frans.2024.1425190
+important: according to my simulations the mCP software is able to work as low as with 11 Fractions, published was with 35 Fr. 
+
+
 
 I created mCP to aliveate the need of deep expertise in data analysis, but in case you need specific support I provide data analysis support that includes use of mCP, and interactomics tools for complexome profiling. Please reach me out my email: hugoagno3@gmail.com 
 
